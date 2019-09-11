@@ -11,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
 import com.upgrad.FoodOrderingApp.api.model.RestaurantList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +39,14 @@ public class RestaurantController {
 
 
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/restaurant/name/{restaurant_name}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<RestaurantListResponse> createAnswer (@PathVariable("restaurant_name") final String restaurant_name) throws RestaurantNotFoundException{
+        final List<RestaurantEntity> reataurants = restaurantService.getRestaurantsByName("%" +restaurant_name + "%");
+        RestaurantListResponse reataurantsResponse = restaurantslist(reataurants);
+        return new ResponseEntity<RestaurantListResponse>(reataurantsResponse, HttpStatus.OK);
+    }
+
     public RestaurantListResponse restaurantslist(List<RestaurantEntity> reataurants){
         RestaurantListResponse reataurantsListResponse = new RestaurantListResponse();
         List<RestaurantList> restaurantLists = new ArrayList<>();
@@ -54,13 +60,18 @@ public class RestaurantController {
                     .pincode(restaurantEntity.getAddress().getPincode()).state(restaurantDetailsResponseAddressState);
             RestaurantList restaurantList = new RestaurantList();
             List<CategoryEntity> categories = restaurantEntity.getCategory();
-            String categoriesString = new String();
+            List<String> categoriyNames = new ArrayList<String>();
             for(CategoryEntity category : categories){
+                categoriyNames.add(category.getCategoryName());
+            }
+            Collections.sort(categoriyNames);
+            String categoriesString = new String();
+            for(String  categoriyName : categoriyNames){
                 if(categoriesString.isEmpty()) {
-                    categoriesString = categoriesString + category.getCategoryName();
+                    categoriesString = categoriesString + categoriyName;
                 }
                 else {
-                    categoriesString = categoriesString + ", " + category.getCategoryName();
+                    categoriesString = categoriesString + ", " + categoriyName;
                 }
             }
             restaurantList.id(UUID.fromString(restaurantEntity.getUuid())).restaurantName(restaurantEntity.getRestaurantName())

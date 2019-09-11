@@ -16,6 +16,7 @@ import java.util.List;
 @NamedQueries(
         {
                 @NamedQuery(name = "allRestaurants" , query = "select r from RestaurantEntity r"),
+                @NamedQuery(name = "restaurantsByName" , query = "select r from RestaurantEntity r where r.restaurantName like :restaurantName"),
         }
 )
 public class RestaurantEntity {

@@ -23,4 +23,12 @@ public class RestaurantDao {
         }
     }
 
+    public List<RestaurantEntity> getRestaurantsByName(String restaurantName) {
+        try {
+            return entityManager.createNamedQuery("restaurantsByName", RestaurantEntity.class).setParameter("restaurantName", restaurantName).getResultList();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
 }
