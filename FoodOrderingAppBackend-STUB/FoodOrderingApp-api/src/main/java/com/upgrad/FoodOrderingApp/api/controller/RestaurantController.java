@@ -6,6 +6,7 @@ import com.upgrad.FoodOrderingApp.api.model.RestaurantListResponse;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
+import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,8 +42,21 @@ public class RestaurantController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant/name/{restaurant_name}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantListResponse> createAnswer (@PathVariable("restaurant_name") final String restaurant_name) throws RestaurantNotFoundException{
+    public ResponseEntity<RestaurantListResponse> getRestaurantsByName (@PathVariable("restaurant_name") final String restaurant_name) throws RestaurantNotFoundException{
         final List<RestaurantEntity> reataurants = restaurantService.getRestaurantsByName("%" +restaurant_name + "%");
+        if(reataurants == null){
+            return new ResponseEntity<RestaurantListResponse>(new RestaurantListResponse(), HttpStatus.NOT_FOUND);
+        }
+        RestaurantListResponse reataurantsResponse = restaurantslist(reataurants);
+        return new ResponseEntity<RestaurantListResponse>(reataurantsResponse, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/restaurant/category/{category_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<RestaurantListResponse> getRestaurantsByCtegoryId (@PathVariable("category_id") final String category_id) throws CategoryNotFoundException {
+        final List<RestaurantEntity> reataurants = restaurantService.getRestaurantsByCategoryId(category_id);
+        if(reataurants == null){
+            return new ResponseEntity<RestaurantListResponse>(new RestaurantListResponse(), HttpStatus.NOT_FOUND);
+        }
         RestaurantListResponse reataurantsResponse = restaurantslist(reataurants);
         return new ResponseEntity<RestaurantListResponse>(reataurantsResponse, HttpStatus.OK);
     }

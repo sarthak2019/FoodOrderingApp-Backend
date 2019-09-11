@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "category", schema = "public")
 @NamedQueries(
         {
-
+                @NamedQuery(name = "categoryById" , query = "select c from CategoryEntity c where c.uuid = :categoryId"),
         }
 )
 public class CategoryEntity {
