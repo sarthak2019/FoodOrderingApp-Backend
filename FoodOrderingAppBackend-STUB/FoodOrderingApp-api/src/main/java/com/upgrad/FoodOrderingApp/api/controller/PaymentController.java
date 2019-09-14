@@ -24,7 +24,8 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @RequestMapping(method= RequestMethod.GET, path= "/payment" , produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<PaymentListResponse>> payment() throws NullPointerException{
+    //public ResponseEntity<List<PaymentListResponse>> payment() throws NullPointerException{
+    public ResponseEntity<PaymentListResponse> payment() throws NullPointerException{
         //final PaymentEntity paymentEntity= new PaymentEntity();
         //final PaymentListResponse> paymentListResponses = new ArrayList<PaymentListResponse>();
 
@@ -48,7 +49,8 @@ public class PaymentController {
         paymentListResponses.add(paymentListResponse);
         System.out.println(paymentListResponses);
         //return new ResponseEntity<List<PaymentListResponse>>(paymentListResponses, HttpStatus.OK);
-        return new ResponseEntity<List<PaymentListResponse>>(paymentListResponses, HttpStatus.OK);
+        //return new ResponseEntity<List<PaymentListResponse>>(paymentListResponses, HttpStatus.OK);
+        return new ResponseEntity<PaymentListResponse>(paymentListResponses.get(0), HttpStatus.OK);
         //return new ResponseEntity(HttpStatus.OK);
     }
 }
