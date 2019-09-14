@@ -4,6 +4,7 @@ import com.upgrad.FoodOrderingApp.service.businness.*;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
+import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -80,6 +81,17 @@ public class CustomerController {
         return new ResponseEntity<LoginResponse>(  loginResponse, headers, HttpStatus.OK);
     }
 
+    //logout method is used to logout a loggedin customer from the application.
+    @RequestMapping(method=RequestMethod.POST,path="/customer/logout",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<LogoutResponse> logout(@RequestHeader("accessToken") final String accessToken)throws AuthorizationFailedException {
 
+        String [] bearerToken = accessToken.split("Bearer ");
+        final CustomerAuthEntity logout = customerService.logout(bearerToken[1]);
+
+        LogoutResponse logoutResponse=new LogoutResponse()
+                .id(logout.getUuid())
+                .message("LOGGED OUT SUCCESSFULLY");
+        return new ResponseEntity<LogoutResponse>(logoutResponse,HttpStatus.OK);
+    }
 
 }

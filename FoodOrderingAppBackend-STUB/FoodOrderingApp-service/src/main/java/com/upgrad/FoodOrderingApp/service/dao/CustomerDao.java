@@ -34,6 +34,15 @@ public class CustomerDao {
         return customerAuthEntity;
     }
 
+    //retrives a matching record in CustomerAuthEntity according to a particular accessToken
+    public CustomerAuthEntity getCustomerAuthToken(final String accessToken) {
+        try {
+            return entityManager.createNamedQuery("customerAuthTokenByAccessToken", CustomerAuthEntity.class).setParameter("accessToken", accessToken).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
 
 
 
