@@ -24,14 +24,15 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @RequestMapping(method= RequestMethod.GET, path= "/payment" , produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<PaymentListResponse>> payment() throws NullPointerException{
+    //public ResponseEntity<List<PaymentListResponse>> payment() throws NullPointerException{
+    public ResponseEntity<PaymentListResponse> payment() throws NullPointerException{
         //final PaymentEntity paymentEntity= new PaymentEntity();
         //final PaymentListResponse> paymentListResponses = new ArrayList<PaymentListResponse>();
 
-            final List<PaymentEntity> paymentMethods = paymentService.paymentMethods();
+            final List<PaymentEntity> paymentMethods = paymentService.getAllPaymentMethods();
 
         final List<PaymentListResponse> paymentListResponses = new ArrayList<PaymentListResponse>();
-        //final PaymentListResponse paymentListResponses = new PaymentListResponse();
+        final PaymentListResponse paymentListResponse = new PaymentListResponse();
         //final List<PaymentEntity> paymentMethods=paymentService.paymentMethods(paymentEntity);
         //final List<PaymentEntity> paymentMethods=
                //System.out.println(paymentService.paymentMethods(paymentEntity));
@@ -41,11 +42,15 @@ public class PaymentController {
             //paymentListResponses.add(paymentListResponse);
             PaymentResponse paymentResponse=new PaymentResponse().paymentName(paymentEntity.getPayment());
             paymentResponse.id((UUID.fromString(paymentEntity.getUuid())));
-            PaymentListResponse paymentListResponse=new PaymentListResponse().addPaymentMethodsItem(paymentResponse);
-            paymentListResponses.add(paymentListResponse);
+            //PaymentListResponse paymentListResponse=new PaymentListResponse().addPaymentMethodsItem(paymentResponse);
+            paymentListResponse.addPaymentMethodsItem(paymentResponse);
+            //paymentListResponses.add(paymentListResponse);
         }
+        paymentListResponses.add(paymentListResponse);
         System.out.println(paymentListResponses);
-        return new ResponseEntity<List<PaymentListResponse>>(paymentListResponses, HttpStatus.OK);
+        //return new ResponseEntity<List<PaymentListResponse>>(paymentListResponses, HttpStatus.OK);
+        //return new ResponseEntity<List<PaymentListResponse>>(paymentListResponses, HttpStatus.OK);
+        return new ResponseEntity<PaymentListResponse>(paymentListResponses.get(0), HttpStatus.OK);
         //return new ResponseEntity(HttpStatus.OK);
     }
 }

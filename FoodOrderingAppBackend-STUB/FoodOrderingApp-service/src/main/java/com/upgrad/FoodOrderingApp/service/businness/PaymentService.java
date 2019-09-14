@@ -19,7 +19,7 @@ public class PaymentService {
         return paymentDao.getPaymentMethods(paymentEntity);
     }*/
    @Transactional(propagation = Propagation.REQUIRED)
-   public List<PaymentEntity> paymentMethods() {
+   public List<PaymentEntity> getAllPaymentMethods() {
        System.out.println("in dao");
        List<PaymentEntity> daoList =paymentDao.getPaymentMethods();
        System.out.println("daoList "+daoList);

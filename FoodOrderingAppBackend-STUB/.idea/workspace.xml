@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75e9fa3d-3387-46ff-845c-5a94081eef05" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="75e9fa3d-3387-46ff-845c-5a94081eef05" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +14,10 @@
   <component name="ProjectId" id="1QYyB5hHMQ1AhDKuuMT4RIDcS8V" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -58,6 +60,10 @@
       <option name="presentableId" value="Default" />
       <updated>1567961685341</updated>
       <workItem from="1567961689326" duration="1323000" />
+      <workItem from="1568070877886" duration="1714000" />
+      <workItem from="1568157073906" duration="593000" />
+      <workItem from="1568436598977" duration="2207000" />
+      <workItem from="1568467466896" duration="2591000" />
     </task>
     <servers />
   </component>
@@ -69,7 +75,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

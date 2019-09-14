@@ -26,7 +26,7 @@ public class PaymentEntity implements Serializable {
     @Column(name= "payment_name")
     @NotNull
     @Size(max=255)
-    private String payment;
+    private String paymentName;
 
     public int getId() {
         return id;
@@ -45,10 +45,10 @@ public class PaymentEntity implements Serializable {
     }
 
     public String getPayment() {
-        return payment;
+        return paymentName;
     }
 
-    public void setPayment(String payment) {
-        this.payment = payment;
+    public void setPaymentName(String paymentName) {
+        this.paymentName = paymentName;
     }
 }

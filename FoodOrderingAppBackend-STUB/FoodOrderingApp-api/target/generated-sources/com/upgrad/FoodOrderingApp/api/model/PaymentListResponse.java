@@ -23,7 +23,7 @@ public class PaymentListResponse   {
   @Valid
   private List<PaymentResponse> paymentMethods = null;
 
-  public PaymentListResponse paymentMethods(List<PaymentResponse> paymentMethods) {
+  public PaymentListResponse getPaymentMethods(List<PaymentResponse> paymentMethods) {
     this.paymentMethods = paymentMethods;
     return this;
   }
