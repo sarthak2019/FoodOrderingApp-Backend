@@ -4,10 +4,14 @@ import com.upgrad.FoodOrderingApp.service.dao.RestaurantDao;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
+import com.upgrad.FoodOrderingApp.service.exception.InvalidRatingException;
 import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +21,13 @@ public class RestaurantService {
     @Autowired
     private RestaurantDao restaurantDao;
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<RestaurantEntity> getAllRestaurants() {
         return restaurantDao.getAllRestaurants();
     }
 
-    public List<RestaurantEntity> getRestaurantsByName(String restaurantName) throws RestaurantNotFoundException {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<RestaurantEntity> restaurantsByName(String restaurantName) throws RestaurantNotFoundException {
         if (restaurantName.isEmpty()) {
             throw new RestaurantNotFoundException("RNF-003", "Restaurant name field should not be empty");
         }
@@ -29,7 +35,8 @@ public class RestaurantService {
         return restaurantEntityList;
     }
 
-    public List<RestaurantEntity> getRestaurantsByCategoryId(String categoryId) throws CategoryNotFoundException {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<RestaurantEntity> restaurantByCategory(String categoryId) throws CategoryNotFoundException {
         if (categoryId.isEmpty()) {
             throw new CategoryNotFoundException("CNF-001", "Category id field should not be empty");
         }
@@ -39,6 +46,42 @@ public class RestaurantService {
         }
         List<RestaurantEntity> restaurantEntityList = categoryEntity.getRestaurant();
         return restaurantEntityList;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public RestaurantEntity restaurantByUUID(String restaurantId) throws RestaurantNotFoundException {
+        if (restaurantId.isEmpty()) {
+            throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");
+        }
+        RestaurantEntity restaurantEntity = restaurantDao.getRestaurantsById(restaurantId);
+        if(restaurantEntity == null){
+            throw new RestaurantNotFoundException("RNF-001", "No restaurant by this id");
+        }
+        return restaurantEntity;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public RestaurantEntity updateRestaurantRating(String restaurantId, Double rating) throws RestaurantNotFoundException, InvalidRatingException {
+        if (restaurantId.isEmpty()) {
+            throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");
+        }
+        RestaurantEntity restaurantEntity = restaurantDao.getRestaurantsById(restaurantId);
+        if(restaurantEntity == null){
+            throw new RestaurantNotFoundException("RNF-001", "No restaurant by this id");
+        }
+        if(rating.toString().isEmpty() || (rating>5 || rating<1)){
+            throw new InvalidRatingException("IRE-001", "Restaurant should be in the range of 1 to 5");
+        }
+        BigDecimal oldRating = restaurantEntity.getCustomerRating();
+        Double oldRatingDouble = oldRating.doubleValue();
+        Integer oldNumCustRated = restaurantEntity.getNumberOfCustomersRated();
+        Integer newNumCustRated = oldNumCustRated + 1;
+        Double newRatingDouble = ((oldRatingDouble*Double.valueOf(oldNumCustRated))+rating)/newNumCustRated;
+        BigDecimal newRating = BigDecimal.valueOf(newRatingDouble);
+        restaurantEntity.setCustomerRating(newRating);
+        restaurantEntity.setNumberOfCustomersRated(newNumCustRated);
+        RestaurantEntity newrestaurantEntity = restaurantDao.updateRestaurantRating(restaurantEntity);
+        return newrestaurantEntity;
     }
 
 }

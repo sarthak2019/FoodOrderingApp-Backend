@@ -38,4 +38,17 @@ public class RestaurantDao {
             return null;
         }
     }
+
+    public RestaurantEntity getRestaurantsById(String restaurantId) {
+        try {
+            return entityManager.createNamedQuery("restaurantsById", RestaurantEntity.class).setParameter("restaurantId", restaurantId).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    public RestaurantEntity updateRestaurantRating (RestaurantEntity restaurantEntity){
+        entityManager.merge(restaurantEntity);
+        return restaurantEntity;
+    }
 }

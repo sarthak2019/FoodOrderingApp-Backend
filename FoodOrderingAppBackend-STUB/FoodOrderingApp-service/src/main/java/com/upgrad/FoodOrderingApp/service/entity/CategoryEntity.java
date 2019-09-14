@@ -34,6 +34,9 @@ public class CategoryEntity {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "category")
     private List<RestaurantEntity> restaurant;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<ItemEntity> item = new ArrayList<>();
+
     public Integer getId() {
         return id;
     }
@@ -64,6 +67,14 @@ public class CategoryEntity {
 
     public void setRestaurant(List<RestaurantEntity> restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public List<ItemEntity> getItem() {
+        return item;
+    }
+
+    public void setItem(List<ItemEntity> item) {
+        this.item = item;
     }
 
     @Override
