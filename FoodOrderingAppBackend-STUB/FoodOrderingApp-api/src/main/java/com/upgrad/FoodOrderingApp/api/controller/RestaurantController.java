@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/")
 public class RestaurantController {
 

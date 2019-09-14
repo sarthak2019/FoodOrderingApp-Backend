@@ -42,6 +42,9 @@ public class ItemEntity {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<CategoryEntity> category;
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    private List<RestaurantEntity> restaurant;
+
     public Integer getId() {
         return id;
     }
@@ -80,6 +83,22 @@ public class ItemEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<CategoryEntity> getCategory() {
+        return category;
+    }
+
+    public void setCategory(List<CategoryEntity> category) {
+        this.category = category;
+    }
+
+    public List<RestaurantEntity> getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(List<RestaurantEntity> restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override

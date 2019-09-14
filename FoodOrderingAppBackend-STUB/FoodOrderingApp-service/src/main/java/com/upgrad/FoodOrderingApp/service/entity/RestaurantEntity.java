@@ -57,6 +57,17 @@ public class RestaurantEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<CategoryEntity> category = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<ItemEntity> item = new ArrayList<>();
+
+    public List<ItemEntity> getItem() {
+        return item;
+    }
+
+    public void setItem(List<ItemEntity> item) {
+        this.item = item;
+    }
+
     public Integer getId() {
         return id;
     }
