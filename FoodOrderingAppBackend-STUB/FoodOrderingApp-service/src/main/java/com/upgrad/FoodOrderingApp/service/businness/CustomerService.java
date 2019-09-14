@@ -6,6 +6,7 @@ import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
+import com.upgrad.FoodOrderingApp.service.exception.UpdateCustomerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -122,6 +123,40 @@ public class CustomerService {
             final ZonedDateTime now = ZonedDateTime.now();
             customerAuthEntity.setLogoutAt(now);
             return customerAuthEntity;
+        }
+    }
+
+    //getCustomer method is used to perform Bearer authorization
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity getCustomer(final String accessToken) throws AuthorizationFailedException {
+        CustomerAuthEntity customerAuthEntity = customerDao.getCustomerAuthToken(accessToken);
+        //If the access token provided by the customer does not exist in the database
+        if (customerAuthEntity == null) {
+            throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in.");
+            //If the access token provided by the customer exists in the database, but the customer has already logged out
+        } else if (customerAuthEntity != null && customerAuthEntity.getLogoutAt() != null) {
+            throw new AuthorizationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
+            //If the access token provided by the customer exists in the database, but the session has expired
+        } else if (customerAuthEntity != null && ZonedDateTime.now().isAfter(customerAuthEntity.getExpiresAt())) {
+            throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
+        } else {
+            return customerAuthEntity.getCustomer();
+        }
+    }
+
+    //updateCustomer method is used to update a customer's firstname and/or lastname
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity updateCustomer(final CustomerEntity customerEntity) throws UpdateCustomerException {
+        if (customerEntity.getFirstName().isEmpty()) {
+            throw new UpdateCustomerException("UCR-002", "First name field should not be empty");
+        } else {
+            final CustomerEntity updatedCustomerEntity = new CustomerEntity();
+            updatedCustomerEntity.setFirstName(customerEntity.getFirstName());
+            if(!customerEntity.getLastName().isEmpty()) {
+                updatedCustomerEntity.setLastName(customerEntity.getLastName());
+            }
+            updatedCustomerEntity.setUuid(customerEntity.getUuid());
+            return updatedCustomerEntity;
         }
     }
 
