@@ -16,6 +16,7 @@ public class ItemService {
     @Autowired
     private RestaurantDao restaurantDao;
 
+    /* The below method returns the list of top 5 items by popularity for a particular restaurant. */
     @Transactional(propagation = Propagation.REQUIRED)
     public List<ItemEntity> getItemsByPopularity(RestaurantEntity restaurantEntity) {
         List<ItemEntity> itemEntities = restaurantEntity.getItem();

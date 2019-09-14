@@ -17,12 +17,14 @@ public class CategoryService {
     @Autowired
     private CategoryDao categoryDao;
 
+    /* The below method returns a list of all the categories present in the database. */
     @Transactional(propagation = Propagation.REQUIRED)
     public List<CategoryEntity> getAllCategoriesOrderedByName() {
         List<CategoryEntity> categoryEntities = categoryDao.getAllCategoriesOrderedByName();
         return categoryEntities;
     }
 
+    /* The below method returns the category having a particular UUID. */
     @Transactional(propagation = Propagation.REQUIRED)
     public CategoryEntity getCategoryById(String categoryId) throws CategoryNotFoundException {
         if (categoryId.isEmpty()) {

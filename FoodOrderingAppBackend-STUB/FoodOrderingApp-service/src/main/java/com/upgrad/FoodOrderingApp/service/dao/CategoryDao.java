@@ -14,6 +14,7 @@ public class CategoryDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /* The below method fetches a list of all the categories present from the database. */
     public List<CategoryEntity> getAllCategoriesOrderedByName() {
         try {
             return entityManager.createNamedQuery("allCategories", CategoryEntity.class).getResultList();
@@ -22,6 +23,7 @@ public class CategoryDao {
         }
     }
 
+    /* The below method fetches the category having a particular UUID from the database. */
     public CategoryEntity getCategoryById(String categoryId) {
         try {
             return entityManager.createNamedQuery("categoryById", CategoryEntity.class).setParameter("categoryId", categoryId).getSingleResult();

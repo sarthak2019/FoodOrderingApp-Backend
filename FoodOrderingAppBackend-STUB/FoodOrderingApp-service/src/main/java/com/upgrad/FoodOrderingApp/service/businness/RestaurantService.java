@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,11 +31,13 @@ public class RestaurantService {
     @Autowired
     private CustomerDao customerDao;
 
+    /* The below method returns a list of all the restaurants present in the database. */
     @Transactional(propagation = Propagation.REQUIRED)
     public List<RestaurantEntity> getAllRestaurants() {
         return restaurantDao.getAllRestaurants();
     }
 
+    /* The below method returns the restaurant based on the restaurantName. */
     @Transactional(propagation = Propagation.REQUIRED)
     public List<RestaurantEntity> restaurantsByName(String restaurantName) throws RestaurantNotFoundException {
         if (restaurantName.isEmpty()) {
@@ -46,6 +47,7 @@ public class RestaurantService {
         return restaurantEntityList;
     }
 
+     /* The below method returns a list of all the restaurants having a particular category. */
     @Transactional(propagation = Propagation.REQUIRED)
     public List<RestaurantEntity> restaurantByCategory(String categoryId) throws CategoryNotFoundException {
         if (categoryId.isEmpty()) {
@@ -59,6 +61,7 @@ public class RestaurantService {
         return restaurantEntityList;
     }
 
+    /* The below method returns the restaurant having a particular UUID. */
     @Transactional(propagation = Propagation.REQUIRED)
     public RestaurantEntity restaurantByUUID(String restaurantId) throws RestaurantNotFoundException {
         if (restaurantId.isEmpty()) {
@@ -71,6 +74,7 @@ public class RestaurantService {
         return restaurantEntity;
     }
 
+    /* The below method updates restaurant details for a particular UUID. */
     @Transactional(propagation = Propagation.REQUIRED)
     public RestaurantEntity updateRestaurantRating(String accessToken, String restaurantId, Double rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
         CustomerAuthEntity customerAuthEntity = customerDao.getCustomerAuthToken(accessToken);

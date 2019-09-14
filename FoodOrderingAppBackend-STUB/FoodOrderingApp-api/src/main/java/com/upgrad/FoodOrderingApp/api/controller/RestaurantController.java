@@ -18,14 +18,19 @@ import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
 import java.math.BigDecimal;
 import java.util.*;
 
+//RestController annotation specifies that this class represents a REST API(equivalent of @Controller + @ResponseBody)
 @RestController
+//"@CrossOrigin” annotation enables cross-origin requests for all methods in that specific controller class.
 @CrossOrigin
 @RequestMapping("/")
 public class RestaurantController {
 
+    //Required services are autowired to enable access to methods defined in respective Business services
     @Autowired
     private RestaurantService restaurantService;
 
+    /* /restaurant endpoint retrieve all the restaurants in order of their ratings and
+    display the response in a JSON format with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getAllRestaurants() {
         final List<RestaurantEntity> restaurants = restaurantService.getAllRestaurants();
@@ -40,6 +45,8 @@ public class RestaurantController {
         return new ResponseEntity<RestaurantListResponse>(reataurantsResponse, HttpStatus.OK);
     }
 
+    /* /restaurant/name/{restaurant_name} endpoint retrieves all the restaurants
+    corresponding to the entered restaurant_name path variable in alphabetical order of their names. */
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant/name/{restaurant_name}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getRestaurantsByName(@PathVariable("restaurant_name") final String restaurant_name) throws RestaurantNotFoundException {
         final List<RestaurantEntity> restaurants = restaurantService.restaurantsByName("%" + restaurant_name + "%");
@@ -56,6 +63,9 @@ public class RestaurantController {
         return new ResponseEntity<RestaurantListResponse>(reataurantsResponse, HttpStatus.OK);
     }
 
+    /* /restaurant/category/{category_id} endpoint retrieves all the restaurants under the category of
+    category_id path variable in alphabetical order and then displays the response in a JSON format
+    with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant/category/{category_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getRestaurantsByCategoryId(@PathVariable("category_id") final String category_id) throws CategoryNotFoundException {
         final List<RestaurantEntity> restaurants = restaurantService.restaurantByCategory(category_id);
@@ -73,6 +83,9 @@ public class RestaurantController {
         return new ResponseEntity<RestaurantListResponse>(reataurantsResponse, HttpStatus.OK);
     }
 
+    /* /api/restaurant/{restaurant_id} endpoint retrieves the restaurant details for the
+    restaurant_id path variable and then displays the response in the JSON format with the
+    corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/api/restaurant/{restaurant_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantDetailsResponse> getRestaurantsById(@PathVariable("restaurant_id") final String restaurant_id) throws RestaurantNotFoundException {
         final RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurant_id);
@@ -130,6 +143,10 @@ public class RestaurantController {
         return new ResponseEntity<RestaurantDetailsResponse>(restaurantDetailsResponse, HttpStatus.OK);
     }
 
+    /* /api/restaurant/{restaurant_id} endpoint updates the restaurant's
+    rating in the database along with the number of customers who have rated it for the restaurant
+    corresponding to the restaurant_id path variable. Then return the uuid of the restaurant updated
+    and message “RESTAURANT RATING UPDATED SUCCESSFULLY” in the JSON response with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.PUT, path = "/api/restaurant/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails  (@PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("accessToken") final String accessToken, @RequestParam("customer_rating") Double customer_rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
@@ -142,6 +159,8 @@ public class RestaurantController {
     }
 
 
+        /* restaurantslist method returns the details of the list of restaurant entities in
+        the RestaurantListResponse format. */
         public RestaurantListResponse restaurantslist(List<RestaurantEntity> reataurants) {
         RestaurantListResponse reataurantsListResponse = new RestaurantListResponse();
         List<RestaurantList> restaurantLists = new ArrayList<>();

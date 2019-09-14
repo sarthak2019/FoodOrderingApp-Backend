@@ -16,14 +16,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+//RestController annotation specifies that this class represents a REST API(equivalent of @Controller + @ResponseBody)
 @RestController
+//"@CrossOrigin” annotation enables cross-origin requests for all methods in that specific controller class.
 @CrossOrigin
 @RequestMapping("/")
 public class CategoryController {
 
+    //Required services are autowired to enable access to methods defined in respective Business services
     @Autowired
     private CategoryService categoryService;
 
+    /* /category endpoint retrieves all the categories present in the database, ordered
+    by their name and displays the response in a JSON format with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CategoriesListResponse> getAllCategoriesOrderedByName() {
         final List<CategoryEntity> categories = categoryService.getAllCategoriesOrderedByName();
@@ -43,6 +48,9 @@ public class CategoryController {
         return new ResponseEntity<CategoriesListResponse>(categoriesListResponse, HttpStatus.OK);
     }
 
+    /* /category/{category_id} endpoint retrieve that category with all items within
+    that category for the category_id path variable and then display the response in a JSON
+    format with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/category/{category_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CategoryDetailsResponse> getCategoryById(@PathVariable("category_id") final String category_id) throws CategoryNotFoundException {
         final CategoryEntity category = categoryService.getCategoryById(category_id);

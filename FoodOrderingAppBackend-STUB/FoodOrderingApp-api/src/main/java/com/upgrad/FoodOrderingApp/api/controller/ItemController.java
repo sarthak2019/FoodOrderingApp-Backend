@@ -18,18 +18,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+//RestController annotation specifies that this class represents a REST API(equivalent of @Controller + @ResponseBody)
 @RestController
+//"@CrossOrigin” annotation enables cross-origin requests for all methods in that specific controller class.
 @CrossOrigin
 @RequestMapping("/")
 public class ItemController {
 
+    //Required services are autowired to enable access to methods defined in respective Business services
     @Autowired
     private ItemService itemService;
 
+    //Required services are autowired to enable access to methods defined in respective Business services
     @Autowired
     private RestaurantService restaurantService;
 
-    @ResponseBody
+    /* /item/restaurant/{restaurant_id} endpoint retrieves the top five items of the restaurant
+    corresponding to the restaurant_id path variable based on the number of times that item was
+    ordered and then display the response in a JSON format with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/item/restaurant/{restaurant_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ItemListResponse> getItemsByPopularity(@PathVariable("restaurant_id") final String restaurant_id) throws RestaurantNotFoundException {
         final RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurant_id);
