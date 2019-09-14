@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Service
@@ -96,9 +97,9 @@ public class CustomerService {
             customerAuthToken.setAccessToken(jwtTokenProvider.generateToken(customerEntity.getUuid(), now, expiresAt));
             customerAuthToken.setLoginAt(now);
             customerAuthToken.setExpiresAt(expiresAt);
-            customerAuthToken.setUuid(customerEntity.getUuid());
+            customerAuthToken.setUuid(UUID.randomUUID().toString());
             customerDao.createAuthToken(customerAuthToken);
-           // customerDao.updateCustomer(customerEntity);
+            customerDao.updateCustomer(customerEntity);
             return customerAuthToken;
         } else {
             //If the password provided by the customer does not match the password in the existing database,

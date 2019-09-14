@@ -43,6 +43,11 @@ public class CustomerDao {
         }
     }
 
+    //updates a CustomerEntity
+    public void updateCustomer(CustomerEntity updatedCustomerEntity) {
+        this.entityManager.merge(updatedCustomerEntity);
+    }
+
 
 
 
