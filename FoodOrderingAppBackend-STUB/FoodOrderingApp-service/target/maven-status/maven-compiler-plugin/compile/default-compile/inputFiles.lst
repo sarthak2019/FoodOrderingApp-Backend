@@ -5,7 +5,9 @@ D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\entity\OrderEntity.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\entity\StateEntity.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\exception\InvalidRatingException.java
+D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\dao\CustomerDao.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\exception\UpdateCustomerException.java
+D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\entity\CustomerEntity.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\entity\CategoryEntity.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\exception\AuthorizationFailedException.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\entity\RestaurantEntity.java
@@ -18,6 +20,7 @@ D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\businness\CategoryService.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\exception\ItemNotFoundException.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\businness\ItemService.java
+D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\entity\CustomerAuthEntity.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\businness\JwtTokenProvider.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\exception\CategoryNotFoundException.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\exception\AuthenticationFailedException.java
@@ -25,6 +28,7 @@ D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\entity\AddressEntity.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\common\UnexpectedException.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\exception\CustomerNotFoundException.java
+D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\businness\CustomerService.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\common\ErrorCode.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\common\GenericErrorCode.java
 D:\Course- 8 Backend project\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\exception\PaymentMethodNotFoundException.java

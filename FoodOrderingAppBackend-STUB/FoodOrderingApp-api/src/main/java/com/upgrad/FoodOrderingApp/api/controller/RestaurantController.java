@@ -74,7 +74,7 @@ public class RestaurantController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/api/restaurant/{restaurant_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-        public ResponseEntity<RestaurantDetailsResponse> getRestaurantsById(@PathVariable("restaurant_id") final String restaurant_id) throws RestaurantNotFoundException {
+    public ResponseEntity<RestaurantDetailsResponse> getRestaurantsById(@PathVariable("restaurant_id") final String restaurant_id) throws RestaurantNotFoundException {
         final RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurant_id);
         RestaurantDetailsResponse restaurantDetailsResponse = new RestaurantDetailsResponse();
         RestaurantDetailsResponseAddressState restaurantDetailsResponseAddressState = new RestaurantDetailsResponseAddressState();
@@ -131,8 +131,11 @@ public class RestaurantController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/api/restaurant/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails  (@PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("authorization") final String authorization, @RequestParam("customer_rating") Double customer_rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
-        RestaurantEntity newRestaurantEntity = restaurantService.updateRestaurantRating(restaurant_id, customer_rating);
+    public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails  (@PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("accessToken") final String accessToken, @RequestParam("customer_rating") Double customer_rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
+
+        String [] bearerToken = accessToken.split("Bearer ");
+
+        RestaurantEntity newRestaurantEntity = restaurantService.updateRestaurantRating(bearerToken[1], restaurant_id, customer_rating);
         RestaurantUpdatedResponse restaurantUpdatedResponse = new RestaurantUpdatedResponse();
         restaurantUpdatedResponse.id(UUID.fromString(newRestaurantEntity.getUuid())).status("RESTAURANT RATING UPDATED SUCCESSFULLY");
         return new ResponseEntity<RestaurantUpdatedResponse>(restaurantUpdatedResponse, HttpStatus.OK);
