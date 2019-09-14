@@ -23,6 +23,7 @@ io\swagger\Swagger2SpringBoot$ExitException.class
 com\upgrad\FoodOrderingApp\api\model\CategoriesListResponse.class
 com\upgrad\FoodOrderingApp\api\model\LoginResponse.class
 com\upgrad\FoodOrderingApp\api\model\UpdateCustomerResponse.class
+com\upgrad\FoodOrderingApp\api\controller\CategoryController$1.class
 io\swagger\api\NotFoundException.class
 io\swagger\api\ApiException.class
 com\upgrad\FoodOrderingApp\api\model\CategoryListResponse.class
@@ -42,6 +43,7 @@ com\upgrad\FoodOrderingApp\api\model\ItemQuantity.class
 com\upgrad\FoodOrderingApp\api\controller\RestaurantController$2.class
 com\upgrad\FoodOrderingApp\api\model\OrderListAddressState.class
 com\upgrad\FoodOrderingApp\api\model\CouponDetailsResponse.class
+com\upgrad\FoodOrderingApp\api\controller\CategoryController.class
 com\upgrad\FoodOrderingApp\api\model\ItemQuantityResponseItem.class
 com\upgrad\FoodOrderingApp\api\model\ErrorResponse.class
 io\swagger\Swagger2SpringBoot.class

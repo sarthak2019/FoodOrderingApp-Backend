@@ -15,6 +15,7 @@ import java.util.List;
 @NamedQueries(
         {
                 @NamedQuery(name = "categoryById" , query = "select c from CategoryEntity c where c.uuid = :categoryId"),
+                @NamedQuery(name = "allCategories" , query = "select c from CategoryEntity c")
         }
 )
 public class CategoryEntity {
