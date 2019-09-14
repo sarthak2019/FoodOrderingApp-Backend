@@ -161,5 +161,22 @@ public class CustomerService {
         }
     }
 
+    //updateCustomerPassword updates password as given by the Customer in newPassword field
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity updateCustomerPassword(final String oldPassword,final String newPassword, final CustomerEntity customerEntity) throws  UpdateCustomerException {
+        if (oldPassword.isEmpty() || newPassword.isEmpty()) {
+            throw new UpdateCustomerException("UCR-003", "No field should be empty");
+        } else if(newPassword.length() < 8 || !newPassword.matches("(?=.*[0-9]).*") || !newPassword.matches("(?=.*[A-Z]).*")|| !newPassword.matches("(?=.*[~!@#$%^&*()_-]).*")) {
+            throw new UpdateCustomerException("UCR-001","Weak password!");
+        } else if(!passwordCryptographyProvider.encrypt(oldPassword,customerEntity.getSalt()).equals(customerEntity.getPassword()) ){
+            throw new UpdateCustomerException("UCR-004","Incorrect old password!");
+        } else {
+            String[] encryptedText = this.passwordCryptographyProvider.encrypt(newPassword);
+            customerEntity.setSalt(encryptedText[0]);
+            customerEntity.setPassword(encryptedText[1]);
+            return customerEntity;
+        }
+    }
+
 
 }
