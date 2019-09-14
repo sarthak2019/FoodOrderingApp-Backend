@@ -31,7 +31,7 @@ public class PaymentController {
             final List<PaymentEntity> paymentMethods = paymentService.getAllPaymentMethods();
 
         final List<PaymentListResponse> paymentListResponses = new ArrayList<PaymentListResponse>();
-        //final PaymentListResponse paymentListResponses = new PaymentListResponse();
+        final PaymentListResponse paymentListResponse = new PaymentListResponse();
         //final List<PaymentEntity> paymentMethods=paymentService.paymentMethods(paymentEntity);
         //final List<PaymentEntity> paymentMethods=
                //System.out.println(paymentService.paymentMethods(paymentEntity));
@@ -41,10 +41,13 @@ public class PaymentController {
             //paymentListResponses.add(paymentListResponse);
             PaymentResponse paymentResponse=new PaymentResponse().paymentName(paymentEntity.getPayment());
             paymentResponse.id((UUID.fromString(paymentEntity.getUuid())));
-            PaymentListResponse paymentListResponse=new PaymentListResponse().addPaymentMethodsItem(paymentResponse);
-            paymentListResponses.add(paymentListResponse);
+            //PaymentListResponse paymentListResponse=new PaymentListResponse().addPaymentMethodsItem(paymentResponse);
+            paymentListResponse.addPaymentMethodsItem(paymentResponse);
+            //paymentListResponses.add(paymentListResponse);
         }
+        paymentListResponses.add(paymentListResponse);
         System.out.println(paymentListResponses);
+        //return new ResponseEntity<List<PaymentListResponse>>(paymentListResponses, HttpStatus.OK);
         return new ResponseEntity<List<PaymentListResponse>>(paymentListResponses, HttpStatus.OK);
         //return new ResponseEntity(HttpStatus.OK);
     }
