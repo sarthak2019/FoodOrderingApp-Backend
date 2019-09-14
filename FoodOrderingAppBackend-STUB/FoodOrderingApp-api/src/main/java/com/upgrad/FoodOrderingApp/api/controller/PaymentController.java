@@ -28,7 +28,7 @@ public class PaymentController {
         //final PaymentEntity paymentEntity= new PaymentEntity();
         //final PaymentListResponse> paymentListResponses = new ArrayList<PaymentListResponse>();
 
-            final List<PaymentEntity> paymentMethods = paymentService.paymentMethods();
+            final List<PaymentEntity> paymentMethods = paymentService.getAllPaymentMethods();
 
         final List<PaymentListResponse> paymentListResponses = new ArrayList<PaymentListResponse>();
         //final PaymentListResponse paymentListResponses = new PaymentListResponse();
