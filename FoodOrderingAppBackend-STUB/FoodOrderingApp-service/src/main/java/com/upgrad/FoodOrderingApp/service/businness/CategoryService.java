@@ -23,4 +23,17 @@ public class CategoryService {
         return categoryEntities;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CategoryEntity getCategoryById(String categoryId) throws CategoryNotFoundException {
+        if (categoryId.isEmpty()) {
+            throw new CategoryNotFoundException("CNF-001", "Category id field should not be empty");
+        }
+        CategoryEntity categoryEntity = categoryDao.getCategoryById(categoryId);
+        if (categoryEntity == null) {
+            throw new CategoryNotFoundException("CNF-002", "No category by this id");
+        }
+        CategoryEntity category = categoryDao.getCategoryById(categoryId);
+        return category;
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.upgrad.FoodOrderingApp.service.dao;
 
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
-import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -18,6 +17,14 @@ public class CategoryDao {
     public List<CategoryEntity> getAllCategoriesOrderedByName() {
         try {
             return entityManager.createNamedQuery("allCategories", CategoryEntity.class).getResultList();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    public CategoryEntity getCategoryById(String categoryId) {
+        try {
+            return entityManager.createNamedQuery("categoryById", CategoryEntity.class).setParameter("categoryId", categoryId).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }

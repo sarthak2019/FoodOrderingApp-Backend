@@ -1,17 +1,18 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.CategoriesListResponse;
+import com.upgrad.FoodOrderingApp.api.model.CategoryDetailsResponse;
 import com.upgrad.FoodOrderingApp.api.model.CategoryListResponse;
+import com.upgrad.FoodOrderingApp.api.model.ItemList;
 import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
+import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
+import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -24,7 +25,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CategoriesListResponse> getAllRestaurants() {
+    public ResponseEntity<CategoriesListResponse> getAllCategoriesOrderedByName() {
         final List<CategoryEntity> categories = categoryService.getAllCategoriesOrderedByName();
         Comparator<CategoryEntity> compareByCategoryName = new Comparator<CategoryEntity>() {
             @Override
@@ -40,6 +41,38 @@ public class CategoryController {
             categoriesListResponse.addCategoriesItem(categoryListResponse);
         }
         return new ResponseEntity<CategoriesListResponse>(categoriesListResponse, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/category/{category_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CategoryDetailsResponse> getCategoryById(@PathVariable("category_id") final String category_id) throws CategoryNotFoundException {
+        final CategoryEntity category = categoryService.getCategoryById(category_id);
+        List<ItemEntity> items = category.getItem();
+        Comparator<ItemEntity> compareByItemName = new Comparator<ItemEntity>() {
+            @Override
+            public int compare(ItemEntity i1, ItemEntity i2) {
+                return i1.getItemName().toLowerCase().compareTo(i2.getItemName().toLowerCase());
+            }
+        };
+        Collections.sort(items, compareByItemName);
+        List<ItemList> itemLists = new ArrayList<ItemList>();
+        for(ItemEntity item : items){
+            ItemList itemList = new ItemList();
+            String itemType = item.getType();
+            String newItemType = null;
+            if(itemType.equals("0")) {
+                newItemType = "VEG";
+            }
+            else if(itemType.equals("1")){
+                newItemType = "NON_VEG";
+            }
+            ItemList.ItemTypeEnum itemTypeEnum = ItemList.ItemTypeEnum.fromValue(newItemType);
+            itemList.id(UUID.fromString(item.getUuid())).itemName(item.getItemName()).price(item.getPrice()).itemType(itemTypeEnum);
+            itemLists.add(itemList);
+        }
+        CategoryDetailsResponse categoryDetailsResponse = new CategoryDetailsResponse();
+        categoryDetailsResponse.id(UUID.fromString(category.getUuid())).categoryName(category.getCategoryName()).itemList(itemLists);
+
+        return new ResponseEntity<CategoryDetailsResponse>(categoryDetailsResponse, HttpStatus.OK);
     }
 
 }

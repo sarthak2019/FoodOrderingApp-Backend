@@ -9,6 +9,7 @@ com\upgrad\FoodOrderingApp\api\model\ItemQuantityResponseItem$TypeEnum.class
 io\swagger\api\ApiResponseMessage.class
 com\upgrad\FoodOrderingApp\api\model\RestaurantDetailsResponseAddress.class
 com\upgrad\FoodOrderingApp\api\model\CategoryDetailsResponse.class
+com\upgrad\FoodOrderingApp\api\controller\CategoryController$2.class
 com\upgrad\FoodOrderingApp\api\model\RestaurantDetailsResponse.class
 com\upgrad\FoodOrderingApp\api\model\SaveAddressResponse.class
 com\upgrad\FoodOrderingApp\api\model\ItemList.class

@@ -31,14 +31,6 @@ public class RestaurantDao {
         }
     }
 
-    public CategoryEntity getCategoryById(String categoryId) {
-        try {
-            return entityManager.createNamedQuery("categoryById", CategoryEntity.class).setParameter("categoryId", categoryId).getSingleResult();
-        } catch (NoResultException nre) {
-            return null;
-        }
-    }
-
     public RestaurantEntity getRestaurantsById(String restaurantId) {
         try {
             return entityManager.createNamedQuery("restaurantsById", RestaurantEntity.class).setParameter("restaurantId", restaurantId).getSingleResult();
