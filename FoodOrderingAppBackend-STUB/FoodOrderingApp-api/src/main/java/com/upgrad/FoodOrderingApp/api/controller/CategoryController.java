@@ -30,7 +30,7 @@ public class CategoryController {
     /* /category endpoint retrieves all the categories present in the database, ordered
     by their name and displays the response in a JSON format with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CategoriesListResponse> getAllCategoriesOrderedByName() {
+    public ResponseEntity<List<CategoryListResponse>> getAllCategoriesOrderedByName() {
         final List<CategoryEntity> categories = categoryService.getAllCategoriesOrderedByName();
         Comparator<CategoryEntity> compareByCategoryName = new Comparator<CategoryEntity>() {
             @Override
@@ -39,13 +39,13 @@ public class CategoryController {
             }
         };
         Collections.sort(categories, compareByCategoryName);
-        CategoriesListResponse categoriesListResponse = new CategoriesListResponse();
+        List<CategoryListResponse> categoryListResponses = new ArrayList<CategoryListResponse>();
         for(CategoryEntity category : categories){
             CategoryListResponse categoryListResponse = new CategoryListResponse();
             categoryListResponse.id(UUID.fromString(category.getUuid())).categoryName(category.getCategoryName());
-            categoriesListResponse.addCategoriesItem(categoryListResponse);
+            categoryListResponses.add(categoryListResponse);
         }
-        return new ResponseEntity<CategoriesListResponse>(categoriesListResponse, HttpStatus.OK);
+        return new ResponseEntity<List<CategoryListResponse>>(categoryListResponses, HttpStatus.OK);
     }
 
     /* /category/{category_id} endpoint retrieve that category with all items within

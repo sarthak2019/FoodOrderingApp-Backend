@@ -4,7 +4,7 @@ import com.upgrad.FoodOrderingApp.service.dao.CategoryDao;
 import com.upgrad.FoodOrderingApp.service.dao.CustomerDao;
 import com.upgrad.FoodOrderingApp.service.dao.RestaurantDao;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
@@ -29,11 +29,11 @@ public class RestaurantService {
     private CategoryDao categoryDao;
 
     @Autowired
-    private CustomerDao customerDao;
+    private CustomerService customerService;
 
     /* The below method returns a list of all the restaurants present in the database. */
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<RestaurantEntity> getAllRestaurants() {
+    public List<RestaurantEntity> restaurantsByRating() {
         return restaurantDao.getAllRestaurants();
     }
 
@@ -76,18 +76,7 @@ public class RestaurantService {
 
     /* The below method updates restaurant details for a particular UUID. */
     @Transactional(propagation = Propagation.REQUIRED)
-    public RestaurantEntity updateRestaurantRating(String accessToken, String restaurantId, Double rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
-        CustomerAuthEntity customerAuthEntity = customerDao.getCustomerAuthToken(accessToken);
-
-        if (customerAuthEntity == null) {
-            throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in.");
-            //If the access token provided by the customer exists in the database, but the customer has already logged out
-        } else if (customerAuthEntity != null && customerAuthEntity.getLogoutAt() != null) {
-            throw new AuthorizationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
-            //If the access token provided by the customer exists in the database, but the session has expired
-        } else if (customerAuthEntity != null && ZonedDateTime.now().isAfter(customerAuthEntity.getExpiresAt())) {
-            throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
-        }
+    public RestaurantEntity updateRestaurantRating(String restaurantId, Double rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
         if (restaurantId.isEmpty()) {
             throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");

@@ -2,6 +2,7 @@ package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
+import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -28,12 +30,14 @@ public class RestaurantController {
     //Required services are autowired to enable access to methods defined in respective Business services
     @Autowired
     private RestaurantService restaurantService;
+    @Autowired
+    public CustomerService customerService;
 
     /* /restaurant endpoint retrieve all the restaurants in order of their ratings and
     display the response in a JSON format with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getAllRestaurants() {
-        final List<RestaurantEntity> restaurants = restaurantService.getAllRestaurants();
+        final List<RestaurantEntity> restaurants = restaurantService.restaurantsByRating();
         Comparator<RestaurantEntity> compareByCustomerRating = new Comparator<RestaurantEntity>() {
             @Override
             public int compare(RestaurantEntity r1, RestaurantEntity r2) {
@@ -151,8 +155,9 @@ public class RestaurantController {
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails  (@PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("accessToken") final String accessToken, @RequestParam("customer_rating") Double customer_rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
         String [] bearerToken = accessToken.split("Bearer ");
+        CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
 
-        RestaurantEntity newRestaurantEntity = restaurantService.updateRestaurantRating(bearerToken[1], restaurant_id, customer_rating);
+        RestaurantEntity newRestaurantEntity = restaurantService.updateRestaurantRating(restaurant_id, customer_rating);
         RestaurantUpdatedResponse restaurantUpdatedResponse = new RestaurantUpdatedResponse();
         restaurantUpdatedResponse.id(UUID.fromString(newRestaurantEntity.getUuid())).status("RESTAURANT RATING UPDATED SUCCESSFULLY");
         return new ResponseEntity<RestaurantUpdatedResponse>(restaurantUpdatedResponse, HttpStatus.OK);

@@ -7,6 +7,7 @@ com\upgrad\FoodOrderingApp\service\dao\CustomerDao.class
 com\upgrad\FoodOrderingApp\service\businness\PasswordCryptographyProvider.class
 com\upgrad\FoodOrderingApp\service\dao\CategoryDao.class
 com\upgrad\FoodOrderingApp\service\businness\CategoryService.class
+com\upgrad\FoodOrderingApp\service\dao\AddressDao.class
 com\upgrad\FoodOrderingApp\service\exception\PaymentMethodNotFoundException.class
 com\upgrad\FoodOrderingApp\service\entity\CustomerEntity.class
 com\upgrad\FoodOrderingApp\service\exception\UpdateCustomerException.class
@@ -18,6 +19,8 @@ com\upgrad\FoodOrderingApp\service\exception\CategoryNotFoundException.class
 com\upgrad\FoodOrderingApp\service\entity\CategoryEntity.class
 com\upgrad\FoodOrderingApp\service\entity\StateEntity.class
 com\upgrad\FoodOrderingApp\service\exception\CustomerNotFoundException.class
+com\upgrad\FoodOrderingApp\service\businness\AddressService.class
+com\upgrad\FoodOrderingApp\service\dao\StateDao.class
 com\upgrad\FoodOrderingApp\service\businness\RestaurantService.class
 com\upgrad\FoodOrderingApp\service\entity\RestaurantEntity.class
 com\upgrad\FoodOrderingApp\service\businness\JwtTokenProvider.class

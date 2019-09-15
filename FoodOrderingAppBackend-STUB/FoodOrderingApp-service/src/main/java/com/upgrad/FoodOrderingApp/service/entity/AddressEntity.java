@@ -4,15 +4,21 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "address", schema = "public")
 @NamedQueries(
         {
-
+                @NamedQuery(name = "addressByAddressUuid", query = "select a from AddressEntity a where a.uuid =:uuid"),
+                @NamedQuery(name = "allSavedAddresses", query = "select a from AddressEntity a "),//returns all the address records
+                @NamedQuery(name = "getAddressById", query = "select a from AddressEntity a where a.id=:id")
         }
 )
 public class AddressEntity {
@@ -39,11 +45,19 @@ public class AddressEntity {
     private String pincode;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "state_id")
     private StateEntity state;
 
     @Column(name="ACTIVE")
     private Integer active;
+
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "customer_address",
+            joinColumns = {@JoinColumn(name ="address_id")},
+            inverseJoinColumns = {@JoinColumn(name = "customer_id")}
+    )
+    private List<CustomerEntity> customer = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -108,6 +122,30 @@ public class AddressEntity {
     public void setActive(Integer active) {
         this.active = active;
     }
+    public void setPinCode(String pinCode) {
+        this.pincode = pinCode;
+    }
+
+    public String getPinCode() {
+        return pincode;
+    }
+
+    public List<CustomerEntity> getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(List<CustomerEntity> customer) {
+        this.customer = customer;
+    }
+
+    @ManyToOne
+    @OnDelete(
+            action = OnDeleteAction.CASCADE
+    )
+
+    @JoinColumn(
+            name = "state_id"
+    )
 
     @Override
     public boolean equals(Object obj) {

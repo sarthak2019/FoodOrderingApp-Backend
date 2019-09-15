@@ -6,6 +6,7 @@ import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
+import com.upgrad.FoodOrderingApp.service.exception.UpdateCustomerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -92,6 +93,42 @@ public class CustomerController {
                 .id(logout.getUuid())
                 .message("LOGGED OUT SUCCESSFULLY");
         return new ResponseEntity<LogoutResponse>(logoutResponse,HttpStatus.OK);
+    }
+
+    //updateCustomer method is used to update the customer firstname and lastname from the application.
+    @RequestMapping(method=RequestMethod.PUT,path="/customer",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<UpdateCustomerResponse> updateCustomer(@RequestBody(required = false) final UpdateCustomerRequest updateCustomerRequest,
+                                                                 @RequestHeader("accessToken") final String accessToken) throws UpdateCustomerException,AuthorizationFailedException {
+
+        String [] bearerToken = accessToken.split("Bearer ");
+        CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
+        customerEntity.setFirstName(updateCustomerRequest.getFirstName());
+        customerEntity.setLastName(updateCustomerRequest.getLastName());
+
+        final CustomerEntity updatedCustomerEntity=customerService.updateCustomer(customerEntity);
+
+        UpdateCustomerResponse updateCustomerResponse=new UpdateCustomerResponse()
+                .firstName(updatedCustomerEntity.getFirstName())
+                .lastName(updatedCustomerEntity.getLastName())
+                .id(updatedCustomerEntity.getUuid())
+                .status("CUSTOMER DETAILS UPDATED SUCCESSFULLY");
+        return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse,HttpStatus.OK);
+    }
+
+    //changePassword method is used to change the customer password details from the application.
+    @RequestMapping(method=RequestMethod.PUT,path="/customer/password",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<UpdatePasswordResponse> changePassword(@RequestBody(required = false)final UpdatePasswordRequest updatePasswordRequest,
+                                                                 @RequestHeader("accessToken") final String accessToken) throws UpdateCustomerException,AuthorizationFailedException {
+
+        String [] bearerToken = accessToken.split("Bearer ");
+        CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
+
+        final CustomerEntity updatedCustomerEntity=customerService.updateCustomerPassword(updatePasswordRequest.getOldPassword(),updatePasswordRequest.getNewPassword(),customerEntity);
+
+        UpdatePasswordResponse updatePasswordResponse=new UpdatePasswordResponse()
+                .id(updatedCustomerEntity.getUuid())
+                .status("CUSTOMER PASSWORD UPDATED SUCCESSFULLY");
+        return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse,HttpStatus.OK);
     }
 
 }

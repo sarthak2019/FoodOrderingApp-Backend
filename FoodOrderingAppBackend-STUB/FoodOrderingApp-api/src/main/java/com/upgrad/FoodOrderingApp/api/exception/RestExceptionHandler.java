@@ -50,4 +50,25 @@ public class RestExceptionHandler {
         );
     }
 
+    @ExceptionHandler(SaveAddressException.class)
+    public ResponseEntity<ErrorResponse> saveAddressException(SaveAddressException exe, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(AddressNotFoundException.class)
+    public ResponseEntity<ErrorResponse> saveAddressException(AddressNotFoundException exe, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(UpdateCustomerException.class)
+    public ResponseEntity<ErrorResponse> updateCustomerException(UpdateCustomerException exe, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.BAD_REQUEST
+        );
+
+    }
 }

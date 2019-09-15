@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -88,6 +90,10 @@ public class CustomerEntity implements Serializable {
     @Size(
             max = 200
     )
+
+    @ManyToMany(mappedBy = "customer")
+    private List<AddressEntity> address = new ArrayList<>();
+
     private String salt;
 
     public long getId() { return id; }
@@ -117,6 +123,14 @@ public class CustomerEntity implements Serializable {
     public String getPassword() { return password; }
 
     public void setPassword(String password) { this.password = password; }
+
+    public List<AddressEntity> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<AddressEntity> address) {
+        this.address = address;
+    }
 
     public String getSalt() { return salt; }
 
