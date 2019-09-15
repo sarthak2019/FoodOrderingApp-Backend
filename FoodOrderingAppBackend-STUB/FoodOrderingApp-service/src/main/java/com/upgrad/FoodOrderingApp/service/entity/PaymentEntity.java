@@ -6,10 +6,10 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name= "payment" , schema = "public")
+@Table(name = "payment", schema = "public")
 @NamedQueries(
         {
-                @NamedQuery(name= "paymentMethods", query = "SELECT p FROM PaymentEntity p" )
+                @NamedQuery(name = "paymentMethods", query = "SELECT p FROM PaymentEntity p")
         }
 )
 public class PaymentEntity implements Serializable {
@@ -20,12 +20,12 @@ public class PaymentEntity implements Serializable {
 
     @Column(name = "uuid")
     @NotNull
-    @Size(max=200)
+    @Size(max = 200)
     private String uuid;
 
-    @Column(name= "payment_name")
+    @Column(name = "payment_name")
     @NotNull
-    @Size(max=255)
+    @Size(max = 255)
     private String paymentName;
 
     public int getId() {

@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75e9fa3d-3387-46ff-845c-5a94081eef05" name="Default Changelist" comment="" />
+    <list default="true" id="75e9fa3d-3387-46ff-845c-5a94081eef05" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoodOrderingApp-service/src/main/java/com/upgrad/FoodOrderingApp/service/entity/PaymentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FoodOrderingApp-service/src/main/java/com/upgrad/FoodOrderingApp/service/entity/PaymentEntity.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -20,7 +30,19 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/FoodOrderingApp-service/src/main/java/com/upgrad/FoodOrderingApp/service/dao" />
     <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\IntelliJWorkspace\FoodOrderingApp-Backend\FoodOrderingApp-Backend\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\dao" />
+      <recent name="F:\IntelliJWorkspace\FoodOrderingApp-Backend\FoodOrderingApp-Backend\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\businness" />
+      <recent name="F:\IntelliJWorkspace\FoodOrderingApp-Backend\FoodOrderingApp-Backend\FoodOrderingAppBackend-STUB\FoodOrderingApp-api\src\main\java\com\upgrad\FoodOrderingApp\api\controller" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\IntelliJWorkspace\FoodOrderingApp-Backend\FoodOrderingApp-Backend\FoodOrderingAppBackend-STUB\FoodOrderingApp-service\src\main\java\com\upgrad\FoodOrderingApp\service\entity" />
+      <recent name="F:\IntelliJWorkspace\FoodOrderingApp-Backend\FoodOrderingApp-Backend\FoodOrderingAppBackend-STUB\FoodOrderingApp-api\src\main\java\com\upgrad\FoodOrderingApp\api\controller" />
+    </key>
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
@@ -63,7 +85,8 @@
       <workItem from="1568070877886" duration="1714000" />
       <workItem from="1568157073906" duration="593000" />
       <workItem from="1568436598977" duration="2207000" />
-      <workItem from="1568467466896" duration="2591000" />
+      <workItem from="1568467466896" duration="5757000" />
+      <workItem from="1568507334045" duration="20202000" />
     </task>
     <servers />
   </component>
