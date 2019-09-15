@@ -41,14 +41,13 @@ public class ItemController {
         final RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurant_id);
         final List<ItemEntity> items = itemService.getItemsByPopularity(restaurantEntity);
         List<ItemList> itemLists = new ArrayList<ItemList>();
-        for(ItemEntity item : items){
+        for (ItemEntity item : items) {
             ItemList itemList = new ItemList();
             String itemType = item.getType();
             String newItemType = null;
-            if(itemType.equals("0")) {
+            if (itemType.equals("0")) {
                 newItemType = "VEG";
-            }
-            else if(itemType.equals("1")){
+            } else if (itemType.equals("1")) {
                 newItemType = "NON_VEG";
             }
             ItemList.ItemTypeEnum itemTypeEnum = ItemList.ItemTypeEnum.fromValue(newItemType);

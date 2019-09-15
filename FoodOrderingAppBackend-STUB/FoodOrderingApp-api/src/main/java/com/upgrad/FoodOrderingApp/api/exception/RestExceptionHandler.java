@@ -12,19 +12,19 @@ import com.upgrad.FoodOrderingApp.api.model.ErrorResponse;
 public class RestExceptionHandler {
 
     @ExceptionHandler(RestaurantNotFoundException.class)
-    public ResponseEntity<ErrorResponse> authenticationFiledException(RestaurantNotFoundException exe, WebRequest request){
+    public ResponseEntity<ErrorResponse> authenticationFiledException(RestaurantNotFoundException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()),
                 HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ErrorResponse> authenticationFiledException(CategoryNotFoundException exe, WebRequest request){
+    public ResponseEntity<ErrorResponse> authenticationFiledException(CategoryNotFoundException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()),
                 HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InvalidRatingException.class)
-    public ResponseEntity<ErrorResponse> authenticationFiledException(InvalidRatingException exe, WebRequest request){
+    public ResponseEntity<ErrorResponse> authenticationFiledException(InvalidRatingException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()),
                 HttpStatus.BAD_REQUEST);
     }
@@ -68,6 +68,14 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorResponse> updateCustomerException(UpdateCustomerException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
                 new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.BAD_REQUEST
+        );
+
+    }
+
+    @ExceptionHandler(CouponNotFoundException.class)
+    public ResponseEntity<ErrorResponse> updateCustomerException(CouponNotFoundException exe, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.NOT_FOUND
         );
 
     }

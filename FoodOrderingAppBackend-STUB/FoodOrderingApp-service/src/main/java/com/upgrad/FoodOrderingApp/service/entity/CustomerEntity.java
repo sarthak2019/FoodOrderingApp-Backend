@@ -1,4 +1,5 @@
 package com.upgrad.FoodOrderingApp.service.entity;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -94,35 +95,66 @@ public class CustomerEntity implements Serializable {
     @ManyToMany(mappedBy = "customer")
     private List<AddressEntity> address = new ArrayList<>();
 
+    @OneToOne(mappedBy="customer")
+    private OrderEntity order;
+
     private String salt;
 
-    public long getId() { return id; }
+    public long getId() {
+        return id;
+    }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public String getUuid() { return uuid; }
+    public String getUuid() {
+        return uuid;
+    }
 
-    public void setUuid(String uuid) { this.uuid = uuid; }
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-    public String getFirstName() { return firstName; }
+    public String getFirstName() {
+        return firstName;
+    }
 
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-    public String getLastName() { return lastName; }
+    public String getLastName() {
+        return lastName;
+    }
 
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getContactNumber() { return contactNumber; }
+    public String getContactNumber() {
+        return contactNumber;
+    }
 
-    public void setContactNumber(String contactNumber) { this.contactNumber = contactNumber; }
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
 
-    public String getPassword() { return password; }
+    public String getPassword() {
+        return password;
+    }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public List<AddressEntity> getAddress() {
         return address;
@@ -132,11 +164,17 @@ public class CustomerEntity implements Serializable {
         this.address = address;
     }
 
-    public String getSalt() { return salt; }
+    public String getSalt() {
+        return salt;
+    }
 
-    public void setSalt(String salt) { this.salt = salt; }
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
-    public boolean equals(Object obj) { return (new EqualsBuilder()).append(this, obj).isEquals(); }
+    public boolean equals(Object obj) {
+        return (new EqualsBuilder()).append(this, obj).isEquals();
+    }
 
     public int hashCode() {
         return (new HashCodeBuilder()).append(this).hashCode();

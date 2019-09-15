@@ -40,7 +40,7 @@ public class CategoryController {
         };
         Collections.sort(categories, compareByCategoryName);
         List<CategoryListResponse> categoryListResponses = new ArrayList<CategoryListResponse>();
-        for(CategoryEntity category : categories){
+        for (CategoryEntity category : categories) {
             CategoryListResponse categoryListResponse = new CategoryListResponse();
             categoryListResponse.id(UUID.fromString(category.getUuid())).categoryName(category.getCategoryName());
             categoryListResponses.add(categoryListResponse);
@@ -63,14 +63,13 @@ public class CategoryController {
         };
         Collections.sort(items, compareByItemName);
         List<ItemList> itemLists = new ArrayList<ItemList>();
-        for(ItemEntity item : items){
+        for (ItemEntity item : items) {
             ItemList itemList = new ItemList();
             String itemType = item.getType();
             String newItemType = null;
-            if(itemType.equals("0")) {
+            if (itemType.equals("0")) {
                 newItemType = "VEG";
-            }
-            else if(itemType.equals("1")){
+            } else if (itemType.equals("1")) {
                 newItemType = "NON_VEG";
             }
             ItemList.ItemTypeEnum itemTypeEnum = ItemList.ItemTypeEnum.fromValue(newItemType);

@@ -77,8 +77,8 @@ public class CustomerService {
         //matches 10-digit numbers only
         String contactNumberRegex = "^[0-9]{10}$";
 
-        if(contactNumber.isEmpty() || password.isEmpty() || !contactNumber.matches(contactNumberRegex) || password.length() <8 || !password.matches("(?=.*[0-9]).*") || !password.matches("(?=.*[A-Z]).*") || !password.matches("(?=.*[~!@#$%^&*()_-]).*")) {
-            throw new AuthenticationFailedException("ATH-003","Incorrect format of decoded customer name and password");
+        if (contactNumber.isEmpty() || password.isEmpty() || !contactNumber.matches(contactNumberRegex) || password.length() < 8 || !password.matches("(?=.*[0-9]).*") || !password.matches("(?=.*[A-Z]).*") || !password.matches("(?=.*[~!@#$%^&*()_-]).*")) {
+            throw new AuthenticationFailedException("ATH-003", "Incorrect format of decoded customer name and password");
         }
         //If the contact number provided by the customer does not exist,
         CustomerEntity customerEntity = customerDao.getCustomerByContactNumber(contactNumber);
@@ -153,7 +153,7 @@ public class CustomerService {
         } else {
             final CustomerEntity updatedCustomerEntity = new CustomerEntity();
             updatedCustomerEntity.setFirstName(customerEntity.getFirstName());
-            if(!customerEntity.getLastName().isEmpty()) {
+            if (!customerEntity.getLastName().isEmpty()) {
                 updatedCustomerEntity.setLastName(customerEntity.getLastName());
             }
             updatedCustomerEntity.setUuid(customerEntity.getUuid());
@@ -163,13 +163,13 @@ public class CustomerService {
 
     //updateCustomerPassword updates password as given by the Customer in newPassword field
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerEntity updateCustomerPassword(final String oldPassword,final String newPassword, final CustomerEntity customerEntity) throws  UpdateCustomerException {
+    public CustomerEntity updateCustomerPassword(final String oldPassword, final String newPassword, final CustomerEntity customerEntity) throws UpdateCustomerException {
         if (oldPassword.isEmpty() || newPassword.isEmpty()) {
             throw new UpdateCustomerException("UCR-003", "No field should be empty");
-        } else if(newPassword.length() < 8 || !newPassword.matches("(?=.*[0-9]).*") || !newPassword.matches("(?=.*[A-Z]).*")|| !newPassword.matches("(?=.*[~!@#$%^&*()_-]).*")) {
-            throw new UpdateCustomerException("UCR-001","Weak password!");
-        } else if(!passwordCryptographyProvider.encrypt(oldPassword,customerEntity.getSalt()).equals(customerEntity.getPassword()) ){
-            throw new UpdateCustomerException("UCR-004","Incorrect old password!");
+        } else if (newPassword.length() < 8 || !newPassword.matches("(?=.*[0-9]).*") || !newPassword.matches("(?=.*[A-Z]).*") || !newPassword.matches("(?=.*[~!@#$%^&*()_-]).*")) {
+            throw new UpdateCustomerException("UCR-001", "Weak password!");
+        } else if (!passwordCryptographyProvider.encrypt(oldPassword, customerEntity.getSalt()).equals(customerEntity.getPassword())) {
+            throw new UpdateCustomerException("UCR-004", "Incorrect old password!");
         } else {
             String[] encryptedText = this.passwordCryptographyProvider.encrypt(newPassword);
             customerEntity.setSalt(encryptedText[0]);

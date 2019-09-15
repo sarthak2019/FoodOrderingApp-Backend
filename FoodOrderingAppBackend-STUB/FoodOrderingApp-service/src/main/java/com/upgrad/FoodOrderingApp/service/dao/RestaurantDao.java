@@ -43,7 +43,7 @@ public class RestaurantDao {
     }
 
     /* The below method updates restaurant details in the databse for a particular UUID. */
-    public RestaurantEntity updateRestaurantRating (RestaurantEntity restaurantEntity){
+    public RestaurantEntity updateRestaurantRating(RestaurantEntity restaurantEntity) {
         entityManager.merge(restaurantEntity);
         return restaurantEntity;
     }

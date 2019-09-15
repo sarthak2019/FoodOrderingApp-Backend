@@ -25,12 +25,12 @@ public class AddressService {
     private StateDao stateDao;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public StateEntity getStateByUUID(final String StateUuid) throws AddressNotFoundException,SaveAddressException {
+    public StateEntity getStateByUUID(final String StateUuid) throws AddressNotFoundException, SaveAddressException {
         StateEntity stateEntity = stateDao.getStateByStateUuid(StateUuid);
-        if(StateUuid.isEmpty()){
+        if (StateUuid.isEmpty()) {
             throw new SaveAddressException("SAR-001", "No field can be empty");
         }
-        if(stateEntity == null){
+        if (stateEntity == null) {
             throw new AddressNotFoundException("ANF-002", "No state by this id");
         } else {
             return stateEntity;
@@ -38,8 +38,8 @@ public class AddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public StateEntity getStateByUUID(final long id)  {
-        return  stateDao.getStateById(id);
+    public StateEntity getStateByUUID(final long id) {
+        return stateDao.getStateById(id);
 
     }
 
@@ -59,30 +59,33 @@ public class AddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<StateEntity> getAllStates() { return stateDao.getAllStates(); }
+    public List<StateEntity> getAllStates() {
+        return stateDao.getAllStates();
+    }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public String deleteAddress(AddressEntity addressEntity) throws AuthorizationFailedException {
-            return addressDao.deleteAddress(addressEntity);
+        return addressDao.deleteAddress(addressEntity);
     }
+
     @Transactional(propagation = Propagation.REQUIRED)
-    public AddressEntity getAddressByUUID(String addressUuid, final CustomerEntity signedincustomerEntity) throws AddressNotFoundException{
-        if(addressUuid.isEmpty()) {
-            throw new AddressNotFoundException("ANF-005","Address id can not be empty");
+    public AddressEntity getAddressByUUID(String addressUuid, final CustomerEntity signedincustomerEntity) throws AddressNotFoundException {
+        if (addressUuid.isEmpty()) {
+            throw new AddressNotFoundException("ANF-005", "Address id can not be empty");
         }
-        AddressEntity addressEntity=addressDao.getAddressByAddressUuid(addressUuid);
-        if(addressEntity == null ) {
-            throw new AddressNotFoundException("ANF-003","No address by this id");
+        AddressEntity addressEntity = addressDao.getAddressByAddressUuid(addressUuid);
+        if (addressEntity == null) {
+            throw new AddressNotFoundException("ANF-003", "No address by this id");
         }
         List<CustomerEntity> addressCustomerEntities = addressEntity.getCustomer();
         boolean isDelete = false;
-        for (CustomerEntity customerEntity1 : addressCustomerEntities){
-            if (customerEntity1.getUuid().equals(signedincustomerEntity.getUuid())){
+        for (CustomerEntity customerEntity1 : addressCustomerEntities) {
+            if (customerEntity1.getUuid().equals(signedincustomerEntity.getUuid())) {
                 isDelete = true;
             }
         }
-        if(isDelete == false){
-            throw new AddressNotFoundException("ATHR-004","You are not authorized to view/update/delete any one else's address");
+        if (isDelete == false) {
+            throw new AddressNotFoundException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
         }
         return addressEntity;
     }

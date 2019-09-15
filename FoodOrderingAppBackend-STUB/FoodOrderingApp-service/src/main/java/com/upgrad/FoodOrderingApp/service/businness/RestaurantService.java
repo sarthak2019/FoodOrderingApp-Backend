@@ -47,7 +47,7 @@ public class RestaurantService {
         return restaurantEntityList;
     }
 
-     /* The below method returns a list of all the restaurants having a particular category. */
+    /* The below method returns a list of all the restaurants having a particular category. */
     @Transactional(propagation = Propagation.REQUIRED)
     public List<RestaurantEntity> restaurantByCategory(String categoryId) throws CategoryNotFoundException {
         if (categoryId.isEmpty()) {
@@ -68,7 +68,7 @@ public class RestaurantService {
             throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");
         }
         RestaurantEntity restaurantEntity = restaurantDao.getRestaurantsById(restaurantId);
-        if(restaurantEntity == null){
+        if (restaurantEntity == null) {
             throw new RestaurantNotFoundException("RNF-001", "No restaurant by this id");
         }
         return restaurantEntity;
@@ -82,17 +82,17 @@ public class RestaurantService {
             throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");
         }
         RestaurantEntity restaurantEntity = restaurantDao.getRestaurantsById(restaurantId);
-        if(restaurantEntity == null){
+        if (restaurantEntity == null) {
             throw new RestaurantNotFoundException("RNF-001", "No restaurant by this id");
         }
-        if(rating.toString().isEmpty() || (rating>5 || rating<1)){
+        if (rating.toString().isEmpty() || (rating > 5 || rating < 1)) {
             throw new InvalidRatingException("IRE-001", "Restaurant should be in the range of 1 to 5");
         }
         BigDecimal oldRating = restaurantEntity.getCustomerRating();
         Double oldRatingDouble = oldRating.doubleValue();
         Integer oldNumCustRated = restaurantEntity.getNumberOfCustomersRated();
         Integer newNumCustRated = oldNumCustRated + 1;
-        Double newRatingDouble = ((oldRatingDouble*Double.valueOf(oldNumCustRated))+rating)/newNumCustRated;
+        Double newRatingDouble = ((oldRatingDouble * Double.valueOf(oldNumCustRated)) + rating) / newNumCustRated;
         BigDecimal newRating = BigDecimal.valueOf(newRatingDouble);
         restaurantEntity.setCustomerRating(newRating);
         restaurantEntity.setNumberOfCustomersRated(newNumCustRated);

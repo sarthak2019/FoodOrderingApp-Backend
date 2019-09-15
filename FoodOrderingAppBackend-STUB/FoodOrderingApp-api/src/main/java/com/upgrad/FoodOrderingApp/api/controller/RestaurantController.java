@@ -111,7 +111,7 @@ public class RestaurantController {
         };
         Collections.sort(categories, compareByCategoryName);
         List<CategoryList> categoryLists = new ArrayList<CategoryList>();
-        for(CategoryEntity category : categories){
+        for (CategoryEntity category : categories) {
             List<ItemEntity> items = category.getItem();
             Comparator<ItemEntity> compareByItemName = new Comparator<ItemEntity>() {
                 @Override
@@ -121,14 +121,13 @@ public class RestaurantController {
             };
             Collections.sort(items, compareByItemName);
             List<ItemList> itemLists = new ArrayList<ItemList>();
-            for(ItemEntity item : items){
+            for (ItemEntity item : items) {
                 ItemList itemList = new ItemList();
                 String itemType = item.getType();
                 String newItemType = null;
-                if(itemType.equals("0")) {
+                if (itemType.equals("0")) {
                     newItemType = "VEG";
-                }
-                else if(itemType.equals("1")){
+                } else if (itemType.equals("1")) {
                     newItemType = "NON_VEG";
                 }
                 ItemList.ItemTypeEnum itemTypeEnum = ItemList.ItemTypeEnum.fromValue(newItemType);
@@ -152,9 +151,9 @@ public class RestaurantController {
     corresponding to the restaurant_id path variable. Then return the uuid of the restaurant updated
     and message “RESTAURANT RATING UPDATED SUCCESSFULLY” in the JSON response with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.PUT, path = "/api/restaurant/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails  (@PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("accessToken") final String accessToken, @RequestParam("customer_rating") Double customer_rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
+    public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(@PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("accessToken") final String accessToken, @RequestParam("customer_rating") Double customer_rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
-        String [] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = accessToken.split("Bearer ");
         CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
 
         RestaurantEntity newRestaurantEntity = restaurantService.updateRestaurantRating(restaurant_id, customer_rating);
@@ -164,9 +163,9 @@ public class RestaurantController {
     }
 
 
-        /* restaurantslist method returns the details of the list of restaurant entities in
-        the RestaurantListResponse format. */
-        public RestaurantListResponse restaurantslist(List<RestaurantEntity> reataurants) {
+    /* restaurantslist method returns the details of the list of restaurant entities in
+    the RestaurantListResponse format. */
+    public RestaurantListResponse restaurantslist(List<RestaurantEntity> reataurants) {
         RestaurantListResponse reataurantsListResponse = new RestaurantListResponse();
         List<RestaurantList> restaurantLists = new ArrayList<>();
         for (RestaurantEntity restaurantEntity : reataurants) {

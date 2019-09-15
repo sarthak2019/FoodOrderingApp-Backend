@@ -22,7 +22,7 @@ import java.util.*;
 //"@CrossOrigin” annotation enables cross-origin requests for all methods in that specific controller class.
 @CrossOrigin
 @RequestMapping("/")
-public class AddressController{
+public class AddressController {
 
     //Required services are autowired to enable access to methods defined in respective Business services
     @Autowired
@@ -31,16 +31,15 @@ public class AddressController{
     private CustomerService customerService;
 
 
-
     //saveaddress  endpoint requests for all the attributes in “SaveAddressRequest” about the customer and saves the address of a customer successfully.
     @RequestMapping(method = RequestMethod.POST, path = "/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SaveAddressResponse> saveaddress(@RequestBody(required = false) final SaveAddressRequest saveAddressRequest,
                                                            @RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
 
-        String [] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = accessToken.split("Bearer ");
         final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
         final StateEntity stateEntity = addressService.getStateByUUID(saveAddressRequest.getStateUuid());
-        final AddressEntity addressEntity= new AddressEntity();
+        final AddressEntity addressEntity = new AddressEntity();
 
         addressEntity.setUuid(UUID.randomUUID().toString());
         addressEntity.setFlatBuilNumber(saveAddressRequest.getFlatBuildingName());
@@ -64,10 +63,10 @@ public class AddressController{
     }
 
     //getallsavedaddresses endpoint retrieves all the addresses of a valid customer present in the database
-    @RequestMapping(method = RequestMethod.GET, path = "/address/customer",  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<AddressListResponse> getAddressByUUID(@RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException  {
+    @RequestMapping(method = RequestMethod.GET, path = "/address/customer", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<AddressListResponse> getAddressByUUID(@RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException {
 
-        String [] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = accessToken.split("Bearer ");
         final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
         final List<AddressEntity> addresses = customerEntity.getAddress();
 
@@ -80,17 +79,17 @@ public class AddressController{
         Collections.sort(addresses, compareBySavedTime);
 
 
-        AddressListResponse addressListResponse=new AddressListResponse();
+        AddressListResponse addressListResponse = new AddressListResponse();
 
-        for( AddressEntity address : addresses){
-            AddressList addressList =new AddressList();
+        for (AddressEntity address : addresses) {
+            AddressList addressList = new AddressList();
             addressList.id(UUID.fromString(address.getUuid()));
             addressList.flatBuildingName(address.getFlatBuilNumber());
             addressList.locality(address.getLocality());
             addressList.pincode(address.getPinCode());
             addressList.city(address.getCity());
 
-            AddressListState addressListState=new AddressListState();
+            AddressListState addressListState = new AddressListState();
             addressListState.id(UUID.fromString(address.getState().getUuid()));
             addressListState.stateName(address.getState().getStateName());
 
@@ -99,14 +98,14 @@ public class AddressController{
             addressListResponse.addAddressesItem(addressList);
         }
 
-        return new ResponseEntity<AddressListResponse>(addressListResponse,HttpStatus.OK);
+        return new ResponseEntity<AddressListResponse>(addressListResponse, HttpStatus.OK);
     }
 
-    @RequestMapping(method= RequestMethod.DELETE,path="/address/{address_id}",produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.DELETE, path = "/address/{address_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<DeleteAddressResponse> deleteAddress(@PathVariable("address_id") final String addressUuid,
                                                                @RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException, AddressNotFoundException {
 
-        String [] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = accessToken.split("Bearer ");
         final CustomerEntity signedinCustomerEntity = customerService.getCustomer(bearerToken[1]);
         final AddressEntity addressEntityToDelete = addressService.getAddressByUUID(addressUuid, signedinCustomerEntity);
         final String Uuid = addressService.deleteAddress(addressEntityToDelete);
@@ -119,14 +118,14 @@ public class AddressController{
 
 
     //getallstates endpoint retrieves all the states present in the database
-    @RequestMapping(method = RequestMethod.GET, path = "/states",  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<StatesList>> getallstates(){
+    @RequestMapping(method = RequestMethod.GET, path = "/states", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<StatesList>> getallstates() {
 
         List<StateEntity> stateEntityList = addressService.getAllStates();
         List<StatesList> statesLists = new ArrayList<StatesList>();
 
         for (StateEntity stateEntity : stateEntityList) {
-            StatesList statesList =new StatesList();
+            StatesList statesList = new StatesList();
             statesList.setId(UUID.fromString(stateEntity.getUuid()));
             statesList.setStateName(stateEntity.getStateName());
             statesLists.add(statesList);

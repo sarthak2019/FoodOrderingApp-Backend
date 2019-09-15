@@ -34,7 +34,7 @@ public class AddressDao {
     }
 
     //retrieves all the saved addresses
-    public List<AddressEntity> getAllSavedAddresses(){
+    public List<AddressEntity> getAllSavedAddresses() {
 
         try {
             return this.entityManager.createNamedQuery("allSavedAddresses", AddressEntity.class).getResultList();
@@ -43,8 +43,8 @@ public class AddressDao {
         }
     }
 
-    public String deleteAddress(AddressEntity addressEntity){
-        String Uuid=addressEntity.getUuid();
+    public String deleteAddress(AddressEntity addressEntity) {
+        String Uuid = addressEntity.getUuid();
         entityManager.remove(addressEntity);
         return Uuid;
     }

@@ -3,6 +3,7 @@ com\upgrad\FoodOrderingApp\api\model\CustomerOrderResponse.class
 com\upgrad\FoodOrderingApp\api\config\SwaggerConfiguration.class
 com\upgrad\FoodOrderingApp\api\model\SaveOrderResponse.class
 io\swagger\configuration\HomeController.class
+com\upgrad\FoodOrderingApp\api\controller\OrderController.class
 com\upgrad\FoodOrderingApp\api\controller\RestaurantController$3.class
 com\upgrad\FoodOrderingApp\api\model\ItemQuantityResponse.class
 com\upgrad\FoodOrderingApp\api\model\ItemQuantityResponseItem$TypeEnum.class
@@ -39,6 +40,7 @@ com\upgrad\FoodOrderingApp\api\model\OrderList.class
 com\upgrad\FoodOrderingApp\api\model\DeleteAddressResponse.class
 com\upgrad\FoodOrderingApp\api\model\ItemList$ItemTypeEnum.class
 com\upgrad\FoodOrderingApp\api\model\SaveOrderRequest.class
+com\upgrad\FoodOrderingApp\api\controller\PaymentController.class
 com\upgrad\FoodOrderingApp\api\controller\AddressController$1.class
 com\upgrad\FoodOrderingApp\api\model\OrderListAddress.class
 com\upgrad\FoodOrderingApp\api\model\UpdatePasswordRequest.class
