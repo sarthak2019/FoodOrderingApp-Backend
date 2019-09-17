@@ -1,7 +1,6 @@
 package com.upgrad.FoodOrderingApp.service.dao;
 
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAddressEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,10 +20,10 @@ public class AddressDao {
         return addressEntity;
     }
     //creates a customerAddress record
-    public CustomerAddressEntity createCustomerAddress(CustomerAddressEntity customerAddressEntity) {
+   /* public CustomerAddressEntity createCustomerAddress(CustomerAddressEntity customerAddressEntity) {
         this.entityManager.persist(customerAddressEntity);
         return customerAddressEntity;
-    }
+    }*/
 
     public AddressEntity getAddressByAddressUuid(String addressUuid) {
         try {
@@ -34,16 +33,8 @@ public class AddressDao {
         }
     }
 
-    public AddressEntity getAddressById(long id){
-        try {
-            return entityManager.createNamedQuery("getAddressById" , AddressEntity.class).setParameter("id", id).getSingleResult();
-        }catch (NoResultException nre){
-            return null;
-        }
-    }
-
     //retrieves all the saved addresses
-    public List<AddressEntity> getAllSavedAddresses(){
+    public List<AddressEntity> getAllSavedAddresses() {
 
         try {
             return this.entityManager.createNamedQuery("allSavedAddresses", AddressEntity.class).getResultList();
@@ -52,9 +43,9 @@ public class AddressDao {
         }
     }
 
-    public String deleteAddress(AddressEntity addressEntity){
-        String Uuid=addressEntity.getUuid();
-        this.entityManager.remove(addressEntity);
+    public String deleteAddress(AddressEntity addressEntity) {
+        String Uuid = addressEntity.getUuid();
+        entityManager.remove(addressEntity);
         return Uuid;
     }
 }

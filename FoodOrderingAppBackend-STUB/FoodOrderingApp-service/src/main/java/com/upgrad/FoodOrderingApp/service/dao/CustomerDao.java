@@ -19,10 +19,11 @@ public class CustomerDao {
         this.entityManager.persist(customerEntity);
         return customerEntity;
     }
+
     //returns customer with a particular contact number
     public CustomerEntity getCustomerByContactNumber(String contactNumber) {
         try {
-            return (CustomerEntity)this.entityManager.createNamedQuery("customerByContactNumber", CustomerEntity.class).setParameter("contactNumber", contactNumber).getSingleResult();
+            return (CustomerEntity) this.entityManager.createNamedQuery("customerByContactNumber", CustomerEntity.class).setParameter("contactNumber", contactNumber).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }
@@ -47,8 +48,6 @@ public class CustomerDao {
     public void updateCustomer(CustomerEntity updatedCustomerEntity) {
         this.entityManager.merge(updatedCustomerEntity);
     }
-
-
 
 
 }
