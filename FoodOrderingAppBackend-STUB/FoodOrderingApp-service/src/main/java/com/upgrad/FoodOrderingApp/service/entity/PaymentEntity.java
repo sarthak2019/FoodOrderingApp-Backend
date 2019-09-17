@@ -9,7 +9,8 @@ import java.io.Serializable;
 @Table(name = "payment", schema = "public")
 @NamedQueries(
         {
-                @NamedQuery(name = "paymentMethods", query = "SELECT p FROM PaymentEntity p")
+                @NamedQuery(name = "paymentMethods", query = "SELECT p FROM PaymentEntity p"),
+                @NamedQuery(name = "paymentByPaymentUuid", query = "SELECT p FROM PaymentEntity p where p.uuid=:paymentUuid")
         }
 )
 public class PaymentEntity implements Serializable {
@@ -27,6 +28,9 @@ public class PaymentEntity implements Serializable {
     @NotNull
     @Size(max = 255)
     private String paymentName;
+
+    @OneToOne(mappedBy="payment")
+    private OrderEntity order;
 
     public int getId() {
         return id;

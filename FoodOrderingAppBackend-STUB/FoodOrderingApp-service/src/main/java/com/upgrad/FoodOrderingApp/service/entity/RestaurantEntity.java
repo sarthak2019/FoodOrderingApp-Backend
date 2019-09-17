@@ -15,9 +15,9 @@ import java.util.List;
 @Table(name = "restaurant", schema = "public")
 @NamedQueries(
         {
-                @NamedQuery(name = "allRestaurants" , query = "select r from RestaurantEntity r"),
-                @NamedQuery(name = "restaurantsByName" , query = "select r from RestaurantEntity r where lower(r.restaurantName) like :restaurantName"),
-                @NamedQuery(name = "restaurantsById" , query = "select r from RestaurantEntity r where r.uuid = :restaurantId")
+                @NamedQuery(name = "allRestaurants", query = "select r from RestaurantEntity r"),
+                @NamedQuery(name = "restaurantsByName", query = "select r from RestaurantEntity r where lower(r.restaurantName) like :restaurantName"),
+                @NamedQuery(name = "restaurantsById", query = "select r from RestaurantEntity r where r.uuid = :restaurantId")
         }
 )
 public class RestaurantEntity {
@@ -38,15 +38,15 @@ public class RestaurantEntity {
     @Column(name = "PHOTO_URL")
     private String photoUrl;
 
-    @Column(name="CUSTOMER_RATING")
+    @Column(name = "CUSTOMER_RATING")
     @NotNull
     private BigDecimal customerRating;
 
-    @Column(name="AVERAGE_PRICE_FOR_TWO")
+    @Column(name = "AVERAGE_PRICE_FOR_TWO")
     @NotNull
     private Integer averagePriceForTwo;
 
-    @Column(name="NUMBER_OF_CUSTOMERS_RATED")
+    @Column(name = "NUMBER_OF_CUSTOMERS_RATED")
     @NotNull
     private Integer numberOfCustomersRated;
 
@@ -59,6 +59,9 @@ public class RestaurantEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<ItemEntity> item = new ArrayList<>();
+
+    @OneToOne(mappedBy="restaurant")
+    private OrderEntity order;
 
     public List<ItemEntity> getItem() {
         return item;

@@ -7,13 +7,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "item", schema = "public")
 @NamedQueries(
         {
-
+                @NamedQuery(name = "itemByItemUuid", query = "select i from ItemEntity i where i.uuid=:itemUuid")
         }
 )
 public class ItemEntity {
@@ -44,6 +45,9 @@ public class ItemEntity {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<RestaurantEntity> restaurant;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    private List<OrderEntity> orders = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -99,6 +103,14 @@ public class ItemEntity {
 
     public void setRestaurant(List<RestaurantEntity> restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
     }
 
     @Override

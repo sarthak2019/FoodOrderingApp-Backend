@@ -15,14 +15,14 @@ public class PaymentService {
     @Autowired
     private PaymentDao paymentDao;
 
-   /* public List<PaymentEntity> paymentMethods(PaymentEntity paymentEntity){
-        return paymentDao.getPaymentMethods(paymentEntity);
-    }*/
-   @Transactional(propagation = Propagation.REQUIRED)
-   public List<PaymentEntity> getAllPaymentMethods() {
-       System.out.println("in dao");
-       List<PaymentEntity> daoList =paymentDao.getPaymentMethods();
-       System.out.println("daoList "+daoList);
-       return daoList;
-   }
+    /* public List<PaymentEntity> paymentMethods(PaymentEntity paymentEntity){
+         return paymentDao.getPaymentMethods(paymentEntity);
+     }*/
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<PaymentEntity> getAllPaymentMethods() {
+        System.out.println("in dao");
+        List<PaymentEntity> daoList = paymentDao.getPaymentMethods();
+        System.out.println("daoList " + daoList);
+        return daoList;
+    }
 }

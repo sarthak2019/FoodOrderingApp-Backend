@@ -1,4 +1,5 @@
 package com.upgrad.FoodOrderingApp.api.controller;
+
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.*;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
@@ -33,9 +34,9 @@ public class CustomerController {
     //signup  endpoint requests for all the attributes in “SignupCustomerRequest” about the customer and registers a customer successfully.
     //PLEASE NOTE @RequestBody(required = false) inside signup function will disable parameters in request body in request model.
     @RequestMapping(method = RequestMethod.POST, path = "/customer/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<SignupCustomerResponse> signup( @RequestBody(required = false) final SignupCustomerRequest signupCustomerRequest) throws SignUpRestrictedException {
+    public ResponseEntity<SignupCustomerResponse> signup(@RequestBody(required = false) final SignupCustomerRequest signupCustomerRequest) throws SignUpRestrictedException {
 
-        final CustomerEntity customerEntity=new CustomerEntity();
+        final CustomerEntity customerEntity = new CustomerEntity();
 
         customerEntity.setUuid(UUID.randomUUID().toString());
         customerEntity.setFirstName(signupCustomerRequest.getFirstName());
@@ -79,56 +80,56 @@ public class CustomerController {
         headers.setAccessControlExposeHeaders(header);
         headers.add("access-token", customerAuthToken.getAccessToken());
 
-        return new ResponseEntity<LoginResponse>(  loginResponse, headers, HttpStatus.OK);
+        return new ResponseEntity<LoginResponse>(loginResponse, headers, HttpStatus.OK);
     }
 
     //logout method is used to logout a loggedin customer from the application.
-    @RequestMapping(method=RequestMethod.POST,path="/customer/logout",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<LogoutResponse> logout(@RequestHeader("accessToken") final String accessToken)throws AuthorizationFailedException {
+    @RequestMapping(method = RequestMethod.POST, path = "/customer/logout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<LogoutResponse> logout(@RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException {
 
-        String [] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = accessToken.split("Bearer ");
         final CustomerAuthEntity logout = customerService.logout(bearerToken[1]);
 
-        LogoutResponse logoutResponse=new LogoutResponse()
+        LogoutResponse logoutResponse = new LogoutResponse()
                 .id(logout.getUuid())
                 .message("LOGGED OUT SUCCESSFULLY");
-        return new ResponseEntity<LogoutResponse>(logoutResponse,HttpStatus.OK);
+        return new ResponseEntity<LogoutResponse>(logoutResponse, HttpStatus.OK);
     }
 
     //updateCustomer method is used to update the customer firstname and lastname from the application.
-    @RequestMapping(method=RequestMethod.PUT,path="/customer",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, path = "/customer", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UpdateCustomerResponse> updateCustomer(@RequestBody(required = false) final UpdateCustomerRequest updateCustomerRequest,
-                                                                 @RequestHeader("accessToken") final String accessToken) throws UpdateCustomerException,AuthorizationFailedException {
+                                                                 @RequestHeader("accessToken") final String accessToken) throws UpdateCustomerException, AuthorizationFailedException {
 
-        String [] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = accessToken.split("Bearer ");
         CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
         customerEntity.setFirstName(updateCustomerRequest.getFirstName());
         customerEntity.setLastName(updateCustomerRequest.getLastName());
 
-        final CustomerEntity updatedCustomerEntity=customerService.updateCustomer(customerEntity);
+        final CustomerEntity updatedCustomerEntity = customerService.updateCustomer(customerEntity);
 
-        UpdateCustomerResponse updateCustomerResponse=new UpdateCustomerResponse()
+        UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse()
                 .firstName(updatedCustomerEntity.getFirstName())
                 .lastName(updatedCustomerEntity.getLastName())
                 .id(updatedCustomerEntity.getUuid())
                 .status("CUSTOMER DETAILS UPDATED SUCCESSFULLY");
-        return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse,HttpStatus.OK);
+        return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse, HttpStatus.OK);
     }
 
     //changePassword method is used to change the customer password details from the application.
-    @RequestMapping(method=RequestMethod.PUT,path="/customer/password",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<UpdatePasswordResponse> changePassword(@RequestBody(required = false)final UpdatePasswordRequest updatePasswordRequest,
-                                                                 @RequestHeader("accessToken") final String accessToken) throws UpdateCustomerException,AuthorizationFailedException {
+    @RequestMapping(method = RequestMethod.PUT, path = "/customer/password", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<UpdatePasswordResponse> changePassword(@RequestBody(required = false) final UpdatePasswordRequest updatePasswordRequest,
+                                                                 @RequestHeader("accessToken") final String accessToken) throws UpdateCustomerException, AuthorizationFailedException {
 
-        String [] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = accessToken.split("Bearer ");
         CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
 
-        final CustomerEntity updatedCustomerEntity=customerService.updateCustomerPassword(updatePasswordRequest.getOldPassword(),updatePasswordRequest.getNewPassword(),customerEntity);
+        final CustomerEntity updatedCustomerEntity = customerService.updateCustomerPassword(updatePasswordRequest.getOldPassword(), updatePasswordRequest.getNewPassword(), customerEntity);
 
-        UpdatePasswordResponse updatePasswordResponse=new UpdatePasswordResponse()
+        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse()
                 .id(updatedCustomerEntity.getUuid())
                 .status("CUSTOMER PASSWORD UPDATED SUCCESSFULLY");
-        return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse,HttpStatus.OK);
+        return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse, HttpStatus.OK);
     }
 
 }

@@ -8,7 +8,8 @@ import java.io.Serializable;
 @Table(name = "coupon", schema = "public")
 @NamedQueries(
         {
-                @NamedQuery(name = "couponByName", query = "SELECT cN FROM CouponEntity cN WHERE cN.couponName=:coupon_name")
+                @NamedQuery(name = "couponByName", query = "SELECT cN FROM CouponEntity cN WHERE cN.couponName=:coupon_name"),
+                @NamedQuery(name = "getCouponUuid", query = "SELECT cN from CouponEntity cN WHERE cN.uuid=:couponUuid")
         }
 )
 public class CouponEntity implements Serializable {
@@ -30,6 +31,8 @@ public class CouponEntity implements Serializable {
     @NotNull
     private Integer percent;
 
+    @OneToOne(mappedBy="coupon")
+    private OrderEntity order;
 
     public Integer getId() {
         return id;
