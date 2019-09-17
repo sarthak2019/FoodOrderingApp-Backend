@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +37,8 @@ public class OrderController {
         CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
 
         CouponEntity couponEntity = orderService.getCouponByCouponName(couponName);
-        couponDetailsResponse.setId(UUID.fromString(couponEntity.getUuid()));
+        //couponDetailsResponse.setId(UUID.fromString(couponEntity.getUuid().toString()));
+        couponDetailsResponse.setId(couponEntity.getUuid());
         couponDetailsResponse.setCouponName(couponEntity.getCouponName());
         couponDetailsResponse.setPercent(couponEntity.getPercent());
         return new ResponseEntity<CouponDetailsResponse>(couponDetailsResponse, HttpStatus.OK);
@@ -50,7 +53,11 @@ public class OrderController {
         final CustomerEntity customerEntity= new CustomerEntity();
         final AddressEntity addressEntity= new AddressEntity();
         final RestaurantEntity restaurantEntity= new RestaurantEntity();
-        couponEntity.setUuid(saveOrderRequest.getCouponId().toString());
+        final List<ItemEntity> itemEntities= new ArrayList<ItemEntity>();
+
+        //couponEntity.setUuid(saveOrderRequest.getCouponId().toString());
+        //couponEntity.setUuid(UUID.fromString(saveOrderRequest.getCouponId().toString()));
+        couponEntity.setUuid(saveOrderRequest.getCouponId());
         orderEntity.setBill(saveOrderRequest.getBill());
         orderEntity.setCoupon(couponEntity);
         orderEntity.setDiscount(saveOrderRequest.getDiscount());
@@ -66,6 +73,10 @@ public class OrderController {
         //orderEntity.setRestaurantId(Integer.parseInt(saveOrderRequest.getRestaurantId().toString()));
         restaurantEntity.setUuid(saveOrderRequest.getRestaurantId().toString());
         orderEntity.setRestaurant(restaurantEntity);
+
+        //for(ItemEntity itemEntity:itemEntities){
+            orderEntity.setItem(itemEntities);
+        //}
 
         final OrderEntity createdOrderEntity = orderService.saveOrder(orderEntity);
 

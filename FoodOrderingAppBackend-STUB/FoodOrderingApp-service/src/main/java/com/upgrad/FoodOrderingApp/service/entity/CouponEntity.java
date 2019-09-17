@@ -3,6 +3,7 @@ package com.upgrad.FoodOrderingApp.service.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "coupon", schema = "public")
@@ -19,9 +20,14 @@ public class CouponEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "uuid")
+    /*@Column(name = "uuid")
     @NotNull
     private String uuid;
+    */
+
+    @Column(name = "uuid")
+    @NotNull
+    private UUID uuid;
 
     @Column(name = "coupon_name")
     @NotNull
@@ -42,11 +48,19 @@ public class CouponEntity implements Serializable {
         this.id = id;
     }
 
+    /*
     public String getUuid() {
         return uuid;
     }
 
     public void setUuid(String uuid) {
+        this.uuid = uuid;
+    } */
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

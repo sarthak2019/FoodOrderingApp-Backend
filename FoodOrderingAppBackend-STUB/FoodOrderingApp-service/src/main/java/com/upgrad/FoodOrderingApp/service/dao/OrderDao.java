@@ -20,7 +20,8 @@ public class OrderDao {
 
     public CouponEntity getCouponByUuid(UUID couponUuid){
         try {
-            return (CouponEntity) this.entityManager.createNamedQuery("couponByCouponUuid", CouponEntity.class).setParameter("couponUuid", couponUuid).getSingleResult();
+            //return (CouponEntity) this.entityManager.createNamedQuery("couponByCouponUuid", CouponEntity.class).setParameter("couponUuid", couponUuid).getSingleResult();
+            return (CouponEntity) this.entityManager.createNamedQuery("getCouponUuid", CouponEntity.class).setParameter("couponUuid", couponUuid).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }
