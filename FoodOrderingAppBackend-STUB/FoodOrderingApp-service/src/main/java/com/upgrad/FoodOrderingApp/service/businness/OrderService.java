@@ -86,20 +86,20 @@ public class OrderService {
         for(ItemEntity itemEntity:itemEntities) {
             //itemEntities.get(count).getUuid();
             //itemEntity.setUuid();
-            if (orderDao.getItemByUuid(UUID.fromString(itemEntity.getUuid())) != null) {
+            if (orderDao.getItemByUuid(UUID.fromString(itemEntity.getUuid())) == null) {
                 throw new ItemNotFoundException("INF-003", "No item by this id exist)");
             }
         }
         //if (orderDao.getCouponByUuid(UUID.fromString(couponEntity.getUuid())) != null ) {
-        if (orderDao.getCouponByUuid(couponEntity.getUuid()) != null ) {
+        if (orderDao.getCouponByUuid(couponEntity.getUuid()) == null ) {
             throw new CouponNotFoundException("CPF-002", "No coupon by this id");
-        } else if (orderDao.getAddressByUuid(UUID.fromString(addressEntity.getUuid())) != null ) {
+        } else if (orderDao.getAddressByUuid(UUID.fromString(addressEntity.getUuid())) == null ) {
             throw new AddressNotFoundException("ANF-003", "No address  by this id");
         } /*else if (orderEntity.getAddress() != null && orderEntity.getAddress() != orderEntity1.getAddress()) {
             throw new AuthorizationFailedException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
-        } */else if (orderDao.getPaymentByUuid(UUID.fromString(paymentEntity.getUuid())) != null ) {
+        } */else if (orderDao.getPaymentByUuid(UUID.fromString(paymentEntity.getUuid())) == null ) {
             throw new PaymentMethodNotFoundException("PNF-002", "No payment method found by this id");
-        } else if (orderDao.getRestaurantByUuid(UUID.fromString(restaurantEntity.getUuid())) != null) {
+        } else if (orderDao.getRestaurantByUuid(UUID.fromString(restaurantEntity.getUuid())) == null) {
             throw new RestaurantNotFoundException("RNF-001", "No restaurant by this id");
         } /*else if (orderDao.getItemByUuid(UUID.fromString(itemEntity.getUuid())) != null) {
             throw new ItemNotFoundException("INF-003", "No item by this id exist)");
