@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,33 +63,47 @@ public class OrderService {
         //customerEntity.getFirstName().isEmpty() || customerEntity.getContactNumber().isEmpty() || customerEntity.getEmail().isEmpty() || customerEntity.getPassword().isEmpty()
 
         CouponEntity couponEntity= new CouponEntity();
-        couponEntity.setUuid(orderEntity.getCoupon().toString());
+        //couponEntity.setUuid(orderEntity.getCoupon().toString());
+        //couponEntity.setUuid(UUID.fromString(orderEntity.getCoupon().toString()));
+        couponEntity.setUuid(orderEntity.getCoupon().getUuid());
 
         AddressEntity addressEntity= new AddressEntity();
-        addressEntity.setUuid(orderEntity.getAddress().toString());
+        //addressEntity.setUuid(orderEntity.getAddress().toString());
+        addressEntity.setUuid(orderEntity.getAddress().getUuid());
 
         PaymentEntity paymentEntity= new PaymentEntity();
-        paymentEntity.setUuid(orderEntity.getPayment().toString());
+        //paymentEntity.setUuid(orderEntity.getPayment().toString());
+        paymentEntity.setUuid(orderEntity.getPayment().getUuid());
 
         RestaurantEntity restaurantEntity= new RestaurantEntity();
-        restaurantEntity.setUuid(orderEntity.getRestaurant().toString());
+        //restaurantEntity.setUuid(orderEntity.getRestaurant().toString());
+        restaurantEntity.setUuid(orderEntity.getRestaurant().getUuid());
 
-        ItemEntity itemEntity= new ItemEntity();
-        itemEntity.setUuid(orderEntity.getItem().toString());
-
-        if (orderDao.getCouponByUuid(UUID.fromString(couponEntity.getUuid())) != null ) {
+        List<ItemEntity> itemEntities= new ArrayList<ItemEntity>();
+        //itemEntity.setUuid(orderEntity.getItem().toString());
+        itemEntities=orderEntity.getItem();
+        int count=0;
+        for(ItemEntity itemEntity:itemEntities) {
+            //itemEntities.get(count).getUuid();
+            //itemEntity.setUuid();
+            if (orderDao.getItemByUuid(UUID.fromString(itemEntity.getUuid())) == null) {
+                throw new ItemNotFoundException("INF-003", "No item by this id exist)");
+            }
+        }
+        //if (orderDao.getCouponByUuid(UUID.fromString(couponEntity.getUuid())) != null ) {
+        if (orderDao.getCouponByUuid(couponEntity.getUuid()) == null ) {
             throw new CouponNotFoundException("CPF-002", "No coupon by this id");
-        } else if (orderDao.getAddressByUuid(UUID.fromString(addressEntity.getUuid())) != null ) {
+        } else if (orderDao.getAddressByUuid(UUID.fromString(addressEntity.getUuid())) == null ) {
             throw new AddressNotFoundException("ANF-003", "No address  by this id");
         } /*else if (orderEntity.getAddress() != null && orderEntity.getAddress() != orderEntity1.getAddress()) {
             throw new AuthorizationFailedException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
-        } */else if (orderDao.getPaymentByUuid(UUID.fromString(paymentEntity.getUuid())) != null ) {
+        } */else if (orderDao.getPaymentByUuid(UUID.fromString(paymentEntity.getUuid())) == null ) {
             throw new PaymentMethodNotFoundException("PNF-002", "No payment method found by this id");
-        } else if (orderDao.getRestaurantByUuid(UUID.fromString(restaurantEntity.getUuid())) != null) {
+        } else if (orderDao.getRestaurantByUuid(UUID.fromString(restaurantEntity.getUuid())) == null) {
             throw new RestaurantNotFoundException("RNF-001", "No restaurant by this id");
-        } else if (orderDao.getItemByUuid(UUID.fromString(itemEntity.getUuid())) != null) {
+        } /*else if (orderDao.getItemByUuid(UUID.fromString(itemEntity.getUuid())) != null) {
             throw new ItemNotFoundException("INF-003", "No item by this id exist)");
-        } else {
+        } */else {
             return this.orderDao.saveOrder(orderEntity);
         }
     }
