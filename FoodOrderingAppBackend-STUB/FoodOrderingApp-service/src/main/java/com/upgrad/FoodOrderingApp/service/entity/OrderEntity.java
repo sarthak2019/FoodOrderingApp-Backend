@@ -52,20 +52,15 @@ public class OrderEntity {
     @JoinColumn(name = "RESTAURANT_ID")
     private RestaurantEntity restaurant;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ADDRESS_ID")
-    private AddressEntity address;
+    @OneToMany(mappedBy="orders", cascade = CascadeType.PERSIST)
+    private List<AddressEntity> addresses;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "COUPON_ID")
-    private CustomerEntity coupon;
+    private CouponEntity coupon;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "order_item",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "item_id")}
-    )
-    private List<ItemEntity> item = new ArrayList<>();
+    @OneToMany(mappedBy="orders", cascade = CascadeType.PERSIST)
+    private List<OrderItemEntity> orderItemEntity;
 
     public Integer getId() {
         return id;
@@ -131,27 +126,27 @@ public class OrderEntity {
         this.restaurant = restaurant;
     }
 
-    public AddressEntity getAddress() {
-        return address;
+    public List<AddressEntity> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(AddressEntity address) {
-        this.address = address;
+    public void setAddresses(List<AddressEntity> addresses) {
+        this.addresses = addresses;
     }
 
-    public CustomerEntity getCoupon() {
+    public CouponEntity getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(CustomerEntity coupon) {
+    public void setCoupon(CouponEntity coupon) {
         this.coupon = coupon;
     }
 
-    public List<ItemEntity> getItem() {
-        return item;
+    public List<OrderItemEntity> getOrderItemEntity() {
+        return orderItemEntity;
     }
 
-    public void setItem(List<ItemEntity> item) {
-        this.item = item;
+    public void setOrderItemEntity(List<OrderItemEntity> orderItemEntity) {
+        this.orderItemEntity = orderItemEntity;
     }
 }

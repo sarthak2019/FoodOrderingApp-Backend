@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,9 +78,14 @@ public class AddressService {
         if (addressEntity == null) {
             throw new AddressNotFoundException("ANF-003", "No address by this id");
         }
-        List<CustomerEntity> addressCustomerEntities = addressEntity.getCustomer();
+        List<CustomerAddressEntity> customerAddressEntities = addressEntity.getCstomerAddressEntity();
+        List<CustomerEntity> customerEntities = new ArrayList<>();
+        for(CustomerAddressEntity CustomerAddressEntity : customerAddressEntities) {
+            CustomerEntity customerEntity = CustomerAddressEntity.getCustomer();
+            customerEntities.add(customerEntity);
+        }
         boolean isDelete = false;
-        for (CustomerEntity customerEntity1 : addressCustomerEntities) {
+        for (CustomerEntity customerEntity1 : customerEntities) {
             if (customerEntity1.getUuid().equals(signedincustomerEntity.getUuid())) {
                 isDelete = true;
             }

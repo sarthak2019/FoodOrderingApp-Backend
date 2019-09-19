@@ -4,6 +4,7 @@ package com.upgrad.FoodOrderingApp.api.controller;
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.*;
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
@@ -40,6 +41,7 @@ public class AddressController {
         final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
         final StateEntity stateEntity = addressService.getStateByUUID(saveAddressRequest.getStateUuid());
         final AddressEntity addressEntity = new AddressEntity();
+        final CustomerAddressEntity customerAddressEntity = new CustomerAddressEntity();
 
         addressEntity.setUuid(UUID.randomUUID().toString());
         addressEntity.setFlatBuilNumber(saveAddressRequest.getFlatBuildingName());
@@ -49,9 +51,11 @@ public class AddressController {
         addressEntity.setState(stateEntity);
         addressEntity.setActive(1);
 
-        List<CustomerEntity> customers = new ArrayList<CustomerEntity>();
-        customers.add(customerEntity);
-        addressEntity.setCustomer(customers);
+        customerAddressEntity.setCustomer(customerEntity);
+        customerAddressEntity.setAddress(addressEntity);
+        List<CustomerAddressEntity> customerAddressEntities = new ArrayList<>();
+        customerAddressEntities.add(customerAddressEntity);
+        addressEntity.setCstomerAddressEntity(customerAddressEntities);
 
         final AddressEntity savedAddressEntity = addressService.saveAddress(addressEntity);
 
@@ -68,7 +72,13 @@ public class AddressController {
 
         String[] bearerToken = accessToken.split("Bearer ");
         final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
-        final List<AddressEntity> addresses = customerEntity.getAddress();
+        final List<CustomerAddressEntity> customerAddressEntities = customerEntity.getCustomerAddressEntity();
+
+        List<AddressEntity> addressEntities = new ArrayList<>();
+        for(CustomerAddressEntity customerAddressEntity : customerAddressEntities){
+            AddressEntity addressEntitiy = customerAddressEntity.getAddress();
+            addressEntities.add(addressEntitiy);
+        }
 
         Comparator<AddressEntity> compareBySavedTime = new Comparator<AddressEntity>() {
             @Override
@@ -76,12 +86,12 @@ public class AddressController {
                 return a1.getId().compareTo(a2.getId());
             }
         };
-        Collections.sort(addresses, compareBySavedTime);
+        Collections.sort(addressEntities, compareBySavedTime);
 
 
         AddressListResponse addressListResponse = new AddressListResponse();
 
-        for (AddressEntity address : addresses) {
+        for (AddressEntity address : addressEntities) {
             AddressList addressList = new AddressList();
             addressList.id(UUID.fromString(address.getUuid()));
             addressList.flatBuildingName(address.getFlatBuilNumber());

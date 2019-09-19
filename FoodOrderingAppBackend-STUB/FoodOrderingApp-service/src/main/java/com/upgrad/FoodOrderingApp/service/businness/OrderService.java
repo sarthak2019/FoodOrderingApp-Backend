@@ -27,6 +27,9 @@ public class OrderService {
     @Autowired
     OrderDao orderDao;
 
+    @Autowired
+    CustomerService customerService;
+
     @Transactional(propagation = Propagation.REQUIRED)
     public CouponEntity getCouponByCouponName(final String couponName) throws AuthorizationFailedException, CouponNotFoundException {
 
@@ -39,26 +42,20 @@ public class OrderService {
         return couponEntity;
     }
 
-    /*@Transactional(propagation = Propagation.REQUIRED)
-    public OrderEntity saveOrder(final OrderEntity orderEntity) throws CouponNotFoundException, AddressNotFoundException, PaymentMethodNotFoundException, RestaurantNotFoundException, ItemNotFoundException {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public OrderEntity saveOrder(final OrderEntity orderEntity) {
+        return this.orderDao.saveOrder(orderEntity);
+    }
 
-        OrderEntity orderEntity1 = orderDao.saveOrder(orderEntity);
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CouponEntity getCouponByCouponId(final String couponId) throws CouponNotFoundException {
 
-        if (orderEntity.getCouponId() != null && orderEntity.getCouponId() != orderEntity1.getCouponId()) {
+        CouponEntity couponEntity = couponDao.getCouponById(couponId);
+
+        if (couponEntity == null) {
             throw new CouponNotFoundException("CPF-002", "No coupon by this id");
-        } else if (orderEntity.getAddressId() != null && orderEntity.getAddressId() != orderEntity1.getAddressId()) {
-            throw new AddressNotFoundException("ANF-003", "No address  by this id");
-        } else if (orderEntity.getAddressId() != null && orderEntity.getAddressId() != orderEntity1.getAddressId()) {
-            throw new AuthorizationFailedException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
-        } else if (orderEntity.getPaymentId() != null && orderEntity.getPaymentId() != orderEntity1.getPaymentId()) {
-            throw new PaymentMethodNotFoundException("PNF-002", "No payment method found by this id");
-        } else if (orderEntity.getRestaurantId() != null && orderEntity.getRestaurantId() != orderEntity1.getRestaurantId()) {
-            throw new RestaurantNotFoundException("RNF-001", "No restaurant by this id");
-        } else if (orderEntity.get() != null && orderEntity.getRestaurantId() != orderEntity1.getRestaurantId()) {
-            throw new ItemNotFoundException("INF-003", "No item by this id exist)");
-        } else {
-            return this.orderDao.saveOrder(orderEntity1);
         }
-    }*/
+        return couponEntity;
+    }
 
 }

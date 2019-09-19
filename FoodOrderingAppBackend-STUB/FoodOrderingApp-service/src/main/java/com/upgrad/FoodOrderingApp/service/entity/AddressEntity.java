@@ -51,16 +51,12 @@ public class AddressEntity {
     @Column(name = "ACTIVE")
     private Integer active;
 
-
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "customer_address",
-            joinColumns = {@JoinColumn(name = "address_id")},
-            inverseJoinColumns = {@JoinColumn(name = "customer_id")}
-    )
-    private List<CustomerEntity> customer = new ArrayList<>();
-
-    @OneToOne(mappedBy="address")
+    @ManyToOne
+    @JoinColumn(name="address_id")
     private OrderEntity orders;
+
+    @OneToMany(mappedBy="address", cascade = CascadeType.PERSIST)
+    private List<CustomerAddressEntity> cstomerAddressEntity;
 
     public Integer getId() {
         return id;
@@ -134,12 +130,20 @@ public class AddressEntity {
         return pincode;
     }
 
-    public List<CustomerEntity> getCustomer() {
-        return customer;
+    public OrderEntity getOrders() {
+        return orders;
     }
 
-    public void setCustomer(List<CustomerEntity> customer) {
-        this.customer = customer;
+    public void setOrders(OrderEntity orders) {
+        this.orders = orders;
+    }
+
+    public List<CustomerAddressEntity> getCstomerAddressEntity() {
+        return cstomerAddressEntity;
+    }
+
+    public void setCstomerAddressEntity(List<CustomerAddressEntity> cstomerAddressEntity) {
+        this.cstomerAddressEntity = cstomerAddressEntity;
     }
 
     @ManyToOne

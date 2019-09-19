@@ -92,11 +92,12 @@ public class CustomerEntity implements Serializable {
             max = 200
     )
 
-    @ManyToMany(mappedBy = "customer")
-    private List<AddressEntity> address = new ArrayList<>();
+    @OneToMany(mappedBy="customer", cascade = CascadeType.PERSIST)
+    private List<CustomerAddressEntity> customerAddressEntity;
 
     @OneToOne(mappedBy="customer")
     private OrderEntity order;
+
 
     private String salt;
 
@@ -156,12 +157,20 @@ public class CustomerEntity implements Serializable {
         this.password = password;
     }
 
-    public List<AddressEntity> getAddress() {
-        return address;
+    public List<CustomerAddressEntity> getCustomerAddressEntity() {
+        return customerAddressEntity;
     }
 
-    public void setAddress(List<AddressEntity> address) {
-        this.address = address;
+    public void setCustomerAddressEntity(List<CustomerAddressEntity> customerAddressEntity) {
+        this.customerAddressEntity = customerAddressEntity;
+    }
+
+    public OrderEntity getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderEntity order) {
+        this.order = order;
     }
 
     public String getSalt() {
