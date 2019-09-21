@@ -2,10 +2,12 @@ package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.CustomerAddressDao;
 import com.upgrad.FoodOrderingApp.service.dao.CustomerDao;
+import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
+import com.upgrad.FoodOrderingApp.service.exception.SaveAddressException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,6 +28,11 @@ public class CustomerAddressService {
         List<CustomerAddressEntity> CustomerAddressEntities = customerAddressDao.getCustomerAddressesListByCustomer(customer);
 
         return CustomerAddressEntities;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerAddressEntity saveCustomerAddress(final CustomerAddressEntity customerAddressEntity) throws SaveAddressException {
+            return customerAddressDao.createCustomerAddress(customerAddressEntity);
     }
 
 }

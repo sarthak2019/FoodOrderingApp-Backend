@@ -53,14 +53,20 @@ public class AddressController {
         addressEntity.setState(stateEntity);
         addressEntity.setActive(1);
 
-        customerAddressEntity.setCustomer(customerEntity);
-        customerAddressEntity.setAddress(addressEntity);
-        addressEntity.setCustomerAddressEntity(customerAddressEntity);
+
 
         final AddressEntity savedAddressEntity = addressService.saveAddress(addressEntity);
 
+        customerAddressEntity.setCustomer(customerEntity);
+        customerAddressEntity.setAddress(savedAddressEntity);
+        final CustomerAddressEntity savedcustomerAddressEntity = customerAddressService.saveCustomerAddress(customerAddressEntity);
+        savedAddressEntity.setCustomerAddressEntity(savedcustomerAddressEntity);
+
+        final AddressEntity mergedddressEntity = addressService.mergeAddress(savedAddressEntity);
+
+
         SaveAddressResponse saveAddressResponse = new SaveAddressResponse()
-                .id(savedAddressEntity.getUuid())
+                .id(mergedddressEntity.getUuid())
                 .status("ADDRESS SUCCESSFULLY REGISTERED");
         return new ResponseEntity<SaveAddressResponse>(saveAddressResponse, HttpStatus.CREATED);
 

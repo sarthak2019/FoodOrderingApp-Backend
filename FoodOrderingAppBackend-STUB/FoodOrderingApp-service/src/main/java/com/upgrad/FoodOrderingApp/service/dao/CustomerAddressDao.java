@@ -32,4 +32,10 @@ public class CustomerAddressDao {
             return null;
         }
     }
+
+
+    public CustomerAddressEntity createCustomerAddress(CustomerAddressEntity customerAddressEntity) {
+        this.entityManager.persist(customerAddressEntity);
+        return customerAddressEntity;
+    }
 }

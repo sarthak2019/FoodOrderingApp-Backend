@@ -63,6 +63,11 @@ public class AddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public AddressEntity mergeAddress(final AddressEntity addressEntity) {
+        return addressDao.mergeAddress(addressEntity);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<StateEntity> getAllStates() {
         return stateDao.getAllStates();
     }
