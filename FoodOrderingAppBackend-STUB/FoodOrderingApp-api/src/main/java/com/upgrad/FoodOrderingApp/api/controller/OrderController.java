@@ -55,7 +55,7 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path="/order", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<SaveOrderResponse> save(@RequestBody(required = false) final SaveOrderRequest saveOrderRequest, @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException,CouponNotFoundException, AddressNotFoundException, PaymentMethodNotFoundException, RestaurantNotFoundException, ItemNotFoundException {
+    public ResponseEntity<SaveOrderResponse> save(@RequestBody(required = false) final SaveOrderRequest saveOrderRequest, @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException,CouponNotFoundException, AddressNotFoundException, PaymentMethodNotFoundException, RestaurantNotFoundException, ItemNotFoundException, CouponNotFoundException {
         final OrderEntity orderEntity= new OrderEntity();
         final LocalDateTime now = LocalDateTime.now();
 
@@ -71,8 +71,6 @@ public class OrderController {
         final RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(saveOrderRequest.getRestaurantId().toString());
                 //couponEntity.setUuid(saveOrderRequest.getCouponId().toString());
         //couponEntity.setUuid(UUID.fromString(saveOrderRequest.getCouponId().toString()));
-
-
 
         orderEntity.setUuid(UUID.randomUUID().toString());
         orderEntity.setBill(saveOrderRequest.getBill());

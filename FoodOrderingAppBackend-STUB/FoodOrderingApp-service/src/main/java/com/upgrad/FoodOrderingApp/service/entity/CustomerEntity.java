@@ -84,11 +84,11 @@ public class CustomerEntity implements Serializable {
     @NotNull
     private String password;
 
-    @OneToOne(mappedBy="customer")
-    private OrderEntity order;
+    @OneToMany(mappedBy="customer")
+    private List<OrderEntity> order;
 
-    @OneToOne(mappedBy="customer")
-    private CustomerAddressEntity customerAddressEntity;
+    @OneToMany(mappedBy="customer")
+    private List<CustomerAddressEntity> customerAddressEntity;
 
 
     private String salt;
@@ -149,11 +149,11 @@ public class CustomerEntity implements Serializable {
         this.password = password;
     }
 
-    public OrderEntity getOrder() {
+    public List<OrderEntity> getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(List<OrderEntity> order) {
         this.order = order;
     }
 
@@ -165,11 +165,11 @@ public class CustomerEntity implements Serializable {
         this.salt = salt;
     }
 
-    public CustomerAddressEntity getCustomerAddressEntity() {
+    public List<CustomerAddressEntity> getCustomerAddressEntity() {
         return customerAddressEntity;
     }
 
-    public void setCustomerAddressEntity(CustomerAddressEntity customerAddressEntity) {
+    public void setCustomerAddressEntity(List<CustomerAddressEntity> customerAddressEntity) {
         this.customerAddressEntity = customerAddressEntity;
     }
 

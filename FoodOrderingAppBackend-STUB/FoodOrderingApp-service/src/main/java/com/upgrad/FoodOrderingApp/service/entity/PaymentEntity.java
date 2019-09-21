@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "payment", schema = "public")
@@ -29,8 +30,8 @@ public class PaymentEntity implements Serializable {
     @Size(max = 255)
     private String paymentName;
 
-    @OneToOne(mappedBy="payment")
-    private OrderEntity order;
+    @OneToMany(mappedBy="payment")
+    private List<OrderEntity> order;
 
     public int getId() {
         return id;
@@ -54,5 +55,18 @@ public class PaymentEntity implements Serializable {
 
     public void setPaymentName(String paymentName) {
         this.paymentName = paymentName;
+    }
+
+
+    public String getPaymentName() {
+        return paymentName;
+    }
+
+    public List<OrderEntity> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<OrderEntity> order) {
+        this.order = order;
     }
 }

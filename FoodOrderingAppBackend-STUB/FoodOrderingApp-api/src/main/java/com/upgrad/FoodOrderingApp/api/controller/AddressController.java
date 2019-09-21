@@ -57,10 +57,12 @@ public class AddressController {
 
         final AddressEntity savedAddressEntity = addressService.saveAddress(addressEntity);
 
+        List<CustomerAddressEntity> customerAddressEntities = new ArrayList<>();
         customerAddressEntity.setCustomer(customerEntity);
         customerAddressEntity.setAddress(savedAddressEntity);
         final CustomerAddressEntity savedcustomerAddressEntity = customerAddressService.saveCustomerAddress(customerAddressEntity);
-        savedAddressEntity.setCustomerAddressEntity(savedcustomerAddressEntity);
+        customerAddressEntities.add(savedcustomerAddressEntity);
+        savedAddressEntity.setCustomerAddressEntity(customerAddressEntities);
 
         final AddressEntity mergedddressEntity = addressService.mergeAddress(savedAddressEntity);
 

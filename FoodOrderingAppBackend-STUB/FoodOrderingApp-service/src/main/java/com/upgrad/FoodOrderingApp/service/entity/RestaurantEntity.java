@@ -60,8 +60,8 @@ public class RestaurantEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<ItemEntity> item = new ArrayList<>();
 
-    @OneToOne(mappedBy="restaurant")
-    private OrderEntity order;
+    @OneToMany(mappedBy="payment")
+    private List<OrderEntity> order;
 
     public List<ItemEntity> getItem() {
         return item;
@@ -141,6 +141,14 @@ public class RestaurantEntity {
 
     public void setCategory(List<CategoryEntity> category) {
         this.category = category;
+    }
+
+    public List<OrderEntity> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<OrderEntity> order) {
+        this.order = order;
     }
 
     @Override

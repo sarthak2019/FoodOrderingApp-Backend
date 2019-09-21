@@ -3,6 +3,7 @@ package com.upgrad.FoodOrderingApp.service.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "coupon", schema = "public")
@@ -31,8 +32,8 @@ public class CouponEntity implements Serializable {
     @NotNull
     private Integer percent;
 
-    @OneToOne(mappedBy="coupon")
-    private OrderEntity order;
+    @OneToMany(mappedBy = "coupon")
+    private List<OrderEntity> order;
 
     public Integer getId() {
         return id;
@@ -66,4 +67,11 @@ public class CouponEntity implements Serializable {
         this.percent = percent;
     }
 
+    public List<OrderEntity> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<OrderEntity> order) {
+        this.order = order;
+    }
 }

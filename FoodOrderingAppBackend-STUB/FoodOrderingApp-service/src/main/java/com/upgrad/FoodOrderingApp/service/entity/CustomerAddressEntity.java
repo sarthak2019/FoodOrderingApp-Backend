@@ -22,11 +22,11 @@ public class CustomerAddressEntity {
     )
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="address_id")
     private AddressEntity address;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="customer_id")
     private CustomerEntity customer;
 

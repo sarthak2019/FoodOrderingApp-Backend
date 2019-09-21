@@ -52,8 +52,8 @@ public class AddressEntity {
     private Integer active;
 
 
-    @OneToOne(mappedBy="address")
-    private CustomerAddressEntity customerAddressEntity;
+    @OneToMany(mappedBy="address")
+    private List<CustomerAddressEntity> customerAddressEntity;
 
     @OneToMany(mappedBy = "address")
     private List<OrderEntity> orders;
@@ -130,11 +130,11 @@ public class AddressEntity {
         return pincode;
     }
 
-    public CustomerAddressEntity getCustomerAddressEntity() {
+    public List<CustomerAddressEntity> getCustomerAddressEntity() {
         return customerAddressEntity;
     }
 
-    public void setCustomerAddressEntity(CustomerAddressEntity customerAddressEntity) {
+    public void setCustomerAddressEntity(List<CustomerAddressEntity> customerAddressEntity) {
         this.customerAddressEntity = customerAddressEntity;
     }
 

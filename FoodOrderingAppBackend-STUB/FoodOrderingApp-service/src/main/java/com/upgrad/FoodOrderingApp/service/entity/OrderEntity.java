@@ -39,20 +39,20 @@ public class OrderEntity {
     @Column(name = "DATE")
     private LocalDateTime date;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "PAYMENT_ID")
     private PaymentEntity payment;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomerEntity customer;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "RESTAURANT_ID")
     private RestaurantEntity restaurant;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "COUPON_ID")
     private CouponEntity coupon;
 
@@ -103,20 +103,20 @@ public class OrderEntity {
         this.date = date;
     }
 
-    public PaymentEntity getPayment() {
-        return payment;
-    }
-
-    public void setPayment(PaymentEntity payment) {
-        this.payment = payment;
-    }
-
     public CustomerEntity getCustomer() {
         return customer;
     }
 
     public void setCustomer(CustomerEntity customer) {
         this.customer = customer;
+    }
+
+    public PaymentEntity getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentEntity payment) {
+        this.payment = payment;
     }
 
     public RestaurantEntity getRestaurant() {
