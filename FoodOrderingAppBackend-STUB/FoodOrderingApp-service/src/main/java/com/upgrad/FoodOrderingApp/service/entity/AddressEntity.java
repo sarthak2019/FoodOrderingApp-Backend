@@ -55,8 +55,8 @@ public class AddressEntity {
     @JoinColumn(name="address_id")
     private OrderEntity orders;
 
-    @OneToMany(mappedBy="address", cascade = CascadeType.PERSIST)
-    private List<CustomerAddressEntity> cstomerAddressEntity;
+    @OneToOne(mappedBy="address")
+    private CustomerAddressEntity customerAddressEntity;
 
     public Integer getId() {
         return id;
@@ -138,22 +138,13 @@ public class AddressEntity {
         this.orders = orders;
     }
 
-    public List<CustomerAddressEntity> getCstomerAddressEntity() {
-        return cstomerAddressEntity;
+    public CustomerAddressEntity getCustomerAddressEntity() {
+        return customerAddressEntity;
     }
 
-    public void setCstomerAddressEntity(List<CustomerAddressEntity> cstomerAddressEntity) {
-        this.cstomerAddressEntity = cstomerAddressEntity;
+    public void setCustomerAddressEntity(CustomerAddressEntity customerAddressEntity) {
+        this.customerAddressEntity = customerAddressEntity;
     }
-
-    @ManyToOne
-    @OnDelete(
-            action = OnDeleteAction.CASCADE
-    )
-
-    @JoinColumn(
-            name = "state_id"
-    )
 
     @Override
     public boolean equals(Object obj) {

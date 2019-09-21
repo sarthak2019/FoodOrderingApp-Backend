@@ -7,7 +7,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "customer_address", schema = "public")
 @NamedQueries(
         {
-
+                @NamedQuery(name = "customerAddressByAddressId", query = "select c from CustomerAddressEntity c where c.address =:address"),
+                @NamedQuery(name = "customerAddressesListByCustomerId", query = "select c from CustomerAddressEntity c where c.customer =:customer")
         }
 )
 public class CustomerAddressEntity {
@@ -21,11 +22,11 @@ public class CustomerAddressEntity {
     )
     private Integer id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="address_id")
     private AddressEntity address;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="customer_id")
     private CustomerEntity customer;
 

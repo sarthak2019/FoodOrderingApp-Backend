@@ -30,6 +30,8 @@ public class AddressController {
     private AddressService addressService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private CustomerAddressService customerAddressService;
 
 
     //saveaddress  endpoint requests for all the attributes in “SaveAddressRequest” about the customer and saves the address of a customer successfully.
@@ -53,9 +55,7 @@ public class AddressController {
 
         customerAddressEntity.setCustomer(customerEntity);
         customerAddressEntity.setAddress(addressEntity);
-        List<CustomerAddressEntity> customerAddressEntities = new ArrayList<>();
-        customerAddressEntities.add(customerAddressEntity);
-        addressEntity.setCstomerAddressEntity(customerAddressEntities);
+        addressEntity.setCustomerAddressEntity(customerAddressEntity);
 
         final AddressEntity savedAddressEntity = addressService.saveAddress(addressEntity);
 
@@ -72,7 +72,7 @@ public class AddressController {
 
         String[] bearerToken = accessToken.split("Bearer ");
         final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
-        final List<CustomerAddressEntity> customerAddressEntities = customerEntity.getCustomerAddressEntity();
+        final List<CustomerAddressEntity> customerAddressEntities = customerAddressService.getCustomerAddressesListByCustomer(customerEntity);
 
         List<AddressEntity> addressEntities = new ArrayList<>();
         for(CustomerAddressEntity customerAddressEntity : customerAddressEntities){

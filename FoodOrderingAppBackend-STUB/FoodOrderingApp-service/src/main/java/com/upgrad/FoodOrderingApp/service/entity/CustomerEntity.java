@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(
-        name = "customer"
+        name = "customer", schema = "public"
 )
 @NamedQueries(
         {       //return customer record matching with a particular contact number
@@ -84,19 +84,11 @@ public class CustomerEntity implements Serializable {
     @NotNull
     private String password;
 
-    @Column(
-            name = "SALT"
-    )
-    @NotNull
-    @Size(
-            max = 200
-    )
-
-    @OneToMany(mappedBy="customer", cascade = CascadeType.PERSIST)
-    private List<CustomerAddressEntity> customerAddressEntity;
-
     @OneToOne(mappedBy="customer")
     private OrderEntity order;
+
+    @OneToOne(mappedBy="customer")
+    private CustomerAddressEntity customerAddressEntity;
 
 
     private String salt;
@@ -157,14 +149,6 @@ public class CustomerEntity implements Serializable {
         this.password = password;
     }
 
-    public List<CustomerAddressEntity> getCustomerAddressEntity() {
-        return customerAddressEntity;
-    }
-
-    public void setCustomerAddressEntity(List<CustomerAddressEntity> customerAddressEntity) {
-        this.customerAddressEntity = customerAddressEntity;
-    }
-
     public OrderEntity getOrder() {
         return order;
     }
@@ -179,6 +163,14 @@ public class CustomerEntity implements Serializable {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public CustomerAddressEntity getCustomerAddressEntity() {
+        return customerAddressEntity;
+    }
+
+    public void setCustomerAddressEntity(CustomerAddressEntity customerAddressEntity) {
+        this.customerAddressEntity = customerAddressEntity;
     }
 
     public boolean equals(Object obj) {
