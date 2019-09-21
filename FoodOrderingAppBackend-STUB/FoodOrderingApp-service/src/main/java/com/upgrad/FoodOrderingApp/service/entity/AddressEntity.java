@@ -51,12 +51,12 @@ public class AddressEntity {
     @Column(name = "ACTIVE")
     private Integer active;
 
-    @ManyToOne
-    @JoinColumn(name="address_id")
-    private OrderEntity orders;
 
     @OneToOne(mappedBy="address")
     private CustomerAddressEntity customerAddressEntity;
+
+    @OneToMany(mappedBy = "address")
+    private List<OrderEntity> orders;
 
     public Integer getId() {
         return id;
@@ -130,20 +130,20 @@ public class AddressEntity {
         return pincode;
     }
 
-    public OrderEntity getOrders() {
-        return orders;
-    }
-
-    public void setOrders(OrderEntity orders) {
-        this.orders = orders;
-    }
-
     public CustomerAddressEntity getCustomerAddressEntity() {
         return customerAddressEntity;
     }
 
     public void setCustomerAddressEntity(CustomerAddressEntity customerAddressEntity) {
         this.customerAddressEntity = customerAddressEntity;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
     }
 
     @Override

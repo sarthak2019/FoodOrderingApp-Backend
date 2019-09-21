@@ -52,15 +52,16 @@ public class OrderEntity {
     @JoinColumn(name = "RESTAURANT_ID")
     private RestaurantEntity restaurant;
 
-    @OneToMany(mappedBy="orders", cascade = CascadeType.PERSIST)
-    private List<AddressEntity> addresses;
-
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "COUPON_ID")
     private CouponEntity coupon;
 
     @OneToMany(mappedBy="orders", cascade = CascadeType.PERSIST)
     private List<OrderItemEntity> orderItemEntity;
+
+    @ManyToOne
+    @JoinColumn(name="address_id")
+    private AddressEntity address;
 
     public Integer getId() {
         return id;
@@ -126,12 +127,12 @@ public class OrderEntity {
         this.restaurant = restaurant;
     }
 
-    public List<AddressEntity> getAddresses() {
-        return addresses;
+    public AddressEntity getAddress() {
+        return address;
     }
 
-    public void setAddresses(List<AddressEntity> addresses) {
-        this.addresses = addresses;
+    public void setAddress(AddressEntity address) {
+        this.address = address;
     }
 
     public CouponEntity getCoupon() {

@@ -73,14 +73,13 @@ public class OrderController {
         //couponEntity.setUuid(UUID.fromString(saveOrderRequest.getCouponId().toString()));
 
 
-        List<AddressEntity> addressEntities = new ArrayList<>();
-        addressEntities.add(addressEntity);
+
         orderEntity.setUuid(UUID.randomUUID().toString());
         orderEntity.setBill(saveOrderRequest.getBill());
         orderEntity.setCustomer(customerEntity);
         orderEntity.setPayment(paymentEntity);
         orderEntity.setCoupon(couponEntity);
-        orderEntity.setAddresses(addressEntities);
+        orderEntity.setAddress(addressEntity);
         orderEntity.setRestaurant(restaurantEntity);
         orderEntity.setDiscount(saveOrderRequest.getDiscount());
         orderEntity.setDate(now);
