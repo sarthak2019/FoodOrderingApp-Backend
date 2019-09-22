@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Order;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 @Table(name = "item", schema = "public")
 @NamedQueries(
         {
-                @NamedQuery(name = "itemByItemUuid", query = "select i from ItemEntity i where i.uuid=:itemUuid")
+                @NamedQuery(name = "itemById", query = "SELECT i FROM ItemEntity i WHERE i.uuid=:uuid")
         }
 )
 public class ItemEntity {
@@ -46,8 +47,8 @@ public class ItemEntity {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<RestaurantEntity> restaurant;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "item")
-    private List<OrderEntity> orders = new ArrayList<>();
+    @OneToMany(mappedBy="item")
+    private List<OrderItemEntity> orderItemEntity;
 
     public Integer getId() {
         return id;
@@ -105,15 +106,15 @@ public class ItemEntity {
         this.restaurant = restaurant;
     }
 
-    public List<OrderEntity> getOrders() {
-        return orders;
+    public List<OrderItemEntity> getOrderItemEntity() {
+        return orderItemEntity;
     }
 
-    public void setOrders(List<OrderEntity> orders) {
-        this.orders = orders;
+    public void setOrderItemEntity(List<OrderItemEntity> orderItemEntity) {
+        this.orderItemEntity = orderItemEntity;
     }
 
-    @Override
+        @Override
     public boolean equals(Object obj) {
         return new EqualsBuilder().append(this, obj).isEquals();
     }

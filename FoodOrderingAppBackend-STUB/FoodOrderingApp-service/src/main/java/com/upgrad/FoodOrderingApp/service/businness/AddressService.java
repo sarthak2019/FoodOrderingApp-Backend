@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.AddressDao;
+import com.upgrad.FoodOrderingApp.service.dao.CustomerAddressDao;
 import com.upgrad.FoodOrderingApp.service.dao.StateDao;
 import com.upgrad.FoodOrderingApp.service.entity.*;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +25,8 @@ public class AddressService {
     private AddressDao addressDao;
     @Autowired
     private StateDao stateDao;
+    @Autowired
+    private CustomerAddressDao customerAddressDao;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public StateEntity getStateByUUID(final String StateUuid) throws AddressNotFoundException, SaveAddressException {
@@ -59,6 +63,11 @@ public class AddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public AddressEntity mergeAddress(final AddressEntity addressEntity) {
+        return addressDao.mergeAddress(addressEntity);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<StateEntity> getAllStates() {
         return stateDao.getAllStates();
     }
@@ -77,16 +86,13 @@ public class AddressService {
         if (addressEntity == null) {
             throw new AddressNotFoundException("ANF-003", "No address by this id");
         }
-        List<CustomerEntity> addressCustomerEntities = addressEntity.getCustomer();
-        boolean isDelete = false;
-        for (CustomerEntity customerEntity1 : addressCustomerEntities) {
-            if (customerEntity1.getUuid().equals(signedincustomerEntity.getUuid())) {
-                isDelete = true;
+        List<CustomerAddressEntity> customerAddressEntities = customerAddressDao.getCustomerAddressesListByCustomer(signedincustomerEntity);
+        for (CustomerAddressEntity customerAddressEntity : customerAddressEntities) {
+            if (customerAddressEntity.getAddress().getUuid().equals(addressEntity.getUuid())) {
+                return addressEntity;
             }
         }
-        if (isDelete == false) {
-            throw new AddressNotFoundException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
-        }
-        return addressEntity;
+        throw new AddressNotFoundException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
+
     }
 }

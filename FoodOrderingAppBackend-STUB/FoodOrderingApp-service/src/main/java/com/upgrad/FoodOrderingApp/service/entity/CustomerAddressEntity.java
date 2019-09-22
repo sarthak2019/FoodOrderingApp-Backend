@@ -1,18 +1,17 @@
 package com.upgrad.FoodOrderingApp.service.entity;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(
-        name = "customer_address"
+@Table(name = "customer_address", schema = "public")
+@NamedQueries(
+        {
+                @NamedQuery(name = "customerAddressByAddressId", query = "select c from CustomerAddressEntity c where c.address =:address"),
+                @NamedQuery(name = "customerAddressesListByCustomerId", query = "select c from CustomerAddressEntity c where c.customer =:customer")
+        }
 )
-@NamedQueries({
-        @NamedQuery(name = "customerAddressByAddressId", query = "select ca from CustomerAddressEntity ca where ca.id = :id"),
-        @NamedQuery(name = "customerAddressesListByCustomerId", query = "select ca from CustomerAddressEntity ca where ca.customer = :customer order by ca.address desc")
-})
-public class CustomerAddressEntity implements Serializable {
+public class CustomerAddressEntity {
 
     @Id
     @Column(
@@ -21,40 +20,22 @@ public class CustomerAddressEntity implements Serializable {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
-    private long id;
+    private Integer id;
 
-    @ManyToOne
-    @OnDelete(
-            action = OnDeleteAction.CASCADE
-    )
-    @JoinColumn(
-            name = "CUSTOMER_ID"
-    )
-    private CustomerEntity customer;
-
-    @ManyToOne
-    @OnDelete(
-            action = OnDeleteAction.CASCADE
-    )
-    @JoinColumn(
-            name = "ADDRESS_ID"
-    )
+    @OneToOne
+    @JoinColumn(name="address_id")
     private AddressEntity address;
 
-    public long getId() {
+    @OneToOne
+    @JoinColumn(name="customer_id")
+    private CustomerEntity customer;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public CustomerEntity getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(CustomerEntity customer) {
-        this.customer = customer;
     }
 
     public AddressEntity getAddress() {
@@ -63,5 +44,13 @@ public class CustomerAddressEntity implements Serializable {
 
     public void setAddress(AddressEntity address) {
         this.address = address;
+    }
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
     }
 }
