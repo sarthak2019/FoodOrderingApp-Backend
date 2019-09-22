@@ -33,6 +33,15 @@ public class PaymentEntity implements Serializable {
     @OneToMany(mappedBy="payment")
     private List<OrderEntity> order;
 
+    public PaymentEntity(@NotNull @Size(max = 200) String uuid, @NotNull @Size(max = 255) String paymentName) {
+        this.uuid = uuid;
+        this.paymentName = paymentName;
+    }
+
+    public PaymentEntity(){
+
+    }
+
     public int getId() {
         return id;
     }

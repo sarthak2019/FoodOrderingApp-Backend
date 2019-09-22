@@ -2,6 +2,7 @@ package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.ItemDao;
 import com.upgrad.FoodOrderingApp.service.dao.RestaurantDao;
+import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.OrderItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
@@ -52,6 +53,19 @@ public class ItemService {
         }
 
         return itemEntity;
+    }
+
+    public List<ItemEntity> getItemsByCategoryAndRestaurant(String restaurantId, String categoryId) throws ItemNotFoundException {
+        RestaurantEntity restaurantEntity = restaurantDao.getRestaurantsById(restaurantId);
+
+        List<CategoryEntity> categoryEntities = restaurantEntity.getCategory();
+
+        for(CategoryEntity categoryEntity : categoryEntities){
+            if(categoryEntity.getUuid() == categoryId){
+                return categoryEntity.getItems();
+            }
+        }
+        return null;
     }
 
 }

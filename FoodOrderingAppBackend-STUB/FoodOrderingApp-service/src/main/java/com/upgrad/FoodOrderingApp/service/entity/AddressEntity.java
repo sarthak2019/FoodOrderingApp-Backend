@@ -33,7 +33,8 @@ public class AddressEntity {
     private String uuid;
 
     @Column(name = "FLAT_BUIL_NUMBER")
-    private String flatBuilNumber;
+    private String flatBuilNo;
+
 
     @Column(name = "LOCALITY")
     private String locality;
@@ -58,6 +59,19 @@ public class AddressEntity {
     @OneToMany(mappedBy = "address")
     private List<OrderEntity> orders;
 
+    public AddressEntity(){
+
+    }
+
+    public AddressEntity(@NotNull String uuid, String flatBuilNumber, String locality, String city, String pincode, StateEntity state) {
+        this.uuid = uuid;
+        this.flatBuilNo = flatBuilNo;
+        this.locality = locality;
+        this.city = city;
+        this.pincode = pincode;
+        this.state = state;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -74,12 +88,12 @@ public class AddressEntity {
         this.uuid = uuid;
     }
 
-    public String getFlatBuilNumber() {
-        return flatBuilNumber;
+    public String getFlatBuilNo() {
+        return flatBuilNo;
     }
 
-    public void setFlatBuilNumber(String flatBuilNumber) {
-        this.flatBuilNumber = flatBuilNumber;
+    public void setFlatBuilNo(String flatBuilNo) {
+        this.flatBuilNo = flatBuilNo;
     }
 
     public String getLocality() {

@@ -26,18 +26,18 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/payment", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<PaymentResponse>> payment() {
+    public ResponseEntity<PaymentListResponse> payment() {
 
         final List<PaymentEntity> paymentEntities = paymentService.getAllPaymentMethods();
 
-        final List<PaymentResponse> paymentResponses = new ArrayList<PaymentResponse>();
+        final PaymentListResponse paymentListResponse = new PaymentListResponse();
 
         for (PaymentEntity paymentEntity : paymentEntities) {
             PaymentResponse paymentResponse = new PaymentResponse();
             paymentResponse.id((UUID.fromString(paymentEntity.getUuid())));
             paymentResponse.paymentName(paymentEntity.getPayment());
-            paymentResponses.add(paymentResponse);
+            paymentListResponse.addPaymentMethodsItem(paymentResponse);
         }
-        return new ResponseEntity<List<PaymentResponse>>(paymentResponses, HttpStatus.OK);
+        return new ResponseEntity<PaymentListResponse>(paymentListResponse, HttpStatus.OK);
     }
 }

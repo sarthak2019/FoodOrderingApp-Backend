@@ -76,26 +76,19 @@ public class RestaurantService {
 
     /* The below method updates restaurant details for a particular UUID. */
     @Transactional(propagation = Propagation.REQUIRED)
-    public RestaurantEntity updateRestaurantRating(String restaurantId, Double rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
+    public RestaurantEntity updateRestaurantRating(RestaurantEntity restaurantEntity, Double rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
-        if (restaurantId.isEmpty()) {
-            throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");
-        }
-        RestaurantEntity restaurantEntity = restaurantDao.getRestaurantsById(restaurantId);
-        if (restaurantEntity == null) {
-            throw new RestaurantNotFoundException("RNF-001", "No restaurant by this id");
-        }
         if (rating.toString().isEmpty() || (rating > 5 || rating < 1)) {
             throw new InvalidRatingException("IRE-001", "Restaurant should be in the range of 1 to 5");
         }
-        BigDecimal oldRating = restaurantEntity.getCustomerRating();
+        Double oldRating = restaurantEntity.getCustomerRating();
         Double oldRatingDouble = oldRating.doubleValue();
-        Integer oldNumCustRated = restaurantEntity.getNumberOfCustomersRated();
+        Integer oldNumCustRated = restaurantEntity.getNumberCustomersRated();
         Integer newNumCustRated = oldNumCustRated + 1;
         Double newRatingDouble = ((oldRatingDouble * Double.valueOf(oldNumCustRated)) + rating) / newNumCustRated;
-        BigDecimal newRating = BigDecimal.valueOf(newRatingDouble);
+        Double newRating = newRatingDouble;
         restaurantEntity.setCustomerRating(newRating);
-        restaurantEntity.setNumberOfCustomersRated(newNumCustRated);
+        restaurantEntity.setNumberCustomersRated(newNumCustRated);
         RestaurantEntity newrestaurantEntity = restaurantDao.updateRestaurantRating(restaurantEntity);
         return newrestaurantEntity;
     }

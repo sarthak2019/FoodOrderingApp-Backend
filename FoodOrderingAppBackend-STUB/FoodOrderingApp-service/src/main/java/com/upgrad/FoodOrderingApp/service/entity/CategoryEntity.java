@@ -15,6 +15,7 @@ import java.util.List;
 @NamedQueries(
         {
                 @NamedQuery(name = "categoryById", query = "select c from CategoryEntity c where c.uuid = :categoryId"),
+                @NamedQuery(name = "categoryByRestaurantId", query = "select c from CategoryEntity c where c.uuid = :categoryId"),
                 @NamedQuery(name = "allCategories", query = "select c from CategoryEntity c")
         }
 )
@@ -70,11 +71,11 @@ public class CategoryEntity {
         this.restaurant = restaurant;
     }
 
-    public List<ItemEntity> getItem() {
+    public List<ItemEntity> getItems() {
         return item;
     }
 
-    public void setItem(List<ItemEntity> item) {
+    public void setItems(List<ItemEntity> item) {
         this.item = item;
     }
 

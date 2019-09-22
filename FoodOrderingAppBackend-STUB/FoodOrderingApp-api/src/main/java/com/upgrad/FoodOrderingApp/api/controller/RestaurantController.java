@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
@@ -32,11 +33,13 @@ public class RestaurantController {
     private RestaurantService restaurantService;
     @Autowired
     public CustomerService customerService;
+    @Autowired
+    public CategoryService categoryService;
 
     /* /restaurant endpoint retrieve all the restaurants in order of their ratings and
     display the response in a JSON format with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantListResponse> getAllRestaurants() {
+    public ResponseEntity<RestaurantListResponse> getAllRestaurants() throws CategoryNotFoundException {
         final List<RestaurantEntity> restaurants = restaurantService.restaurantsByRating();
         Comparator<RestaurantEntity> compareByCustomerRating = new Comparator<RestaurantEntity>() {
             @Override
@@ -52,7 +55,7 @@ public class RestaurantController {
     /* /restaurant/name/{restaurant_name} endpoint retrieves all the restaurants
     corresponding to the entered restaurant_name path variable in alphabetical order of their names. */
     @RequestMapping(method = RequestMethod.GET, path = "/restaurant/name/{restaurant_name}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantListResponse> getRestaurantsByName(@PathVariable("restaurant_name") final String restaurant_name) throws RestaurantNotFoundException {
+    public ResponseEntity<RestaurantListResponse> getRestaurantsByName(@PathVariable("restaurant_name") final String restaurant_name) throws RestaurantNotFoundException, CategoryNotFoundException {
         final List<RestaurantEntity> restaurants = restaurantService.restaurantsByName("%" + restaurant_name + "%");
         if (restaurants == null) {
             return new ResponseEntity<RestaurantListResponse>(new RestaurantListResponse(), HttpStatus.NOT_FOUND);
@@ -90,8 +93,8 @@ public class RestaurantController {
     /* /api/restaurant/{restaurant_id} endpoint retrieves the restaurant details for the
     restaurant_id path variable and then displays the response in the JSON format with the
     corresponding HTTP status. */
-    @RequestMapping(method = RequestMethod.GET, path = "/api/restaurant/{restaurant_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantDetailsResponse> getRestaurantsById(@PathVariable("restaurant_id") final String restaurant_id) throws RestaurantNotFoundException {
+    @RequestMapping(method = RequestMethod.GET, path = "/restaurant/{restaurant_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<RestaurantDetailsResponse> getRestaurantsById(@PathVariable("restaurant_id") final String restaurant_id) throws RestaurantNotFoundException, CategoryNotFoundException {
         final RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurant_id);
         RestaurantDetailsResponse restaurantDetailsResponse = new RestaurantDetailsResponse();
         RestaurantDetailsResponseAddressState restaurantDetailsResponseAddressState = new RestaurantDetailsResponseAddressState();
@@ -102,7 +105,7 @@ public class RestaurantController {
                 .locality(restaurantEntity.getAddress().getLocality()).city(restaurantEntity.getAddress().getCity())
                 .pincode(restaurantEntity.getAddress().getPincode()).state(restaurantDetailsResponseAddressState);
         RestaurantList restaurantList = new RestaurantList();
-        List<CategoryEntity> categories = restaurantEntity.getCategory();
+        List<CategoryEntity> categories = categoryService.getCategoriesByRestaurant(restaurantEntity.getUuid());
         Comparator<CategoryEntity> compareByCategoryName = new Comparator<CategoryEntity>() {
             @Override
             public int compare(CategoryEntity c1, CategoryEntity c2) {
@@ -112,7 +115,7 @@ public class RestaurantController {
         Collections.sort(categories, compareByCategoryName);
         List<CategoryList> categoryLists = new ArrayList<CategoryList>();
         for (CategoryEntity category : categories) {
-            List<ItemEntity> items = category.getItem();
+            List<ItemEntity> items = category.getItems();
             Comparator<ItemEntity> compareByItemName = new Comparator<ItemEntity>() {
                 @Override
                 public int compare(ItemEntity i1, ItemEntity i2) {
@@ -139,9 +142,9 @@ public class RestaurantController {
             categoryLists.add(categoryList);
         }
         restaurantDetailsResponse.id(UUID.fromString(restaurantEntity.getUuid())).restaurantName(restaurantEntity.getRestaurantName())
-                .photoURL(restaurantEntity.getPhotoUrl()).customerRating(restaurantEntity.getCustomerRating())
-                .averagePrice(restaurantEntity.getAveragePriceForTwo()).numberCustomersRated(restaurantEntity
-                .getNumberOfCustomersRated())
+                .photoURL(restaurantEntity.getPhotoUrl()).customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
+                .averagePrice(restaurantEntity.getAvgPrice()).numberCustomersRated(restaurantEntity
+                .getNumberCustomersRated())
                 .address(restaurantDetailsResponseAddress).categories(categoryLists);
         return new ResponseEntity<RestaurantDetailsResponse>(restaurantDetailsResponse, HttpStatus.OK);
     }
@@ -150,13 +153,18 @@ public class RestaurantController {
     rating in the database along with the number of customers who have rated it for the restaurant
     corresponding to the restaurant_id path variable. Then return the uuid of the restaurant updated
     and message “RESTAURANT RATING UPDATED SUCCESSFULLY” in the JSON response with the corresponding HTTP status. */
-    @RequestMapping(method = RequestMethod.PUT, path = "/api/restaurant/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(@PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("accessToken") final String accessToken, @RequestParam("customer_rating") Double customer_rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
+    @RequestMapping(method = RequestMethod.PUT, path = "/restaurant/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(@PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("authorization") final String authorization, @RequestParam("customer_rating") Double customer_rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
-        String[] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = authorization.split("Bearer ");
         CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
 
-        RestaurantEntity newRestaurantEntity = restaurantService.updateRestaurantRating(restaurant_id, customer_rating);
+        if(restaurant_id.isEmpty()){
+            throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");
+        }
+
+        RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurant_id);
+        RestaurantEntity newRestaurantEntity = restaurantService.updateRestaurantRating(restaurantEntity, customer_rating);
         RestaurantUpdatedResponse restaurantUpdatedResponse = new RestaurantUpdatedResponse();
         restaurantUpdatedResponse.id(UUID.fromString(newRestaurantEntity.getUuid())).status("RESTAURANT RATING UPDATED SUCCESSFULLY");
         return new ResponseEntity<RestaurantUpdatedResponse>(restaurantUpdatedResponse, HttpStatus.OK);
@@ -165,7 +173,7 @@ public class RestaurantController {
 
     /* restaurantslist method returns the details of the list of restaurant entities in
     the RestaurantListResponse format. */
-    public RestaurantListResponse restaurantslist(List<RestaurantEntity> reataurants) {
+    public RestaurantListResponse restaurantslist(List<RestaurantEntity> reataurants) throws CategoryNotFoundException {
         RestaurantListResponse reataurantsListResponse = new RestaurantListResponse();
         List<RestaurantList> restaurantLists = new ArrayList<>();
         for (RestaurantEntity restaurantEntity : reataurants) {
@@ -177,7 +185,7 @@ public class RestaurantController {
                     .locality(restaurantEntity.getAddress().getLocality()).city(restaurantEntity.getAddress().getCity())
                     .pincode(restaurantEntity.getAddress().getPincode()).state(restaurantDetailsResponseAddressState);
             RestaurantList restaurantList = new RestaurantList();
-            List<CategoryEntity> categories = restaurantEntity.getCategory();
+            List<CategoryEntity> categories = categoryService.getCategoriesByRestaurant(restaurantEntity.getUuid());
             List<String> categoryNames = new ArrayList<String>();
             for (CategoryEntity category : categories) {
                 categoryNames.add(category.getCategoryName());
@@ -192,9 +200,9 @@ public class RestaurantController {
                 }
             }
             restaurantList.id(UUID.fromString(restaurantEntity.getUuid())).restaurantName(restaurantEntity.getRestaurantName())
-                    .photoURL(restaurantEntity.getPhotoUrl()).customerRating(restaurantEntity.getCustomerRating())
-                    .averagePrice(restaurantEntity.getAveragePriceForTwo()).numberCustomersRated(restaurantEntity
-                    .getNumberOfCustomersRated())
+                    .photoURL(restaurantEntity.getPhotoUrl()).customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
+                    .averagePrice(restaurantEntity.getAvgPrice()).numberCustomersRated(restaurantEntity
+                    .getNumberCustomersRated())
                     .address(restaurantDetailsResponseAddress).categories(categoriesString);
             restaurantLists.add(restaurantList);
         }

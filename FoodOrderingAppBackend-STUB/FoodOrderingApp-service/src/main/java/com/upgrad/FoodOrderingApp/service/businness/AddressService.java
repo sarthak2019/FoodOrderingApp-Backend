@@ -53,7 +53,7 @@ public class AddressService {
 
         String pinCodeRegex = "^[0-9]{6}$";
 
-        if (addressEntity.getFlatBuilNumber().isEmpty() || addressEntity.getLocality().isEmpty() || addressEntity.getCity().isEmpty() || addressEntity.getPinCode().isEmpty() || addressEntity.getUuid().isEmpty()) {
+        if (addressEntity.getFlatBuilNo().isEmpty() || addressEntity.getLocality().isEmpty() || addressEntity.getCity().isEmpty() || addressEntity.getPinCode().isEmpty() || addressEntity.getUuid().isEmpty()) {
             throw new SaveAddressException("SAR-001", "No field can be empty");
         } else if (!addressEntity.getPinCode().matches(pinCodeRegex)) {
             throw new SaveAddressException("SAR-002", "Invalid pincode");
@@ -79,7 +79,7 @@ public class AddressService {
             AddressEntity newaddressEntity = new AddressEntity();
             newaddressEntity.setId(addressEntity.getId());
             newaddressEntity.setUuid(addressEntity.getUuid());
-            newaddressEntity.setFlatBuilNumber(addressEntity.getFlatBuilNumber());
+            newaddressEntity.setFlatBuilNo(addressEntity.getFlatBuilNo());
             newaddressEntity.setCity(addressEntity.getCity());
             newaddressEntity.setCustomerAddressEntity(addressEntity.getCustomerAddressEntity());
             newaddressEntity.setLocality(addressEntity.getLocality());

@@ -35,6 +35,16 @@ public class CouponEntity implements Serializable {
     @OneToMany(mappedBy = "coupon")
     private List<OrderEntity> order;
 
+    public CouponEntity(@NotNull String uuid, @NotNull String couponName, @NotNull Integer percent) {
+        this.uuid = uuid;
+        this.couponName = couponName;
+        this.percent = percent;
+    }
+
+    public CouponEntity(){
+
+    }
+
     public Integer getId() {
         return id;
     }

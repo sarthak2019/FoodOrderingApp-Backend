@@ -30,7 +30,7 @@ public class CategoryController {
     /* /category endpoint retrieves all the categories present in the database, ordered
     by their name and displays the response in a JSON format with the corresponding HTTP status. */
     @RequestMapping(method = RequestMethod.GET, path = "/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<CategoryListResponse>> getAllCategoriesOrderedByName() {
+    public ResponseEntity<CategoriesListResponse> getAllCategoriesOrderedByName() {
         final List<CategoryEntity> categories = categoryService.getAllCategoriesOrderedByName();
         Comparator<CategoryEntity> compareByCategoryName = new Comparator<CategoryEntity>() {
             @Override
@@ -39,13 +39,13 @@ public class CategoryController {
             }
         };
         Collections.sort(categories, compareByCategoryName);
-        List<CategoryListResponse> categoryListResponses = new ArrayList<CategoryListResponse>();
+        CategoriesListResponse categoriesListResponse = new CategoriesListResponse();
         for (CategoryEntity category : categories) {
             CategoryListResponse categoryListResponse = new CategoryListResponse();
             categoryListResponse.id(UUID.fromString(category.getUuid())).categoryName(category.getCategoryName());
-            categoryListResponses.add(categoryListResponse);
+            categoriesListResponse.addCategoriesItem(categoryListResponse);
         }
-        return new ResponseEntity<List<CategoryListResponse>>(categoryListResponses, HttpStatus.OK);
+        return new ResponseEntity<CategoriesListResponse>(categoriesListResponse, HttpStatus.OK);
     }
 
     /* /category/{category_id} endpoint retrieve that category with all items within
@@ -54,7 +54,7 @@ public class CategoryController {
     @RequestMapping(method = RequestMethod.GET, path = "/category/{category_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CategoryDetailsResponse> getCategoryById(@PathVariable("category_id") final String category_id) throws CategoryNotFoundException {
         final CategoryEntity category = categoryService.getCategoryById(category_id);
-        List<ItemEntity> items = category.getItem();
+        List<ItemEntity> items = category.getItems();
         Comparator<ItemEntity> compareByItemName = new Comparator<ItemEntity>() {
             @Override
             public int compare(ItemEntity i1, ItemEntity i2) {

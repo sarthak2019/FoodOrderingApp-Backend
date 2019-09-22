@@ -135,9 +135,14 @@ public class CustomerService {
             //If the access token provided by the customer exists in the database, but the session has expired
         } else if (customerAuthEntity != null && ZonedDateTime.now().isAfter(customerAuthEntity.getExpiresAt())) {
             throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
-        } else {
-            return customerAuthEntity.getCustomer();
         }
+        return customerAuthEntity.getCustomer();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity getCustomerById(final String customerId) throws AuthorizationFailedException {
+        CustomerEntity customerEntity = customerDao.getCustomerById(customerId);
+        return customerEntity;
     }
 
     //updateCustomer method is used to update a customer's firstname and/or lastname

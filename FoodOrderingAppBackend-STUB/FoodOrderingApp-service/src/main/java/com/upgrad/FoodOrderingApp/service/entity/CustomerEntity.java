@@ -19,7 +19,8 @@ import java.util.List;
 )
 @NamedQueries(
         {       //return customer record matching with a particular contact number
-                @NamedQuery(name = "customerByContactNumber", query = "select c from CustomerEntity c where c.contactNumber = :contactNumber")
+                @NamedQuery(name = "customerByContactNumber", query = "select c from CustomerEntity c where c.contactNumber = :contactNumber"),
+                @NamedQuery(name = "customerByCustomerId", query = "select c from CustomerEntity c where c.uuid = :uuid")
         }
 )
 public class CustomerEntity implements Serializable {
@@ -173,7 +174,7 @@ public class CustomerEntity implements Serializable {
         this.customerAddressEntity = customerAddressEntity;
     }
 
-    /*public boolean equals(Object obj) {
+    public boolean equals(Object obj) {
         return (new EqualsBuilder()).append(this, obj).isEquals();
     }
 
@@ -183,6 +184,6 @@ public class CustomerEntity implements Serializable {
 
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }*/
+    }
 
 }

@@ -40,15 +40,15 @@ public class RestaurantEntity {
 
     @Column(name = "CUSTOMER_RATING")
     @NotNull
-    private BigDecimal customerRating;
+    private Double customerRating;
 
     @Column(name = "AVERAGE_PRICE_FOR_TWO")
     @NotNull
-    private Integer averagePriceForTwo;
+    private Integer avgPrice;
 
     @Column(name = "NUMBER_OF_CUSTOMERS_RATED")
     @NotNull
-    private Integer numberOfCustomersRated;
+    private Integer numberCustomersRated;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
@@ -103,28 +103,28 @@ public class RestaurantEntity {
         this.photoUrl = photoUrl;
     }
 
-    public BigDecimal getCustomerRating() {
+    public Integer getAvgPrice() {
+        return avgPrice;
+    }
+
+    public void setAvgPrice(Integer avgPrice) {
+        this.avgPrice = avgPrice;
+    }
+
+    public Double getCustomerRating() {
         return customerRating;
     }
 
-    public void setCustomerRating(BigDecimal customerRating) {
+    public void setCustomerRating(Double customerRating) {
         this.customerRating = customerRating;
     }
 
-    public Integer getAveragePriceForTwo() {
-        return averagePriceForTwo;
+    public Integer getNumberCustomersRated() {
+        return numberCustomersRated;
     }
 
-    public void setAveragePriceForTwo(Integer averagePriceForTwo) {
-        this.averagePriceForTwo = averagePriceForTwo;
-    }
-
-    public Integer getNumberOfCustomersRated() {
-        return numberOfCustomersRated;
-    }
-
-    public void setNumberOfCustomersRated(Integer numberOfCustomersRated) {
-        this.numberOfCustomersRated = numberOfCustomersRated;
+    public void setNumberCustomersRated(Integer numberCustomersRated) {
+        this.numberCustomersRated = numberCustomersRated;
     }
 
     public AddressEntity getAddress() {

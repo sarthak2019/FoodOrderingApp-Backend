@@ -31,6 +31,11 @@ public class StateEntity {
     @NotNull
     private String stateName;
 
+    public StateEntity(@NotNull String uuid, @NotNull String stateName) {
+        this.uuid = uuid;
+        this.stateName = stateName;
+    }
+
     public Integer getId() {
         return id;
     }

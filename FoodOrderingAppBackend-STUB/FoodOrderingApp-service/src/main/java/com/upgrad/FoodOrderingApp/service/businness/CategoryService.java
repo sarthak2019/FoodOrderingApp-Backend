@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.CategoryDao;
+import com.upgrad.FoodOrderingApp.service.dao.RestaurantDao;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
@@ -16,6 +17,9 @@ public class CategoryService {
 
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private RestaurantDao restaurantDao;
 
     /* The below method returns a list of all the categories present in the database. */
     @Transactional(propagation = Propagation.REQUIRED)
@@ -36,6 +40,16 @@ public class CategoryService {
         }
         CategoryEntity category = categoryDao.getCategoryById(categoryId);
         return category;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<CategoryEntity> getCategoriesByRestaurant(String restaurantId) throws CategoryNotFoundException {
+
+        RestaurantEntity restaurantEntity = restaurantDao.getRestaurantsById(restaurantId);
+
+        List<CategoryEntity> categoryEntities = restaurantEntity.getCategory();
+
+        return categoryEntities;
     }
 
 }

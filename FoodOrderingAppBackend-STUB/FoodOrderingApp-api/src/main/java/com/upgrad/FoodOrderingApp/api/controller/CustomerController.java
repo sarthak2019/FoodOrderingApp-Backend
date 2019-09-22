@@ -117,16 +117,6 @@ public class CustomerController {
         String[] bearerToken = authorization.split("Bearer ");
         CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
         CustomerEntity newCustomerEntity = new CustomerEntity();
-        /*newCustomerEntity.setFirstName(updateCustomerRequest.getFirstName());
-        newCustomerEntity.setLastName(updateCustomerRequest.getLastName());
-        newCustomerEntity.setId(customerEntity.getId());
-        newCustomerEntity.setUuid(customerEntity.getUuid());
-        newCustomerEntity.setPassword(customerEntity.getPassword());
-        newCustomerEntity.setSalt(customerEntity.getSalt());
-        newCustomerEntity.setContactNumber(customerEntity.getContactNumber());
-        newCustomerEntity.setCustomerAddressEntity(customerEntity.getCustomerAddressEntity());
-        newCustomerEntity.setOrder(customerEntity.getOrder());
-        newCustomerEntity.setEmail(customerEntity.getEmail());*/
 
         customerEntity.setFirstName(updateCustomerRequest.getFirstName());
         customerEntity.setLastName(updateCustomerRequest.getLastName());

@@ -5,8 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,13 +28,13 @@ public class OrderEntity {
 
     @Column(name = "BILL")
     @NotNull
-    private BigDecimal bill;
+    private Double bill;
 
     @Column(name = "DISCOUNT", columnDefinition = "BigDecimal default 0")
-    private BigDecimal discount;
+    private Double discount;
 
     @Column(name = "DATE")
-    private LocalDateTime date;
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "PAYMENT_ID")
@@ -61,6 +60,23 @@ public class OrderEntity {
     @JoinColumn(name="address_id")
     private AddressEntity address;
 
+    public OrderEntity(@NotNull String uuid, @NotNull Double bill, CouponEntity coupon, Double discount, Date date, PaymentEntity payment, CustomerEntity customer, AddressEntity address, RestaurantEntity restaurant) {
+        this.uuid = uuid;
+        this.bill = bill;
+        this.discount = discount;
+        this.date = date;
+        this.payment = payment;
+        this.customer = customer;
+        this.restaurant = restaurant;
+        this.coupon = coupon;
+        this.orderItemEntity = orderItemEntity;
+        this.address = address;
+    }
+
+    public OrderEntity(){
+
+    }
+
     public Integer getId() {
         return id;
     }
@@ -77,27 +93,27 @@ public class OrderEntity {
         this.uuid = uuid;
     }
 
-    public BigDecimal getBill() {
+    public Double getBill() {
         return bill;
     }
 
-    public void setBill(BigDecimal bill) {
+    public void setBill(Double bill) {
         this.bill = bill;
     }
 
-    public BigDecimal getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(BigDecimal discount) {
+    public void setDiscount(Double discount) {
         this.discount = discount;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
