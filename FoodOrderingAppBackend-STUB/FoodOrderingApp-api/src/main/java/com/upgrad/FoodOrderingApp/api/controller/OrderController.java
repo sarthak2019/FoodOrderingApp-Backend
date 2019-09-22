@@ -54,6 +54,61 @@ public class OrderController {
         return new ResponseEntity<CouponDetailsResponse>(couponDetailsResponse, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, path="/order", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<OrderList>> orders(@RequestHeader("authorization") final String authorization) throws AuthorizationFailedException,CouponNotFoundException, AddressNotFoundException, PaymentMethodNotFoundException, RestaurantNotFoundException, ItemNotFoundException {
+        String[] bearerToken = authorization.split("Bearer ");
+        final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
+        final List<OrderEntity> orderEntities = orderService.getOrdersByCustomers(customerEntity);
+
+        CustomerOrderResponse customerOrderResponse= new CustomerOrderResponse();
+        List<OrderList> orderLists = new ArrayList<>();
+
+        for(OrderEntity orderEntity : orderEntities) {
+            OrderList orderList = new OrderList();
+            OrderListCoupon orderListCoupon = new OrderListCoupon();
+            OrderListPayment orderListPayment = new OrderListPayment();
+            OrderListCustomer orderListCustomer = new OrderListCustomer();
+            OrderListAddress orderListAddress = new OrderListAddress();
+            OrderListAddressState orderListAddressState = new OrderListAddressState();
+            orderListCoupon.id(UUID.fromString(orderEntity.getCoupon().getUuid())).couponName(orderEntity.getCoupon().getCouponName())
+                    .percent(orderEntity.getCoupon().getPercent());
+            orderListPayment.id(UUID.fromString(orderEntity.getPayment().getUuid())).paymentName(orderEntity.getPayment().getPaymentName());
+            orderListCustomer.id(UUID.fromString(orderEntity.getCustomer().getUuid())).firstName(orderEntity.getCustomer().getFirstName())
+                    .lastName(orderEntity.getCustomer().getLastName()).emailAddress(orderEntity.getCustomer().getEmail())
+                    .contactNumber(orderEntity.getCustomer().getContactNumber());
+            orderListAddressState.id(UUID.fromString(orderEntity.getAddress().getState().getUuid()))
+                    .stateName(orderEntity.getAddress().getState().getStateName());
+            orderListAddress.id(UUID.fromString(orderEntity.getAddress().getUuid()))
+                    .flatBuildingName(orderEntity.getAddress().getFlatBuilNumber())
+                    .locality(orderEntity.getAddress().getLocality()).city(orderEntity.getAddress().getCity())
+                    .pincode(orderEntity.getAddress().getPinCode()).state(orderListAddressState);
+            List<ItemQuantityResponse> itemQuantityResponseList = new ArrayList<>();
+            for(OrderItemEntity orderItemEntity : orderEntity.getOrderItemEntity()) {
+                ItemQuantityResponse itemQuantityResponse = new ItemQuantityResponse();
+                ItemQuantityResponseItem itemQuantityResponseItem = new ItemQuantityResponseItem();
+                String itemType = orderItemEntity.getItem().getType();
+                String newItemType = null;
+                if (itemType.equals("0")) {
+                    newItemType = "VEG";
+                } else if (itemType.equals("1")) {
+                    newItemType = "NON_VEG";
+                }
+                ItemQuantityResponseItem.TypeEnum typeEnum = ItemQuantityResponseItem.TypeEnum.fromValue(newItemType);
+                itemQuantityResponseItem.id(UUID.fromString(orderItemEntity.getItem().getUuid())).itemName(orderItemEntity.getItem().getItemName())
+                        .itemPrice(orderItemEntity.getItem().getPrice()).type(typeEnum);
+                itemQuantityResponse.item(itemQuantityResponseItem).quantity(orderItemEntity.getQuantity())
+                        .price(orderItemEntity.getItem().getPrice());
+                itemQuantityResponseList.add(itemQuantityResponse);
+            }
+            orderList.id(UUID.fromString(orderEntity.getUuid())).bill(orderEntity.getBill()).coupon(orderListCoupon)
+                    .discount(orderEntity.getDiscount()).date(orderEntity.getDate().toString()).payment(orderListPayment)
+                    .customer(orderListCustomer).address(orderListAddress).itemQuantities(itemQuantityResponseList);
+            orderLists.add(orderList);
+        }
+
+        return new ResponseEntity<List<OrderList>>(orderLists,HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.POST, path="/order", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SaveOrderResponse> save(@RequestBody(required = false) final SaveOrderRequest saveOrderRequest, @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException,CouponNotFoundException, AddressNotFoundException, PaymentMethodNotFoundException, RestaurantNotFoundException, ItemNotFoundException, CouponNotFoundException {
         final OrderEntity orderEntity= new OrderEntity();
@@ -69,8 +124,6 @@ public class OrderController {
         final AddressEntity addressEntity = addressService.getAddressByUUID(saveOrderRequest.getAddressId().toString(), customerEntity);
 
         final RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(saveOrderRequest.getRestaurantId().toString());
-                //couponEntity.setUuid(saveOrderRequest.getCouponId().toString());
-        //couponEntity.setUuid(UUID.fromString(saveOrderRequest.getCouponId().toString()));
 
         orderEntity.setUuid(UUID.randomUUID().toString());
         orderEntity.setBill(saveOrderRequest.getBill());
@@ -101,7 +154,6 @@ public class OrderController {
                 .id(createdOrderEntity.getUuid())
                 .status("ORDER SUCCESSFULLY PLACED");
 
-        //SaveOrderResponse saveOrderResponse = new SaveOrderResponse();
         return new ResponseEntity<SaveOrderResponse>(saveOrderResponse,HttpStatus.OK);
     }
 }

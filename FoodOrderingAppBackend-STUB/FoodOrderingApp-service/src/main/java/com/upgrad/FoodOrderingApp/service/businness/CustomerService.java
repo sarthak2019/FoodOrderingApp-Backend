@@ -150,15 +150,10 @@ public class CustomerService {
     public CustomerEntity updateCustomer(final CustomerEntity customerEntity) throws UpdateCustomerException {
         if (customerEntity.getFirstName().isEmpty()) {
             throw new UpdateCustomerException("UCR-002", "First name field should not be empty");
-        } else {
-            final CustomerEntity updatedCustomerEntity = new CustomerEntity();
-            updatedCustomerEntity.setFirstName(customerEntity.getFirstName());
-            if (!customerEntity.getLastName().isEmpty()) {
-                updatedCustomerEntity.setLastName(customerEntity.getLastName());
-            }
-            updatedCustomerEntity.setUuid(customerEntity.getUuid());
-            return updatedCustomerEntity;
         }
+        final CustomerEntity updatedCustomerEntity = customerDao.updateCustomer(customerEntity);
+        return updatedCustomerEntity;
+
     }
 
     //updateCustomerPassword updates password as given by the Customer in newPassword field

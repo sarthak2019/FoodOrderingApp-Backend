@@ -5,6 +5,7 @@ import com.upgrad.FoodOrderingApp.service.dao.CustomerDao;
 import com.upgrad.FoodOrderingApp.service.dao.OrderDao;
 import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.OrderEntity;
 import com.upgrad.FoodOrderingApp.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class OrderService {
@@ -40,6 +42,13 @@ public class OrderService {
         }
         //if(customerAuthEntity.getUser().getId() != couponEntity.getId()){
         return couponEntity;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<OrderEntity> getOrdersByCustomers(CustomerEntity customer) throws NullPointerException{
+        System.out.println("In getOrdersByCustomers");
+        List<OrderEntity> orderEntities = orderDao.getOrdersByCustomerId(customer);
+        return orderEntities;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

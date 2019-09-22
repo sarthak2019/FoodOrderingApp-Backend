@@ -76,11 +76,11 @@ public class AddressController {
 
     //getallsavedaddresses endpoint retrieves all the addresses of a valid customer present in the database
     @RequestMapping(method = RequestMethod.GET, path = "/address/customer", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<AddressListResponse> getAddressByUUID(@RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException {
+    public ResponseEntity<List<AddressList>> getAddressByUUID(@RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException {
 
         String[] bearerToken = accessToken.split("Bearer ");
         final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
-        final List<CustomerAddressEntity> customerAddressEntities = customerAddressService.getCustomerAddressesListByCustomer(customerEntity);
+        final List<CustomerAddressEntity> customerAddressEntities = addressService.getAllAddress(customerEntity);
 
         List<AddressEntity> addressEntities = new ArrayList<>();
         for(CustomerAddressEntity customerAddressEntity : customerAddressEntities){
@@ -97,7 +97,7 @@ public class AddressController {
         Collections.sort(addressEntities, compareBySavedTime);
 
 
-        AddressListResponse addressListResponse = new AddressListResponse();
+        List<AddressList> addressLists = new ArrayList<>();
 
         for (AddressEntity address : addressEntities) {
             AddressList addressList = new AddressList();
@@ -113,10 +113,10 @@ public class AddressController {
 
             addressList.state(addressListState);
 
-            addressListResponse.addAddressesItem(addressList);
+            addressLists.add(addressList);
         }
 
-        return new ResponseEntity<AddressListResponse>(addressListResponse, HttpStatus.OK);
+        return new ResponseEntity<List<AddressList>>(addressLists, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/address/{address_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

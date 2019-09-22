@@ -74,7 +74,25 @@ public class AddressService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public String deleteAddress(AddressEntity addressEntity) throws AuthorizationFailedException {
-        return addressDao.deleteAddress(addressEntity);
+        List<OrderEntity> orderEntityList =  addressEntity.getOrders();
+        if(orderEntityList.size() != 0){
+            AddressEntity newaddressEntity = new AddressEntity();
+            newaddressEntity.setId(addressEntity.getId());
+            newaddressEntity.setUuid(addressEntity.getUuid());
+            newaddressEntity.setFlatBuilNumber(addressEntity.getFlatBuilNumber());
+            newaddressEntity.setCity(addressEntity.getCity());
+            newaddressEntity.setCustomerAddressEntity(addressEntity.getCustomerAddressEntity());
+            newaddressEntity.setLocality(addressEntity.getLocality());
+            newaddressEntity.setPinCode(addressEntity.getPincode());
+            newaddressEntity.setState(addressEntity.getState());
+            newaddressEntity.setOrders(addressEntity.getOrders());
+            newaddressEntity.setActive(0);
+            AddressEntity mergedaddressEntity = addressDao.mergeAddress(newaddressEntity);
+            return mergedaddressEntity.getUuid();
+        }
+        else {
+            return addressDao.deleteAddress(addressEntity);
+        }
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -94,5 +112,12 @@ public class AddressService {
         }
         throw new AddressNotFoundException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
 
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<CustomerAddressEntity> getAllAddress(final CustomerEntity customer) throws AuthorizationFailedException {
+        List<CustomerAddressEntity> CustomerAddressEntities = customerAddressDao.getCustomerAddressesListByCustomer(customer);
+
+        return CustomerAddressEntities;
     }
 }

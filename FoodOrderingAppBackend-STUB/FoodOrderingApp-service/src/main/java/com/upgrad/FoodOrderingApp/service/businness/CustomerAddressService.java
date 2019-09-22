@@ -23,12 +23,7 @@ public class CustomerAddressService {
     private CustomerAddressDao customerAddressDao;
 
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    public List<CustomerAddressEntity> getCustomerAddressesListByCustomer(final CustomerEntity customer) throws AuthorizationFailedException {
-        List<CustomerAddressEntity> CustomerAddressEntities = customerAddressDao.getCustomerAddressesListByCustomer(customer);
 
-        return CustomerAddressEntities;
-    }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerAddressEntity saveCustomerAddress(final CustomerAddressEntity customerAddressEntity) throws SaveAddressException {

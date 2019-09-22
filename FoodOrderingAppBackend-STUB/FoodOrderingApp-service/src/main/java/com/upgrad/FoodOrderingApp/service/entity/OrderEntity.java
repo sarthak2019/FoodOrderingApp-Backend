@@ -7,15 +7,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "orders", schema = "public")
 @NamedQueries(
         {
-
+                @NamedQuery(name="getOrdersByCustomerId", query="select o from OrderEntity o where o.customer = :customer")
         }
 )
 public class OrderEntity {
