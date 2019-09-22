@@ -12,19 +12,19 @@ import com.upgrad.FoodOrderingApp.api.model.ErrorResponse;
 public class RestExceptionHandler {
 
     @ExceptionHandler(RestaurantNotFoundException.class)
-    public ResponseEntity<ErrorResponse> authenticationFiledException(RestaurantNotFoundException exe, WebRequest request) {
+    public ResponseEntity<ErrorResponse> restaurantNotFoundException(RestaurantNotFoundException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()),
                 HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ErrorResponse> authenticationFiledException(CategoryNotFoundException exe, WebRequest request) {
+    public ResponseEntity<ErrorResponse> categoryNotFoundException(CategoryNotFoundException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()),
                 HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InvalidRatingException.class)
-    public ResponseEntity<ErrorResponse> authenticationFiledException(InvalidRatingException exe, WebRequest request) {
+    public ResponseEntity<ErrorResponse> invalidRatingException(InvalidRatingException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()),
                 HttpStatus.BAD_REQUEST);
     }
@@ -58,7 +58,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(AddressNotFoundException.class)
-    public ResponseEntity<ErrorResponse> saveAddressException(AddressNotFoundException exe, WebRequest request) {
+    public ResponseEntity<ErrorResponse> addressNotFoundException(AddressNotFoundException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
                 new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.NOT_FOUND
         );
@@ -73,7 +73,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(CouponNotFoundException.class)
-    public ResponseEntity<ErrorResponse> updateCustomerException(CouponNotFoundException exe, WebRequest request) {
+    public ResponseEntity<ErrorResponse> couponNotFoundException(CouponNotFoundException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
                 new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.NOT_FOUND
         );
@@ -81,7 +81,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(PaymentMethodNotFoundException.class)
-    public ResponseEntity<ErrorResponse> updateCustomerException(PaymentMethodNotFoundException exe, WebRequest request) {
+    public ResponseEntity<ErrorResponse> paymentMethodNotFoundException(PaymentMethodNotFoundException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
                 new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.NOT_FOUND
         );
@@ -89,7 +89,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(ItemNotFoundException.class)
-    public ResponseEntity<ErrorResponse> updateCustomerException(ItemNotFoundException exe, WebRequest request) {
+    public ResponseEntity<ErrorResponse> itemNotFoundException(ItemNotFoundException exe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
                 new ErrorResponse().code(exe.getCode()).message(exe.getErrorMessage()), HttpStatus.NOT_FOUND
         );

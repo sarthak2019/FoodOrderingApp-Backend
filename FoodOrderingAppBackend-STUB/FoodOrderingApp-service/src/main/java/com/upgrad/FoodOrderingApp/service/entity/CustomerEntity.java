@@ -173,7 +173,7 @@ public class CustomerEntity implements Serializable {
         this.customerAddressEntity = customerAddressEntity;
     }
 
-    public boolean equals(Object obj) {
+    /*public boolean equals(Object obj) {
         return (new EqualsBuilder()).append(this, obj).isEquals();
     }
 
@@ -183,6 +183,6 @@ public class CustomerEntity implements Serializable {
 
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }
+    }*/
 
 }
