@@ -52,15 +52,11 @@ public class AddressEntity {
     private Integer active;
 
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "customer_address",
-            joinColumns = {@JoinColumn(name = "address_id")},
-            inverseJoinColumns = {@JoinColumn(name = "customer_id")}
-    )
-    private List<CustomerEntity> customer = new ArrayList<>();
-
     @OneToOne(mappedBy="address")
-    private OrderEntity orders;
+    private CustomerAddressEntity customerAddressEntity;
+
+    @OneToMany(mappedBy = "address")
+    private List<OrderEntity> orders;
 
     public Integer getId() {
         return id;
@@ -134,22 +130,21 @@ public class AddressEntity {
         return pincode;
     }
 
-    public List<CustomerEntity> getCustomer() {
-        return customer;
+    public CustomerAddressEntity getCustomerAddressEntity() {
+        return customerAddressEntity;
     }
 
-    public void setCustomer(List<CustomerEntity> customer) {
-        this.customer = customer;
+    public void setCustomerAddressEntity(CustomerAddressEntity customerAddressEntity) {
+        this.customerAddressEntity = customerAddressEntity;
     }
 
-    @ManyToOne
-    @OnDelete(
-            action = OnDeleteAction.CASCADE
-    )
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
 
-    @JoinColumn(
-            name = "state_id"
-    )
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
+    }
 
     @Override
     public boolean equals(Object obj) {

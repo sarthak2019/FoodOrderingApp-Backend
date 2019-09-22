@@ -19,6 +19,11 @@ public class AddressDao {
         this.entityManager.persist(addressEntity);
         return addressEntity;
     }
+
+    public AddressEntity mergeAddress(AddressEntity addressEntity) {
+        this.entityManager.merge(addressEntity);
+        return addressEntity;
+    }
     //creates a customerAddress record
    /* public CustomerAddressEntity createCustomerAddress(CustomerAddressEntity customerAddressEntity) {
         this.entityManager.persist(customerAddressEntity);

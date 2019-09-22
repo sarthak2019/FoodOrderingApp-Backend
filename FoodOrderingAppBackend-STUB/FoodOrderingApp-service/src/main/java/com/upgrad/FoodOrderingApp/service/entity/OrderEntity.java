@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "orders", schema = "public")
 @NamedQueries(
         {
-
+            @NamedQuery(name="getOrdersByCustomerId", query="select o from OrderEntity o where o.customer = :CUSTOMER_ID")
         }
 )
 public class OrderEntity {
@@ -53,24 +53,15 @@ public class OrderEntity {
     private RestaurantEntity restaurant;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ADDRESS_ID")
-    private AddressEntity address;
-
-    /*
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "COUPON_ID")
-    private CustomerEntity coupon; */
-
-    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "COUPON_ID")
     private CouponEntity coupon;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "order_item",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "item_id")}
-    )
-    private List<ItemEntity> item = new ArrayList<>();
+    @OneToMany(mappedBy="orders", cascade = CascadeType.PERSIST)
+    private List<OrderItemEntity> orderItemEntity;
+
+    @ManyToOne
+    @JoinColumn(name="address_id")
+    private AddressEntity address;
 
     public Integer getId() {
         return id;
@@ -144,14 +135,6 @@ public class OrderEntity {
         this.address = address;
     }
 
-    /*public CustomerEntity getCoupon() {
-        return coupon;
-    }
-
-    public void setCoupon(CustomerEntity coupon) {
-        this.coupon = coupon;
-    } */
-
     public CouponEntity getCoupon() {
         return coupon;
     }
@@ -160,11 +143,11 @@ public class OrderEntity {
         this.coupon = coupon;
     }
 
-    public List<ItemEntity> getItem() {
-        return item;
+    public List<OrderItemEntity> getOrderItemEntity() {
+        return orderItemEntity;
     }
 
-    public void setItem(List<ItemEntity> item) {
-        this.item = item;
+    public void setOrderItemEntity(List<OrderItemEntity> orderItemEntity) {
+        this.orderItemEntity = orderItemEntity;
     }
 }

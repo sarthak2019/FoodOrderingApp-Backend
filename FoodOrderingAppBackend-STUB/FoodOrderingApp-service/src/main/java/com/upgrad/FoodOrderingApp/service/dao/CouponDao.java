@@ -1,7 +1,6 @@
 package com.upgrad.FoodOrderingApp.service.dao;
 
 import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -17,10 +16,20 @@ public class CouponDao {
         try {
 
             CouponEntity result = entityManager.createNamedQuery("couponByName", CouponEntity.class).setParameter("coupon_name", couponName).getSingleResult();
-            System.out.println("coupon" + result);
             return result;
         } catch (NoResultException nre) {
             return null;
         }
     }
+
+    public CouponEntity getCouponById(final String uuid) {
+        try {
+            CouponEntity result = entityManager.createNamedQuery("couponById", CouponEntity.class).setParameter("uuid", uuid).getSingleResult();
+            return result;
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+
 }

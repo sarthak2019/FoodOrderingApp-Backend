@@ -1,4 +1,3 @@
-/*
 package com.upgrad.FoodOrderingApp.service.dao;
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAddressEntity;
@@ -16,21 +15,27 @@ public class CustomerAddressDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public CustomerAddressEntity getCustomerAddressByAddressId(long AddressId){
+    public CustomerAddressEntity getCustomerAddressByAddress(AddressEntity address){
 
         try {
-            return this.entityManager.createNamedQuery("customerAddressByAddressId", CustomerAddressEntity.class).setParameter("id", AddressId).getSingleResult();
+            return this.entityManager.createNamedQuery("customerAddressByAddressId", CustomerAddressEntity.class).setParameter("address", address).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }
     }
 
-    public List<CustomerAddressEntity> getCustomerAddressesListByCustomerId(CustomerEntity customerEntity){
+    public List<CustomerAddressEntity> getCustomerAddressesListByCustomer(CustomerEntity customer){
 
         try {
-            return this.entityManager.createNamedQuery("customerAddressesListByCustomerId", CustomerAddressEntity.class).setParameter("customer", customerEntity).getResultList();
+            return this.entityManager.createNamedQuery("customerAddressesListByCustomerId", CustomerAddressEntity.class).setParameter("customer", customer).getResultList();
         } catch (NoResultException nre) {
             return null;
         }
     }
-}*/
+
+
+    public CustomerAddressEntity createCustomerAddress(CustomerAddressEntity customerAddressEntity) {
+        this.entityManager.persist(customerAddressEntity);
+        return customerAddressEntity;
+    }
+}
