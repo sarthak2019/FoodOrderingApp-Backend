@@ -17,7 +17,6 @@ public class PaymentDao {
 
     public List<PaymentEntity> getPaymentMethods() {
         try {
-            System.out.println("In Dao get");
             List<PaymentEntity> result = entityManager.createNamedQuery("paymentMethods", PaymentEntity.class).getResultList();
             return result;
         } catch (NoResultException nre) {
@@ -27,9 +26,7 @@ public class PaymentDao {
 
     public PaymentEntity getPaymentByUUID(String uuid) {
         try {
-            System.out.println("In Dao get");
             PaymentEntity result = entityManager.createNamedQuery("paymentById", PaymentEntity.class).setParameter("uuid", uuid).getSingleResult();
-
             return result;
         } catch (NoResultException nre) {
             return null;
