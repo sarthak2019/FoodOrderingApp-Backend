@@ -95,7 +95,7 @@ public class AddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public AddressEntity getAddressByUUID(String addressUuid, final CustomerEntity signedincustomerEntity) throws AddressNotFoundException {
+    public AddressEntity getAddressByUUID(String addressUuid, final CustomerEntity signedincustomerEntity) throws AddressNotFoundException, AuthorizationFailedException {
         if (addressUuid.isEmpty()) {
             throw new AddressNotFoundException("ANF-005", "Address id can not be empty");
         }
@@ -109,7 +109,7 @@ public class AddressService {
                 return addressEntity;
             }
         }
-        throw new AddressNotFoundException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
+        throw new AuthorizationFailedException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
 
     }
 
