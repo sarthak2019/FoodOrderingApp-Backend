@@ -148,6 +148,8 @@ public class OrderController {
             orderitemEntities.add(orderItemEntity);
         }
 
+        orderEntity.setOrderItemEntity(orderitemEntities);
+
         final OrderEntity createdOrderEntity = orderService.saveOrder(orderEntity);
 
         SaveOrderResponse saveOrderResponse = new SaveOrderResponse()
