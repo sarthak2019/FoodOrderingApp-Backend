@@ -49,7 +49,7 @@ public class AddressService {
 
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public AddressEntity saveAddress(final AddressEntity addressEntity) throws SaveAddressException {
+    public AddressEntity saveAddress(final AddressEntity addressEntity, final CustomerEntity customerEntity) throws SaveAddressException {
 
         String pinCodeRegex = "^[0-9]{6}$";
 

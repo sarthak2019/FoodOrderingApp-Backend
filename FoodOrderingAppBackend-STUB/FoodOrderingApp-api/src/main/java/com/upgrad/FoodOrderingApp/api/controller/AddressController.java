@@ -37,9 +37,9 @@ public class AddressController {
     //saveaddress  endpoint requests for all the attributes in “SaveAddressRequest” about the customer and saves the address of a customer successfully.
     @RequestMapping(method = RequestMethod.POST, path = "/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SaveAddressResponse> saveaddress(@RequestBody(required = false) final SaveAddressRequest saveAddressRequest,
-                                                           @RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
+                                                           @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
 
-        String[] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = authorization.split("Bearer ");
         final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
         final StateEntity stateEntity = addressService.getStateByUUID(saveAddressRequest.getStateUuid());
         final AddressEntity addressEntity = new AddressEntity();
@@ -55,7 +55,7 @@ public class AddressController {
 
 
 
-        final AddressEntity savedAddressEntity = addressService.saveAddress(addressEntity);
+        final AddressEntity savedAddressEntity = addressService.saveAddress(addressEntity, customerEntity);
 
         List<CustomerAddressEntity> customerAddressEntities = new ArrayList<>();
         customerAddressEntity.setCustomer(customerEntity);
@@ -76,9 +76,9 @@ public class AddressController {
 
     //getallsavedaddresses endpoint retrieves all the addresses of a valid customer present in the database
     @RequestMapping(method = RequestMethod.GET, path = "/address/customer", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<AddressList>> getAddressByUUID(@RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException {
+    public ResponseEntity<AddressListResponse> getAddressByUUID(@RequestHeader("authorization") final String authorization) throws AuthorizationFailedException {
 
-        String[] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = authorization.split("Bearer ");
         final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
         final List<CustomerAddressEntity> customerAddressEntities = addressService.getAllAddress(customerEntity);
 
@@ -97,7 +97,7 @@ public class AddressController {
         Collections.sort(addressEntities, compareBySavedTime);
 
 
-        List<AddressList> addressLists = new ArrayList<>();
+        AddressListResponse addressListResponse = new AddressListResponse();
 
         for (AddressEntity address : addressEntities) {
             AddressList addressList = new AddressList();
@@ -113,17 +113,17 @@ public class AddressController {
 
             addressList.state(addressListState);
 
-            addressLists.add(addressList);
+            addressListResponse.addAddressesItem(addressList);
         }
 
-        return new ResponseEntity<List<AddressList>>(addressLists, HttpStatus.OK);
+        return new ResponseEntity<AddressListResponse>(addressListResponse, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, path = "/address/{address_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.DELETE, path = "/address/{address_id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<DeleteAddressResponse> deleteAddress(@PathVariable("address_id") final String addressUuid,
-                                                               @RequestHeader("accessToken") final String accessToken) throws AuthorizationFailedException, AddressNotFoundException {
+                                                               @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException, AddressNotFoundException {
 
-        String[] bearerToken = accessToken.split("Bearer ");
+        String[] bearerToken = authorization.split("Bearer ");
         final CustomerEntity signedinCustomerEntity = customerService.getCustomer(bearerToken[1]);
         final AddressEntity addressEntityToDelete = addressService.getAddressByUUID(addressUuid, signedinCustomerEntity);
         final String Uuid = addressService.deleteAddress(addressEntityToDelete);
@@ -137,18 +137,18 @@ public class AddressController {
 
     //getallstates endpoint retrieves all the states present in the database
     @RequestMapping(method = RequestMethod.GET, path = "/states", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<StatesList>> getallstates() {
+    public ResponseEntity<StatesListResponse> getallstates() {
 
         List<StateEntity> stateEntityList = addressService.getAllStates();
-        List<StatesList> statesLists = new ArrayList<StatesList>();
+        StatesListResponse statesLists = new StatesListResponse();
 
         for (StateEntity stateEntity : stateEntityList) {
             StatesList statesList = new StatesList();
             statesList.setId(UUID.fromString(stateEntity.getUuid()));
             statesList.setStateName(stateEntity.getStateName());
-            statesLists.add(statesList);
+            statesLists.addStatesItem(statesList);
         }
 
-        return new ResponseEntity<List<StatesList>>(statesLists, HttpStatus.OK);
+        return new ResponseEntity<StatesListResponse>(statesLists, HttpStatus.OK);
     }
 }

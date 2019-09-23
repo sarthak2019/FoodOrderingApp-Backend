@@ -36,6 +36,10 @@ public class StateEntity {
         this.stateName = stateName;
     }
 
+    public StateEntity(){
+
+    }
+
     public Integer getId() {
         return id;
     }
