@@ -153,7 +153,7 @@ public class RestaurantController {
     rating in the database along with the number of customers who have rated it for the restaurant
     corresponding to the restaurant_id path variable. Then return the uuid of the restaurant updated
     and message “RESTAURANT RATING UPDATED SUCCESSFULLY” in the JSON response with the corresponding HTTP status. */
-    @RequestMapping(method = RequestMethod.PUT, path = "/restaurant/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, path = "/restaurant/{restaurant_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(@PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("authorization") final String authorization, @RequestParam("customer_rating") Double customer_rating) throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
         String[] bearerToken = authorization.split("Bearer ");
