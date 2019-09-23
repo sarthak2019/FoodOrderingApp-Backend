@@ -41,7 +41,7 @@ public class CouponEntity implements Serializable {
         this.percent = percent;
     }
 
-    public CouponEntity(){
+    public CouponEntity() {
 
     }
 

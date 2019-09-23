@@ -17,17 +17,17 @@ public class OrderDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public OrderEntity saveOrder( OrderEntity orderEntity ){
+    public OrderEntity saveOrder(OrderEntity orderEntity) {
         entityManager.persist(orderEntity);
         return orderEntity;
     }
 
-    public List<OrderEntity> getOrdersByCustomerId(final CustomerEntity customer){
-        List<OrderEntity> result = entityManager.createNamedQuery("getOrdersByCustomerId", OrderEntity.class).setParameter("customer",customer).getResultList();
+    public List<OrderEntity> getOrdersByCustomerId(final CustomerEntity customer) {
+        List<OrderEntity> result = entityManager.createNamedQuery("getOrdersByCustomerId", OrderEntity.class).setParameter("customer", customer).getResultList();
         return result;
     }
 
-    public OrderItemEntity saveOrderItem(OrderItemEntity saveOrderItem ){
+    public OrderItemEntity saveOrderItem(OrderItemEntity saveOrderItem) {
         entityManager.persist(saveOrderItem);
         return saveOrderItem;
     }

@@ -32,11 +32,11 @@ public class OrderItemEntity {
     private Integer price;
 
     @ManyToOne
-    @JoinColumn(name="item_id")
+    @JoinColumn(name = "item_id")
     private ItemEntity item;
 
     @ManyToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     private OrderEntity orders;
 
     public Integer getId() {

@@ -47,7 +47,7 @@ public class ItemEntity {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<RestaurantEntity> restaurant;
 
-    @OneToMany(mappedBy="item")
+    @OneToMany(mappedBy = "item")
     private List<OrderItemEntity> orderItemEntity;
 
     public Integer getId() {
@@ -114,7 +114,7 @@ public class ItemEntity {
         this.orderItemEntity = orderItemEntity;
     }
 
-        @Override
+    @Override
     public boolean equals(Object obj) {
         return new EqualsBuilder().append(this, obj).isEquals();
     }

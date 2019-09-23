@@ -85,10 +85,10 @@ public class CustomerEntity implements Serializable {
     @NotNull
     private String password;
 
-    @OneToMany(mappedBy="customer")
+    @OneToMany(mappedBy = "customer")
     private List<OrderEntity> order;
 
-    @OneToMany(mappedBy="customer")
+    @OneToMany(mappedBy = "customer")
     private List<CustomerAddressEntity> customerAddressEntity;
 
 

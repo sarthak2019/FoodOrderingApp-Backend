@@ -53,13 +53,13 @@ public class AddressEntity {
     private Integer active;
 
 
-    @OneToMany(mappedBy="address")
+    @OneToMany(mappedBy = "address")
     private List<CustomerAddressEntity> customerAddressEntity;
 
     @OneToMany(mappedBy = "address")
     private List<OrderEntity> orders;
 
-    public AddressEntity(){
+    public AddressEntity() {
 
     }
 

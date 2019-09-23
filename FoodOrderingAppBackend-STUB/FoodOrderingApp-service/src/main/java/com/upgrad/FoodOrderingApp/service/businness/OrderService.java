@@ -52,7 +52,6 @@ public class OrderService {
     }
 
 
-
     @Transactional(propagation = Propagation.REQUIRED)
     public CouponEntity getCouponByCouponId(final String couponId) throws CouponNotFoundException {
 

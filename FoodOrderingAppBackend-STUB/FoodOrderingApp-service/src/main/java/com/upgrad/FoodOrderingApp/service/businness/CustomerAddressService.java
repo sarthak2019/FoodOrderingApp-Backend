@@ -23,11 +23,9 @@ public class CustomerAddressService {
     private CustomerAddressDao customerAddressDao;
 
 
-
-
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerAddressEntity saveCustomerAddress(final CustomerAddressEntity customerAddressEntity) throws SaveAddressException {
-            return customerAddressDao.createCustomerAddress(customerAddressEntity);
+        return customerAddressDao.createCustomerAddress(customerAddressEntity);
     }
 
 }

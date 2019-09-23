@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "orders", schema = "public")
 @NamedQueries(
         {
-                @NamedQuery(name="getOrdersByCustomerId", query="select o from OrderEntity o where o.customer = :customer")
+                @NamedQuery(name = "getOrdersByCustomerId", query = "select o from OrderEntity o where o.customer = :customer")
         }
 )
 public class OrderEntity {
@@ -53,11 +53,11 @@ public class OrderEntity {
     @JoinColumn(name = "COUPON_ID")
     private CouponEntity coupon;
 
-    @OneToMany(mappedBy="orders", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.PERSIST)
     private List<OrderItemEntity> orderItemEntity;
 
     @ManyToOne
-    @JoinColumn(name="address_id")
+    @JoinColumn(name = "address_id")
     private AddressEntity address;
 
     public OrderEntity(@NotNull String uuid, @NotNull Double bill, CouponEntity coupon, Double discount, Date date, PaymentEntity payment, CustomerEntity customer, AddressEntity address, RestaurantEntity restaurant) {
@@ -73,7 +73,7 @@ public class OrderEntity {
         this.address = address;
     }
 
-    public OrderEntity(){
+    public OrderEntity() {
 
     }
 

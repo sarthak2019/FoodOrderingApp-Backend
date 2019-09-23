@@ -36,7 +36,7 @@ public class StateEntity {
         this.stateName = stateName;
     }
 
-    public StateEntity(){
+    public StateEntity() {
 
     }
 

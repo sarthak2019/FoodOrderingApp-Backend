@@ -159,7 +159,7 @@ public class RestaurantController {
         String[] bearerToken = authorization.split("Bearer ");
         CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
 
-        if(restaurant_id.isEmpty()){
+        if (restaurant_id.isEmpty()) {
             throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");
         }
 

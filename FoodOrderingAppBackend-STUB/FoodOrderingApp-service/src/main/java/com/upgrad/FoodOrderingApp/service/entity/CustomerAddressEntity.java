@@ -23,11 +23,11 @@ public class CustomerAddressEntity {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name="address_id")
+    @JoinColumn(name = "address_id")
     private AddressEntity address;
 
     @ManyToOne
-    @JoinColumn(name="customer_id")
+    @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
     public Integer getId() {

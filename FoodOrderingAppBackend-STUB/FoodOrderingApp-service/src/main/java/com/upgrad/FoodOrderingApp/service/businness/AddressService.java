@@ -74,8 +74,8 @@ public class AddressService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public String deleteAddress(AddressEntity addressEntity) throws AuthorizationFailedException {
-        List<OrderEntity> orderEntityList =  addressEntity.getOrders();
-        if(orderEntityList.size() != 0){
+        List<OrderEntity> orderEntityList = addressEntity.getOrders();
+        if (orderEntityList.size() != 0) {
             AddressEntity newaddressEntity = new AddressEntity();
             newaddressEntity.setId(addressEntity.getId());
             newaddressEntity.setUuid(addressEntity.getUuid());
@@ -89,8 +89,7 @@ public class AddressService {
             newaddressEntity.setActive(0);
             AddressEntity mergedaddressEntity = addressDao.mergeAddress(newaddressEntity);
             return mergedaddressEntity.getUuid();
-        }
-        else {
+        } else {
             return addressDao.deleteAddress(addressEntity);
         }
     }

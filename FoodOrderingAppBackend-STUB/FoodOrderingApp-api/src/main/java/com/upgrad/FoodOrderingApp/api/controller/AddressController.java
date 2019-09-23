@@ -54,7 +54,6 @@ public class AddressController {
         addressEntity.setActive(1);
 
 
-
         final AddressEntity savedAddressEntity = addressService.saveAddress(addressEntity, customerEntity);
 
         List<CustomerAddressEntity> customerAddressEntities = new ArrayList<>();
@@ -83,7 +82,7 @@ public class AddressController {
         final List<CustomerAddressEntity> customerAddressEntities = addressService.getAllAddress(customerEntity);
 
         List<AddressEntity> addressEntities = new ArrayList<>();
-        for(CustomerAddressEntity customerAddressEntity : customerAddressEntities){
+        for (CustomerAddressEntity customerAddressEntity : customerAddressEntities) {
             AddressEntity addressEntitiy = customerAddressEntity.getAddress();
             addressEntities.add(addressEntitiy);
         }

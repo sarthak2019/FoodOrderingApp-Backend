@@ -30,7 +30,7 @@ public class PaymentEntity implements Serializable {
     @Size(max = 255)
     private String paymentName;
 
-    @OneToMany(mappedBy="payment")
+    @OneToMany(mappedBy = "payment")
     private List<OrderEntity> order;
 
     public PaymentEntity(@NotNull @Size(max = 200) String uuid, @NotNull @Size(max = 255) String paymentName) {
@@ -38,7 +38,7 @@ public class PaymentEntity implements Serializable {
         this.paymentName = paymentName;
     }
 
-    public PaymentEntity(){
+    public PaymentEntity() {
 
     }
 

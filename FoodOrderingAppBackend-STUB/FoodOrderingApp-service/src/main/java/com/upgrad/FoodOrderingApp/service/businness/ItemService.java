@@ -38,7 +38,7 @@ public class ItemService {
         };
         Collections.sort(itemEntities, compareByItemPopularity);
         List<ItemEntity> topitemEntities = new ArrayList<>();
-        for(int i=0; i<5; i++){
+        for (int i = 0; i < 5; i++) {
             topitemEntities.add(itemEntities.get(i));
         }
         return topitemEntities;
@@ -60,8 +60,8 @@ public class ItemService {
 
         List<CategoryEntity> categoryEntities = restaurantEntity.getCategory();
 
-        for(CategoryEntity categoryEntity : categoryEntities){
-            if(categoryEntity.getUuid() == categoryId){
+        for (CategoryEntity categoryEntity : categoryEntities) {
+            if (categoryEntity.getUuid() == categoryId) {
                 return categoryEntity.getItems();
             }
         }

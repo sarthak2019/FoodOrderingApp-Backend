@@ -56,16 +56,16 @@ public class OrderController {
         return new ResponseEntity<CouponDetailsResponse>(couponDetailsResponse, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path="/order", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<OrderList>> orders(@RequestHeader("authorization") final String authorization) throws AuthorizationFailedException,CouponNotFoundException, AddressNotFoundException, PaymentMethodNotFoundException, RestaurantNotFoundException, ItemNotFoundException {
+    @RequestMapping(method = RequestMethod.GET, path = "/order", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<OrderList>> orders(@RequestHeader("authorization") final String authorization) throws AuthorizationFailedException, CouponNotFoundException, AddressNotFoundException, PaymentMethodNotFoundException, RestaurantNotFoundException, ItemNotFoundException {
         String[] bearerToken = authorization.split("Bearer ");
         final CustomerEntity customerEntity = customerService.getCustomer(bearerToken[1]);
         final List<OrderEntity> orderEntities = orderService.getOrdersByCustomers(customerEntity.getUuid());
 
-        CustomerOrderResponse customerOrderResponse= new CustomerOrderResponse();
+        CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse();
         List<OrderList> orderLists = new ArrayList<>();
 
-        for(OrderEntity orderEntity : orderEntities) {
+        for (OrderEntity orderEntity : orderEntities) {
             OrderList orderList = new OrderList();
             OrderListCoupon orderListCoupon = new OrderListCoupon();
             OrderListPayment orderListPayment = new OrderListPayment();
@@ -85,7 +85,7 @@ public class OrderController {
                     .locality(orderEntity.getAddress().getLocality()).city(orderEntity.getAddress().getCity())
                     .pincode(orderEntity.getAddress().getPinCode()).state(orderListAddressState);
             List<ItemQuantityResponse> itemQuantityResponseList = new ArrayList<>();
-            for(OrderItemEntity orderItemEntity : orderEntity.getOrderItemEntity()) {
+            for (OrderItemEntity orderItemEntity : orderEntity.getOrderItemEntity()) {
                 ItemQuantityResponse itemQuantityResponse = new ItemQuantityResponse();
                 ItemQuantityResponseItem itemQuantityResponseItem = new ItemQuantityResponseItem();
                 String itemType = orderItemEntity.getItem().getType();
@@ -108,12 +108,12 @@ public class OrderController {
             orderLists.add(orderList);
         }
 
-        return new ResponseEntity<List<OrderList>>(orderLists,HttpStatus.OK);
+        return new ResponseEntity<List<OrderList>>(orderLists, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path="/order", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<SaveOrderResponse> save(@RequestBody(required = false) final SaveOrderRequest saveOrderRequest, @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException,  CouponNotFoundException, AddressNotFoundException, PaymentMethodNotFoundException, RestaurantNotFoundException, ItemNotFoundException {
-        final OrderEntity orderEntity= new OrderEntity();
+    @RequestMapping(method = RequestMethod.POST, path = "/order", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<SaveOrderResponse> save(@RequestBody(required = false) final SaveOrderRequest saveOrderRequest, @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException, CouponNotFoundException, AddressNotFoundException, PaymentMethodNotFoundException, RestaurantNotFoundException, ItemNotFoundException {
+        final OrderEntity orderEntity = new OrderEntity();
         final Date now = new Date();
 
         String[] bearerToken = authorization.split("Bearer ");
@@ -138,7 +138,7 @@ public class OrderController {
         orderEntity.setDate(now);
 
         List<OrderItemEntity> orderitemEntities = new ArrayList<>();
-        for(ItemQuantity itemQuantity : saveOrderRequest.getItemQuantities()) {
+        for (ItemQuantity itemQuantity : saveOrderRequest.getItemQuantities()) {
             ItemEntity itemEntity = itemService.getItemsById(itemQuantity.getItemId().toString());
             OrderItemEntity orderItemEntity = new OrderItemEntity();
             orderItemEntity.setQuantity(itemQuantity.getQuantity());
@@ -154,6 +154,6 @@ public class OrderController {
                 .id(createdOrderEntity.getUuid())
                 .status("ORDER SUCCESSFULLY PLACED");
 
-        return new ResponseEntity<SaveOrderResponse>(saveOrderResponse,HttpStatus.CREATED);
+        return new ResponseEntity<SaveOrderResponse>(saveOrderResponse, HttpStatus.CREATED);
     }
 }

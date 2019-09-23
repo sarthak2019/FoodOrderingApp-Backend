@@ -1,4 +1,5 @@
 package com.upgrad.FoodOrderingApp.service.dao;
+
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
@@ -15,7 +16,7 @@ public class CustomerAddressDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public CustomerAddressEntity getCustomerAddressByAddress(AddressEntity address){
+    public CustomerAddressEntity getCustomerAddressByAddress(AddressEntity address) {
 
         try {
             return this.entityManager.createNamedQuery("customerAddressByAddressId", CustomerAddressEntity.class).setParameter("address", address).getSingleResult();
@@ -24,7 +25,7 @@ public class CustomerAddressDao {
         }
     }
 
-    public List<CustomerAddressEntity> getCustomerAddressesListByCustomer(CustomerEntity customer){
+    public List<CustomerAddressEntity> getCustomerAddressesListByCustomer(CustomerEntity customer) {
 
         try {
             return this.entityManager.createNamedQuery("customerAddressesListByCustomerId", CustomerAddressEntity.class).setParameter("customer", customer).getResultList();
