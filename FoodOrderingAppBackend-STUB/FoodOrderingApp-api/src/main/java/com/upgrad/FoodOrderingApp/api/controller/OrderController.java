@@ -81,7 +81,7 @@ public class OrderController {
             orderListAddressState.id(UUID.fromString(orderEntity.getAddress().getState().getUuid()))
                     .stateName(orderEntity.getAddress().getState().getStateName());
             orderListAddress.id(UUID.fromString(orderEntity.getAddress().getUuid()))
-                    .flatBuildingName(orderEntity.getAddress().getFlatBuilNumber())
+                    .flatBuildingName(orderEntity.getAddress().getFlatBuilNo())
                     .locality(orderEntity.getAddress().getLocality()).city(orderEntity.getAddress().getCity())
                     .pincode(orderEntity.getAddress().getPinCode()).state(orderListAddressState);
             List<ItemQuantityResponse> itemQuantityResponseList = new ArrayList<>();

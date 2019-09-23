@@ -46,7 +46,7 @@ public class AddressController {
         final CustomerAddressEntity customerAddressEntity = new CustomerAddressEntity();
 
         addressEntity.setUuid(UUID.randomUUID().toString());
-        addressEntity.setFlatBuilNumber(saveAddressRequest.getFlatBuildingName());
+        addressEntity.setFlatBuilNo(saveAddressRequest.getFlatBuildingName());
         addressEntity.setLocality(saveAddressRequest.getLocality());
         addressEntity.setCity(saveAddressRequest.getCity());
         addressEntity.setPinCode(saveAddressRequest.getPincode());
@@ -102,7 +102,7 @@ public class AddressController {
         for (AddressEntity address : addressEntities) {
             AddressList addressList = new AddressList();
             addressList.id(UUID.fromString(address.getUuid()));
-            addressList.flatBuildingName(address.getFlatBuilNumber());
+            addressList.flatBuildingName(address.getFlatBuilNo());
             addressList.locality(address.getLocality());
             addressList.pincode(address.getPinCode());
             addressList.city(address.getCity());

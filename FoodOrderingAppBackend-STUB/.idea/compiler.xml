@@ -11,5 +11,8 @@
         <module name="FoodOrderingApp-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="FoodOrderingApp-Backend" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

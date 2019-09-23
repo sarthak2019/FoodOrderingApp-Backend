@@ -101,7 +101,7 @@ public class RestaurantController {
         restaurantDetailsResponseAddressState.id(UUID.fromString(restaurantEntity.getAddress().getState().getUuid())).stateName(restaurantEntity.getAddress().getState().getStateName());
         RestaurantDetailsResponseAddress restaurantDetailsResponseAddress = new RestaurantDetailsResponseAddress();
         restaurantDetailsResponseAddress.id(UUID.fromString(restaurantEntity.getAddress().getUuid()))
-                .flatBuildingName(restaurantEntity.getAddress().getFlatBuilNumber())
+                .flatBuildingName(restaurantEntity.getAddress().getFlatBuilNo())
                 .locality(restaurantEntity.getAddress().getLocality()).city(restaurantEntity.getAddress().getCity())
                 .pincode(restaurantEntity.getAddress().getPincode()).state(restaurantDetailsResponseAddressState);
         RestaurantList restaurantList = new RestaurantList();
@@ -181,7 +181,7 @@ public class RestaurantController {
             restaurantDetailsResponseAddressState.id(UUID.fromString(restaurantEntity.getAddress().getState().getUuid())).stateName(restaurantEntity.getAddress().getState().getStateName());
             RestaurantDetailsResponseAddress restaurantDetailsResponseAddress = new RestaurantDetailsResponseAddress();
             restaurantDetailsResponseAddress.id(UUID.fromString(restaurantEntity.getAddress().getUuid()))
-                    .flatBuildingName(restaurantEntity.getAddress().getFlatBuilNumber())
+                    .flatBuildingName(restaurantEntity.getAddress().getFlatBuilNo())
                     .locality(restaurantEntity.getAddress().getLocality()).city(restaurantEntity.getAddress().getCity())
                     .pincode(restaurantEntity.getAddress().getPincode()).state(restaurantDetailsResponseAddressState);
             RestaurantList restaurantList = new RestaurantList();
